@@ -1,2 +1,2 @@
-# config4k
-A Kotlin wrapper for Typesafe Config
+# Config4k
+A Typesafe Config wrapper for Kotlin.
