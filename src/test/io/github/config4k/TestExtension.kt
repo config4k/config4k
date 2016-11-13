@@ -6,11 +6,11 @@ import io.kotlintest.specs.WordSpec
 
 class TestExtension : WordSpec() {
     init {
-        "Config.getInt" should {
+        "Config.extract" should {
             "return Int value" {
-                val config = ConfigFactory.parseString(
-                        "number = 0")
-                config.getInt("number") shouldBe 0
+                val config = ConfigFactory.parseString("number = 0")
+                val number = config.extract<Int>("number")
+                number shouldBe 0
             }
         }
     }
