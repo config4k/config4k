@@ -1,5 +1,7 @@
 package io.github.config4k.readers
 
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigValue
 import kotlin.reflect.KClass
 
 
@@ -19,6 +21,9 @@ class SelectReader {
                 String::class -> StringReader()
                 Boolean::class -> BooleanReader()
                 Double::class -> DoubleReader()
+                Long::class -> LongReader()
+                Config::class -> ConfigReader()
+                ConfigValue::class -> ConfigValueReader()
                 else -> TODO()
             }
 }
