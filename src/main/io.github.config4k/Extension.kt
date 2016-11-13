@@ -8,6 +8,7 @@ import io.github.config4k.readers.SelectReader
  *
  * Returns a value of given type by calling method
  * in [com.typesafe.config.Config]
+ * 
  * As this function is an inline function, shown stacktrace is not true.
  *
  * @param path see [com.typesafe.config.Config]
