@@ -18,7 +18,7 @@ class TestExtension : WordSpec() {
 
             "return String value" {
                 val str = "str"
-                val config = ConfigFactory.parseString("""value = $str """)
+                val config = ConfigFactory.parseString("""value = $str""")
                 config.extract<String>("value") shouldBe str
             }
 
