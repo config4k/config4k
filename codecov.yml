@@ -1,0 +1,3 @@
+fixes:
+  - "io/github/config4k::src/main/io.github.config4k"
+  - "io/github/config4k/ExtensionKt::src/main/io.github.config4k"
