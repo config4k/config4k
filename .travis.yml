@@ -1,8 +1,8 @@
 language: java
 sudo: false
 jdk:
-    - oraclejdk8
+  - oraclejdk8
 script:
-    - ./gradlew test jacocoTestReport
+  - ./gradlew test jacocoTestReport
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
