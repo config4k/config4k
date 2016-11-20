@@ -2,6 +2,7 @@ package io.github.config4k.readers
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValue
+import io.github.config4k.Config4kException
 import java.time.Duration
 import kotlin.reflect.KClass
 
@@ -15,6 +16,7 @@ class SelectReader {
      * Add new case to support new type.
      *
      * @param type a instance got from the given type by reflection
+     * @throws Config4kException.UnSupportedType if the passed type is not supported
      */
     fun getReader(type: KClass<*>): Reader<*> =
             when (type) {
@@ -26,6 +28,6 @@ class SelectReader {
                 Duration::class -> DurationReader()
                 Config::class -> ConfigReader()
                 ConfigValue::class -> ConfigValueReader()
-                else -> TODO()
+                else -> throw Config4kException.UnSupportedType(type)
             }
 }
