@@ -5,6 +5,7 @@ import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValue
 import com.typesafe.config.ConfigValueType
 import io.kotlintest.specs.WordSpec
+import java.time.Duration
 
 
 class TestExtension : WordSpec() {
@@ -38,6 +39,12 @@ class TestExtension : WordSpec() {
                 val num = 1000L
                 val config = ConfigFactory.parseString("""value = $num""")
                 config.extract<Long>("value") shouldBe num
+            }
+            "return Duration" {
+                val duration = "60minutes"
+                val config = ConfigFactory.parseString("""value = $duration""")
+                config.extract<Duration>("value") shouldBe
+                        Duration.ofMinutes(60)
             }
 
             "return Config" {
