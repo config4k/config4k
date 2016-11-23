@@ -2,15 +2,20 @@ buildscript {
     ext.kotlin_version = '1.0.4'
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.novoda:bintray-release:0.4.0'
+        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:0.9.9'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
 apply plugin: 'jacoco'
+apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'org.jetbrains.dokka'
 
 repositories {
     mavenCentral()
@@ -34,4 +39,31 @@ jacocoTestReport {
         xml.enabled = true
         csv.enabled = false
     }
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/tmp/kdoc"
+}
+
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    archiveName = "config4k-javadoc.jar"
+    from "$buildDir/tmp/kdoc"
+}
+
+afterEvaluate {
+    mavenSourcesJar.dependsOn javadocJar
+}
+
+publish {
+    userOrg = 'config4k'
+    repoName = 'config4k'
+    groupId = 'io.github.config4k'
+    artifactId = 'config4k'
+    publishVersion = '0.1.0'
+    description = 'A Typesafe Config wrapper for Kotlin'
+    website = 'https://github.com/config4k/config4k'
+    licences = ['Apache-2.0']
+    issueTracker = 'https://github.com/config4k/config4k/issues'
+    repository = 'https://github.com/config4k/config4k.git'
 }
