@@ -8,17 +8,17 @@ A Typesafe Config wrapper for Kotlin. Config4k adds an extension function `extra
  
 Gradle:
 
-`compile 'io.github.config4k:config4k:0.1.0'`
+```
+repositories {
+    maven {
+        url 'http://dl.bintray.com/config4k/config4k'
+    }
+}
 
-Maven:
 
-```xml
-<dependency>
-  <groupId>io.github.config4k</groupId>
-  <artifactId>config4k</artifactId>
-  <version>0.1.0</version>
-  <type>pom</type>
-</dependency>
+dependencies {
+    compile 'io.github.config4k:config4k:0.1.0'
+}
 ```
 
 ## Examples
@@ -33,6 +33,8 @@ fun main(args: Array<String>) {
     println(key)
 }
 ```
+
+For more details, please see https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestExtension.kt
 
 ## Supported types
 - Primitive types
