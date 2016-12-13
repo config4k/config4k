@@ -10,5 +10,4 @@ import com.typesafe.config.Config
  *
  * @param T support type
  */
-open class Reader<out T> internal constructor(
-        val read: (Config, String) -> T)
+internal open class Reader<out T>(val read: (Config, String) -> T)

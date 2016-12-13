@@ -7,7 +7,7 @@ import java.time.Duration
 import kotlin.reflect.KClass
 
 
-class SelectReader {
+object SelectReader {
     /**
      * Don't use this method.
      * Called by an inline function [io.github.config4k.Extension.extract],
@@ -15,11 +15,14 @@ class SelectReader {
      *
      * Add new case to support new type.
      *
-     * @param type a instance got from the given type by reflection
+     * @param clazz a instance got from the given type by reflection
+     * @param genericType clazz is C and genericType is A,
+     *                    when the passed type is C<A>
      * @throws Config4kException.UnSupportedType if the passed type is not supported
      */
-    fun getReader(type: KClass<*>): Reader<*> =
-            when (type) {
+    fun getReader(clazz: KClass<*>,
+                  genericType: KClass<*>?): (Config, String) -> Any =
+            when (clazz) {
                 Int::class -> IntReader()
                 String::class -> StringReader()
                 Boolean::class -> BooleanReader()
@@ -28,6 +31,7 @@ class SelectReader {
                 Duration::class -> DurationReader()
                 Config::class -> ConfigReader()
                 ConfigValue::class -> ConfigValueReader()
-                else -> throw Config4kException.UnSupportedType(type)
-            }
+                List::class -> ListReader(genericType!!)
+                else -> throw Config4kException.UnSupportedType(clazz)
+            }.read
 }
