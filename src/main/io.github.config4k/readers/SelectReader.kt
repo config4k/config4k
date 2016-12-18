@@ -16,12 +16,9 @@ object SelectReader {
      * Add new case to support new type.
      *
      * @param clazz a instance got from the given type by reflection
-     * @param genericType clazz is C and genericType is A,
-     *                    when the passed type is C<A>
      * @throws Config4kException.UnSupportedType if the passed type is not supported
      */
-    fun getReader(clazz: KClass<*>,
-                  genericType: KClass<*>?): (Config, String) -> Any =
+    fun getReader(clazz: KClass<*>) =
             when (clazz) {
                 Int::class -> IntReader()
                 String::class -> StringReader()
@@ -31,7 +28,7 @@ object SelectReader {
                 Duration::class -> DurationReader()
                 Config::class -> ConfigReader()
                 ConfigValue::class -> ConfigValueReader()
-                List::class -> ListReader(genericType!!)
+                List::class -> ListReader()
                 else -> throw Config4kException.UnSupportedType(clazz)
             }.read
 }
