@@ -1,12 +1,12 @@
 matrix:
   include:
-    # Ubuntu 12.04 LTS
-    - os: linux
-      dist: precise
-      jdk: oraclejdk8
     # Ubuntu 14.04 LTS
     - os: linux
       dist: trusty
+      jdk: oraclejdk8
+    # Ubuntu 12.04 LTS
+    - os: linux
+      dist: precise
       jdk: oraclejdk8
     # macOS 10.12
     - os: osx
