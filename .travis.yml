@@ -3,12 +3,10 @@ matrix:
     # Ubuntu 12.04 LTS
     - os: linux
       dist: precise
-      sudo: false
       jdk: oraclejdk8
     # Ubuntu 14.04 LTS
     - os: linux
       dist: trusty
-      sudo: false
       jdk: oraclejdk8
     # macOS 10.12
     - os: osx
@@ -19,6 +17,8 @@ matrix:
     # OS X 10.10
     - os: osx
       osx_image: xcode6.4
+
+sudo: false
 
 language: java
   
