@@ -29,6 +29,10 @@ object SelectReader {
                 Config::class -> ConfigReader()
                 ConfigValue::class -> ConfigValueReader()
                 List::class -> ListReader()
-                else -> throw Config4kException.UnSupportedType(clazz)
+                Set::class -> SetReader()
+                else ->
+                    if (clazz.java.isArray)
+                        ArrayReader(clazz.java.componentType.kotlin)
+                    else throw Config4kException.UnSupportedType(clazz)
             }.read
 }
