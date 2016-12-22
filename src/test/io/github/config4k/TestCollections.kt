@@ -3,6 +3,7 @@ package io.github.config4k
 import com.typesafe.config.ConfigFactory
 import io.kotlintest.specs.WordSpec
 import java.time.Duration
+import java.util.*
 
 
 class TestCollections : WordSpec() {
@@ -21,12 +22,16 @@ class TestCollections : WordSpec() {
             }
 
             "return Array<T>" {
-                ConfigFactory
-                        .parseString("""key = ["a", "b", "c", "d"]""")
-                        .extract<Array<String>>("key")
-                ConfigFactory
-                        .parseString("""key = ["0m", "1m"]""")
-                        .extract<Array<Duration>>("key")
+                Arrays.deepEquals(
+                        ConfigFactory
+                                .parseString("""key = ["a", "b", "c", "d"]""")
+                                .extract<Array<String>>("key"),
+                        arrayOf("a", "b", "c", "d"))
+                Arrays.deepEquals(
+                        ConfigFactory
+                                .parseString("""key = ["0m", "1m"]""")
+                                .extract<Array<Duration>>("key"),
+                        arrayOf(Duration.ofMinutes(0), Duration.ofMinutes(1)))
             }
         }
     }
