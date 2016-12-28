@@ -10,19 +10,15 @@ import kotlin.reflect.KClass
 internal class ArrayReader(clazz: KClass<*>) : Reader<Array<*>>({
     config, path ->
     when (clazz) {
-        Int::class -> config.getIntList(path).toTypedArray()
-        String::class -> config.getStringList(path).toTypedArray()
-        Boolean::class -> config.getBooleanList(path).toTypedArray()
-        Double::class -> config.getDoubleList(path).toTypedArray()
-        Long::class -> config.getDoubleList(path).toTypedArray()
-        Duration::class -> config.getDurationList(path).toTypedArray()
-        Config::class -> config.getConfigList(path).toTypedArray()
-        List::class -> config.getList(path).map {
-            it.atPath("a").extract<List<*>>("a")
-        }.toTypedArray()
-        Set::class -> config.getList(path).map {
-            it.atPath("a").extract<Set<*>>("a")
-        }.toTypedArray()
+        Int::class -> config.extract<List<Int>>(path).toTypedArray()
+        String::class -> config.extract<List<String>>(path).toTypedArray()
+        Boolean::class -> config.extract<List<Boolean>>(path).toTypedArray()
+        Double::class -> config.extract<List<Double>>(path).toTypedArray()
+        Long::class -> config.extract<List<Long>>(path).toTypedArray()
+        Duration::class -> config.extract<List<Duration>>(path).toTypedArray()
+        Config::class -> config.extract<List<Config>>(path).toTypedArray()
+        List::class -> config.extract<List<List<*>>>(path).toTypedArray()
+        Set::class -> config.extract<List<Set<*>>>(path).toTypedArray()
         else -> throw Config4kException.UnSupportedType(clazz)
     }
 })

@@ -13,5 +13,9 @@ import io.github.config4k.readers.SelectReader
  *
  * @param path see [com.typesafe.config.Config]
  */
-inline fun <reified T> Config.extract(path: String) =
-        SelectReader.getReader(T::class)(this, path) as T
+inline fun <reified T> Config.extract(path: String): T {
+    val genericType = object : TypeReference<T>() {}.genericType()
+    val clazz = listOf(T::class)
+    return SelectReader.getReader(
+            genericType?.let { clazz + it } ?: clazz)(this, path) as T
+}

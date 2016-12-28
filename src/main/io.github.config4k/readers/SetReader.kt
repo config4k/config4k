@@ -1,7 +1,9 @@
 package io.github.config4k.readers
 
+import kotlin.reflect.KClass
 
-internal class SetReader : Reader<Set<*>>({
+
+internal class SetReader(clazz: List<KClass<*>>) : Reader<Set<*>>({
     config, path ->
-    ListReader().read(config, path).toSet()
+    ListReader(clazz).read(config, path).toSet()
 })
