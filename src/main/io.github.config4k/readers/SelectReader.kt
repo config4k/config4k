@@ -18,8 +18,8 @@ object SelectReader {
      * @param clazz a instance got from the given type by reflection
      * @throws Config4kException.UnSupportedType if the passed type is not supported
      */
-    fun getReader(clazz: KClass<*>) =
-            when (clazz) {
+    fun getReader(clazz: List<KClass<*>>) =
+            when (clazz[0]) {
                 Int::class -> IntReader()
                 String::class -> StringReader()
                 Boolean::class -> BooleanReader()
@@ -28,7 +28,11 @@ object SelectReader {
                 Duration::class -> DurationReader()
                 Config::class -> ConfigReader()
                 ConfigValue::class -> ConfigValueReader()
-                List::class -> ListReader()
-                else -> throw Config4kException.UnSupportedType(clazz)
+                List::class -> ListReader(clazz)
+                Set::class -> SetReader(clazz)
+                else ->
+                    if (clazz[0].java.isArray)
+                        ArrayReader(clazz[0].java.componentType.kotlin)
+                    else throw Config4kException.UnSupportedType(clazz[0])
             }.read
 }
