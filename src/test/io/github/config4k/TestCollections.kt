@@ -37,6 +37,7 @@ class TestCollections : WordSpec() {
             "return Array<T>" {
                 Arrays.deepEquals(
                         ConfigFactory
+
                                 .parseString("""key = ["a", "b", "c", "d"]""")
                                 .extract<Array<String>>("key"),
                         arrayOf("a", "b", "c", "d")) shouldBe true

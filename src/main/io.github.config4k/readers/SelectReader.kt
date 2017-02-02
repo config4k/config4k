@@ -30,6 +30,7 @@ object SelectReader {
                 ConfigValue::class -> ConfigValueReader()
                 List::class -> ListReader(clazz)
                 Set::class -> SetReader(clazz)
+                Map::class -> MapReader(clazz)
                 else ->
                     if (clazz[0].java.isArray)
                         ArrayReader(clazz[0].java.componentType.kotlin)

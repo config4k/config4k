@@ -20,7 +20,9 @@ open class TypeReference<T> {
     }
 
     private fun getGenericList(type: ParameterizedType): List<KClass<*>> {
-        val r = type.actualTypeArguments[0]
+        val r = if (type.actualTypeArguments.size > 1)
+            type.actualTypeArguments[1]
+        else type.actualTypeArguments[0]
         val impl = (r as WildcardType).upperBounds[0]
         val wild = listOf((if (impl is ParameterizedTypeImpl) impl.rawType
         else impl as Class<*>).kotlin)
