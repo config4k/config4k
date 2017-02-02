@@ -38,6 +38,17 @@ class TestMap : WordSpec() {
                         "nest2" to mapOf("key3" to 30, "key4" to 40)
                 )
             }
+
+            "return Map<String, List<T>>" {
+                val mapConfig =
+                        ConfigFactory.parseString("""
+                        |nest = {
+                        |  key1 = [0, 1]
+                        |  key2 = [2, 3]
+                        |}""".trimMargin())
+                val list = mapConfig.extract<Map<String, List<Int>>>("nest")
+                list shouldBe mapOf("key1" to listOf(0, 1), "key2" to listOf(2, 3))
+            }
         }
     }
 }
