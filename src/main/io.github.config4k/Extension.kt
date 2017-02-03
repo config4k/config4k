@@ -21,7 +21,11 @@ inline fun <reified T> Config.extract(path: String): T {
         SelectReader.getReader(
                 genericType?.let { clazz + it } ?: clazz)(this, path) as T
     } catch (e: Exception) {
-        throw ConfigException.BadPath(path, "take a look at your config")
+        when (e) {
+            is Config4kException.UnSupportedType -> throw e
+            else -> throw ConfigException
+                    .BadPath(path, "take a look at your config")
+        }
     }
 
 }
