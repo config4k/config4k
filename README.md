@@ -17,7 +17,7 @@ repositories {
 
 
 dependencies {
-    compile 'io.github.config4k:config4k:0.1.0'
+    compile 'io.github.config4k:config4k:xxx' // See the `Download` badge
 }
 ```
 
@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-For more details, please see https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestExtension.kt
+For more details, please see [TestExtension.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestExtension.kt)
 
 ## Supported types
 - Primitive types
@@ -44,6 +44,12 @@ For more details, please see https://github.com/config4k/config4k/blob/master/sr
      - `Double`
 - `String`
 - `java.time.Duration`
+- Collections
+    - `List`
+    - `Set`
+    - `Map<String, T>`
+    - `Array<T>` (You can use `Array<Int>`, but can't use `Array<Array<Int>>`)
+- Nullable `T?`
 - Typesafe Config classes
     - `com.typesafe.config.Config`
     - `com.typesafe.config.ConfigValue`
