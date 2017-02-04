@@ -17,15 +17,12 @@ import io.github.config4k.readers.SelectReader
 inline fun <reified T> Config.extract(path: String): T {
     val genericType = object : TypeReference<T>() {}.genericType()
     val clazz = listOf(T::class)
+    val result = SelectReader.getReader(
+            genericType?.let { clazz + it } ?: clazz)(this, path)
     return try {
-        SelectReader.getReader(
-                genericType?.let { clazz + it } ?: clazz)(this, path) as T
+        result as T
     } catch (e: Exception) {
-        when (e) {
-            is Config4kException.UnSupportedType -> throw e
-            else -> throw ConfigException
-                    .BadPath(path, "take a look at your config")
-        }
+        throw result?.let { e } ?: ConfigException.BadPath(
+                path, "take a look at your config")
     }
-
 }
