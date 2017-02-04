@@ -10,4 +10,9 @@ import com.typesafe.config.Config
  *
  * @param T support type
  */
-internal open class Reader<out T>(val read: (Config, String) -> T)
+internal open class Reader<out T>(read: (Config, String) -> T) {
+    val getValue: (Config, String) -> T? = {
+        config, path ->
+        if (config.hasPath(path)) read(config, path) else null
+    }
+}

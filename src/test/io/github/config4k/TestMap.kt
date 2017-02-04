@@ -23,13 +23,13 @@ class TestMap : WordSpec() {
                         ConfigFactory.parseString("""
                         |nest = {
                         |  nest1 = {
-                        |   key1 = 10
-                        |   key2 = 20
-                        |}
+                        |    key1 = 10
+                        |    key2 = 20
+                        |  }
                         |  nest2 = {
-                        |   key3 = 30
-                        |   key4 = 40
-                        |}
+                        |    key3 = 30
+                        |    key4 = 40
+                        |  }
                         |}""".trimMargin())
                 val list = mapConfig
                         .extract<Map<String, Map<String, Int>>>("nest")
