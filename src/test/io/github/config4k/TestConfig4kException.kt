@@ -15,11 +15,19 @@ class TestConfig4kException : WordSpec() {
                 }
             }
 
-            "return ConfigException.BadPath" {
+            "throw ConfigException.BadPath" {
                 val config = ConfigFactory.parseString("")
                 shouldThrow<ConfigException.BadPath> {
                     config.extract<Int>("key")
                 }
+            }
+
+            "throw Config4kException.WrongEnum" {
+                val config = ConfigFactory.parseString("""key = foo""")
+                shouldThrow<Config4kException.WrongEnum> {
+                    config.extract<Size>("key")
+                }.message shouldBe
+                        "expected : [SMALL, MEDIUM, LARGE], actually : foo"
             }
         }
     }
