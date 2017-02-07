@@ -34,6 +34,8 @@ object SelectReader {
                 else ->
                     if (clazz[0].java.isArray)
                         ArrayReader(clazz[0].java.componentType.kotlin)
-                    else throw Config4kException.UnSupportedType(clazz[0])
+                    else if (clazz[0].java.isEnum) {
+                        EnumReader(clazz[0])
+                    } else throw Config4kException.UnSupportedType(clazz[0])
             }.getValue
 }
