@@ -17,7 +17,24 @@ class TestArbitraryType : WordSpec() {
                 person shouldBe Person("foo", 20)
             }
         }
+
+        "Config.extract<Nest>" should {
+            "return Nest" {
+                val config = ConfigFactory.parseString("""
+                                          |key = {  
+                                          |  nest = 1
+                                          |  person = {
+                                          |    name = "foo"
+                                          |    age = 20
+                                          |  }
+                                          |}""".trimMargin())
+                val person = config.extract<Nest>("key")
+                person shouldBe Nest(1, Person("foo", 20))
+            }
+        }
     }
 }
 
 data class Person(val name: String, val age: Int)
+
+data class Nest(val nest: Int, val person: Person)
