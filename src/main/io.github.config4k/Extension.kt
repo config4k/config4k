@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
 import io.github.config4k.readers.SelectReader
+import kotlin.reflect.primaryConstructor
 
 /**
  * An extension function that enables you to use type parameter.
@@ -35,6 +36,9 @@ fun Any.toConfig(name: String): Config {
     val map = when {
         clazz.javaPrimitiveType != null -> mapOf(name to this)
         this is String -> mapOf(name to this)
+        clazz.primaryConstructor != null -> {
+            mapOf(name to getConfigMap(this, clazz))
+        }
         else -> TODO()
     }
 
