@@ -31,6 +31,12 @@ inline fun <reified T> Config.extract(path: String): T {
 }
 
 fun Any.toConfig(name: String): Config {
-    val map = mapOf(name to this)
+    val clazz = this.javaClass.kotlin
+    val map = when {
+        clazz.javaPrimitiveType != null -> mapOf(name to this)
+        this is String -> mapOf(name to this)
+        else -> TODO()
+    }
+
     return ConfigFactory.parseMap(map)
 }
