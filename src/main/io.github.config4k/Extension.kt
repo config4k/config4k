@@ -2,6 +2,7 @@ package io.github.config4k
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
+import com.typesafe.config.ConfigFactory
 import io.github.config4k.readers.SelectReader
 
 /**
@@ -27,4 +28,9 @@ inline fun <reified T> Config.extract(path: String): T {
         throw result?.let { e } ?: ConfigException.BadPath(
                 path, "take a look at your config")
     }
+}
+
+fun Any.toConfig(name: String): Config {
+    val map = mapOf(name to this)
+    return ConfigFactory.parseMap(map)
 }
