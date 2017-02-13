@@ -19,5 +19,21 @@ class TestToConfigForArbitraryType : WordSpec() {
                         Nest(1, Person("foo", 20))
             }
         }
+
+        "NullableName.toConfig" should {
+            "return Config having name" {
+                val person = NullableName("foo").toConfig("nullable")
+                person.extract<NullableName>("nullable") shouldBe
+                        NullableName("foo")
+            }
+
+            "return Config having null" {
+                val person = NullableName(null).toConfig("nullable")
+                person.extract<NullableName>("nullable") shouldBe
+                        NullableName(null)
+            }
+        }
     }
 }
+
+data class NullableName(val name: String?)
