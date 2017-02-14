@@ -36,9 +36,9 @@ fun Any.toConfig(name: String): Config {
     val map = when {
         clazz.javaPrimitiveType != null -> mapOf(name to this)
         this is String -> mapOf(name to this)
-        clazz.primaryConstructor != null -> {
+        this is Enum<*> -> mapOf(name to this.name)
+        clazz.primaryConstructor != null ->
             mapOf(name to getConfigMap(this, clazz))
-        }
         else -> TODO()
     }
 

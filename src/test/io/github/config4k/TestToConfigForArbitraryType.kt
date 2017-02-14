@@ -33,6 +33,13 @@ class TestToConfigForArbitraryType : WordSpec() {
                         NullableName(null)
             }
         }
+
+        "Size.toConfig" should {
+            "return Config having Size" {
+                val person = Size.SMALL.toConfig("size")
+                person.extract<Size>("size") shouldBe Size.SMALL
+            }
+        }
     }
 }
 
