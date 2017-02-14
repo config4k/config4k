@@ -39,7 +39,7 @@ fun Any.toConfig(name: String): Config {
         this is Enum<*> -> mapOf(name to this.name)
         clazz.primaryConstructor != null ->
             mapOf(name to getConfigMap(this, clazz))
-        else -> TODO()
+        else -> throw Config4kException.UnSupportedType(clazz)
     }
 
     return ConfigFactory.parseMap(map)
