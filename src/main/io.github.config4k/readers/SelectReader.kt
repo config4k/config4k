@@ -5,6 +5,7 @@ import com.typesafe.config.ConfigValue
 import io.github.config4k.Config4kException
 import java.time.Duration
 import kotlin.reflect.KClass
+import kotlin.reflect.primaryConstructor
 
 
 object SelectReader {
@@ -18,7 +19,7 @@ object SelectReader {
      * @param clazz a instance got from the given type by reflection
      * @throws Config4kException.UnSupportedType if the passed type is not supported
      */
-    fun getReader(clazz: List<KClass<*>>) = 
+    fun getReader(clazz: List<KClass<*>>) =
             when (clazz[0]) {
                 Int::class -> IntReader()
                 String::class -> StringReader()
@@ -36,6 +37,8 @@ object SelectReader {
                         ArrayReader(clazz[0].java.componentType.kotlin)
                     else if (clazz[0].java.isEnum) {
                         EnumReader(clazz[0])
-                    } else throw Config4kException.UnSupportedType(clazz[0])
+                    } else clazz[0].primaryConstructor?.let {
+                        ArbitraryTypeReader(clazz[0])
+                    } ?: throw Config4kException.UnSupportedType(clazz[0])
             }.getValue
 }
