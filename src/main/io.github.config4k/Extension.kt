@@ -31,12 +31,32 @@ inline fun <reified T> Config.extract(path: String): T {
     }
 }
 
+/**
+ * Converts the receiver object to Config.
+ *
+ * @param name the returned config's name
+ */
 fun Any.toConfig(name: String): Config {
     val clazz = this.javaClass.kotlin
     val map = when {
         clazz.javaPrimitiveType != null -> mapOf(name to this)
         this is String -> mapOf(name to this)
         this is Enum<*> -> mapOf(name to this.name)
+        this is Iterable<*> -> {
+            val list = this.map {
+                it?.toConfigValue()?.unwrapped()
+            }
+            mapOf(name to list)
+        }
+        this is Map<*, *> -> {
+            val map = this.mapKeys {
+                (it.key as? String) ?:
+                        throw Config4kException.UnSupportedType(clazz)
+            }.mapValues {
+                it.value?.toConfigValue()?.unwrapped()
+            }
+            mapOf(name to map)
+        }
         clazz.primaryConstructor != null ->
             mapOf(name to getConfigMap(this, clazz))
         else -> throw Config4kException.UnSupportedType(clazz)

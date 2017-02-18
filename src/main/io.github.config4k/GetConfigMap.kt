@@ -1,5 +1,6 @@
 package io.github.config4k
 
+import com.typesafe.config.ConfigValue
 import kotlin.reflect.KClass
 import kotlin.reflect.memberProperties
 import kotlin.reflect.primaryConstructor
@@ -11,9 +12,10 @@ internal fun getConfigMap(receiver: Any,
             parameterName to clazz.memberProperties
                     .find { it.name == parameterName }!!
                     .get(receiver)
-                    ?.let {
-                        it.toConfig(parameterName)
-                                .root()[parameterName]!!
-                                .unwrapped()
-                    }
+                    ?.toConfigValue()
         }.toMap()
+
+internal fun Any.toConfigValue(): ConfigValue {
+    val name = "dummy"
+    return this.toConfig(name).root()[name]!!
+}
