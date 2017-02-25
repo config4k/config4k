@@ -4,18 +4,19 @@
 
 Config4k is a lightweight [Typesafe Config](https://github.com/typesafehub/config) wrapper for Kotlin and inspired by [ficus](https://github.com/iheartradio/ficus). Config4k provides simple extension functions `com.typesafe.config.Config.extract<T>` and `Any.toConfig` to convert between `Config` and Kotlin Objects.
 ## Table of Contents
-- [Examples](#Examples)
-- [Installation](#Installation)
-- [Usage](#Usage)
-  - [Deserialization](#Deserialization)
-    - [Data Classes](#Data Classes)
-    - [Nullable](#Nullable)
-    - [Enum](#Enum)
-  - [Serialization](#Serialization)
-    - [Data Classes](#Data Classes)
-    - [ConfigRenderOptions](#ConfigRenderOptions)
-- [Supported types](#Supported types)
-- [Contribute](#Contribute)
+- [Examples](#examples)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Deserialization](#deserialization)
+    - [Data Classes](#data-classes)
+    - [Nullable](#nullable)
+    - [Enum](#enum)
+  - [Serialization](#serialization)
+    - [String](#string)
+    - [ConfigRenderOptions](#configrenderoptions)
+- [Supported types](#supported-types)
+- [Contribute](#contribute) 
+
 ## Examples
 
 ```kotlin
@@ -56,7 +57,7 @@ config.extract<Family>("family")
 
 Gradle:
 
-```
+```groovy
 repositories {
     maven {
         url 'http://dl.bintray.com/config4k/config4k'
@@ -113,7 +114,7 @@ small == Size.SMALL // true
 Test Class: [TestEnum.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestEnum.kt) 
 ### Serialization
 `Any.toConfig` converts the receiver object to `Config`.
-#### Data Classes
+#### String
 You can use [ConfigValue.render()](https://typesafehub.github.io/config/latest/api/com/typesafe/config/ConfigValue.html#render--) to serialize `Config`. Config4k helps getting `Config` of the class you want to serialize.
 ```kotlin
 data class Person(val name: String, val age: Int)
