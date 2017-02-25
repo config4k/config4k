@@ -59,9 +59,7 @@ Gradle:
 
 ```groovy
 repositories {
-    maven {
-        url 'http://dl.bintray.com/config4k/config4k'
-    }
+    jcenter()
 }
 
 
