@@ -39,15 +39,6 @@ val config = ConfigFactory.parseString("""
                                          |  age = 25
                                          | }]
                                          |}""".trimMargin())
-// only typesafe config
-val list = config.getList("family.list")
-val foo = list[0].atKey("foo").run {
-  Person(getString("foo.name"), getInt("foo.age"))
-}
-val bar = list[1].atKey("bar").run {
-            Person(getString("bar.name"), getInt("bar.age"))
-}
-Family(listOf(foo, bar))
 
 // typesafe config + config4k
 config.extract<Family>("family")
