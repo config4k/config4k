@@ -2,22 +2,9 @@
 
 [![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=master)](https://travis-ci.org/config4k/config4k) [![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k) [![codebeat badge](https://codebeat.co/badges/4e9682a1-cdbb-4e1f-804b-a2d801381942)](https://codebeat.co/projects/github-com-config4k-config4k) [![kotlin](https://img.shields.io/badge/kotlin-1.2.0-pink.svg)]() [ ![Download](https://api.bintray.com/packages/config4k/config4k/config4k/images/download.svg) ](https://bintray.com/config4k/config4k/config4k/_latestVersion)
 
-Config4k is a lightweight [Typesafe Config](https://github.com/typesafehub/config) wrapper for Kotlin and inspired by [ficus](https://github.com/iheartradio/ficus). Config4k provides simple extension functions `com.typesafe.config.Config.extract<T>` and `Any.toConfig` to convert between `Config` and Kotlin Objects.
-## Table of Contents
-- [Examples](#examples)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Deserialization](#deserialization)
-    - [Data Classes](#data-classes)
-    - [Nullable](#nullable)
-    - [Enum](#enum)
-  - [Serialization](#serialization)
-    - [String](#string)
-    - [ConfigRenderOptions](#configrenderoptions)
-- [Supported types](#supported-types)
-- [Contribute](#contribute) 
+_**Config** for **K**otlin._  
 
-## Examples
+**Config4k** is a lightweight [Typesafe Config](https://github.com/typesafehub/config) wrapper for Kotlin and inspired by [ficus](https://github.com/iheartradio/ficus),  providing simple extension functions `Config.extract<T>` and `Any.toConfig` to convert between `Config` and Kotlin Objects.
 
 ```kotlin
 import com.typesafe.config.ConfigFactory
@@ -43,7 +30,18 @@ val config = ConfigFactory.parseString("""
 // typesafe config + config4k
 config.extract<Family>("family")
 ```
-
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Deserialization](#deserialization)
+    - [Data Classes](#data-classes)
+    - [Nullable](#nullable)
+    - [Enum](#enum)
+  - [Serialization](#serialization)
+    - [String](#string)
+    - [ConfigRenderOptions](#configrenderoptions)
+- [Supported types](#supported-types)
+- [Contribute](#contribute) 
 ## Installation
 
 Gradle:
