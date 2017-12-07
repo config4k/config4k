@@ -5,8 +5,8 @@ import io.github.config4k.extract
 import io.github.config4k.getGenericList
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
+import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.javaType
-import kotlin.reflect.primaryConstructor
 
 
 internal class ArbitraryTypeReader(clazz: KClass<*>) : Reader<Any>({

@@ -2,8 +2,8 @@ package io.github.config4k
 
 import com.typesafe.config.ConfigValue
 import kotlin.reflect.KClass
-import kotlin.reflect.memberProperties
-import kotlin.reflect.primaryConstructor
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.primaryConstructor
 
 internal fun getConfigMap(receiver: Any,
                           clazz: KClass<Any>): Map<String, *> =

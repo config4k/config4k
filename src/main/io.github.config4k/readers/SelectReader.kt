@@ -3,9 +3,8 @@ package io.github.config4k.readers
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValue
 import io.github.config4k.Config4kException
-import java.time.Duration
 import kotlin.reflect.KClass
-import kotlin.reflect.primaryConstructor
+import kotlin.reflect.full.primaryConstructor
 
 
 object SelectReader {
@@ -26,19 +25,19 @@ object SelectReader {
                 Boolean::class -> BooleanReader()
                 Double::class -> DoubleReader()
                 Long::class -> LongReader()
-                Duration::class -> DurationReader()
                 Config::class -> ConfigReader()
                 ConfigValue::class -> ConfigValueReader()
                 List::class -> ListReader(clazz)
                 Set::class -> SetReader(clazz)
                 Map::class -> MapReader(clazz)
                 else ->
-                    if (clazz[0].java.isArray)
-                        ArrayReader(clazz[0].java.componentType.kotlin)
-                    else if (clazz[0].java.isEnum) {
-                        EnumReader(clazz[0])
-                    } else clazz[0].primaryConstructor?.let {
-                        ArbitraryTypeReader(clazz[0])
-                    } ?: throw Config4kException.UnSupportedType(clazz[0])
+                    when {
+                        clazz[0].java.isArray ->
+                            ArrayReader(clazz[0].java.componentType.kotlin)
+                        clazz[0].java.isEnum -> EnumReader(clazz[0])
+                        else -> clazz[0].primaryConstructor?.let {
+                            ArbitraryTypeReader(clazz[0])
+                        } ?: throw Config4kException.UnSupportedType(clazz[0])
+                    }
             }.getValue
 }

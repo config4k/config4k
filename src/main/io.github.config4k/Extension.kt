@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
 import io.github.config4k.readers.SelectReader
-import kotlin.reflect.primaryConstructor
+import kotlin.reflect.full.primaryConstructor
 
 /**
  * An extension function that enables you to use type parameter.

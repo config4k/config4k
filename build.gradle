@@ -1,12 +1,12 @@
 buildscript {
-    ext.kotlin_version = '1.1.0'
+    ext.kotlin_version = '1.2.0'
     repositories {
         mavenCentral()
         jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.novoda:bintray-release:0.4.0'
+        classpath 'com.novoda:bintray-release:0.8.0'
         classpath 'org.jetbrains.dokka:dokka-gradle-plugin:0.9.9'
     }
 }
@@ -60,7 +60,7 @@ publish {
     repoName = 'config4k'
     groupId = 'io.github.config4k'
     artifactId = 'config4k'
-    publishVersion = '0.3.0'
+    publishVersion = '0.3.1'
     description = 'A Typesafe Config wrapper for Kotlin'
     website = 'https://github.com/config4k/config4k'
     licences = ['Apache-2.0']
