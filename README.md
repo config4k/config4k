@@ -162,6 +162,7 @@ person {
      - `Long`
      - `Double`
 - `String`
+- `java.time.Duration`
 - Collections
     - `List`
     - `Set`
