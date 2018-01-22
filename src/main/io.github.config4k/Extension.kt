@@ -18,10 +18,8 @@ import kotlin.reflect.full.primaryConstructor
  */
 inline fun <reified T> Config.extract(path: String): T {
     val genericType = object : TypeReference<T>() {}.genericType()
-    val clazz = listOf(T::class)
 
-    val result = SelectReader.getReader(
-            genericType?.let { clazz + it } ?: clazz)(this, path)
+    val result = SelectReader.getReader(ClassContainer(T::class, genericType))(this, path)
 
     return try {
         result as T
