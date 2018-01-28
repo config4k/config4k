@@ -11,23 +11,21 @@ import kotlin.reflect.KClass
  * see [io.github.config4k.readers.SelectReader.getReader]
  */
 open class TypeReference<T> {
-    fun genericType(): List<KClass<*>>? {
+    fun genericType(): List<ClassContainer> {
         val type: Type =
                 (this.javaClass.genericSuperclass as ParameterizedType)
                         .actualTypeArguments[0]
-        return if (type is ParameterizedType) getGenericList(type)
-        else null
+        return if (type is ParameterizedType) getGenericList(type) else emptyList()
     }
 }
 
-internal fun getGenericList(type: ParameterizedType): List<KClass<*>> {
-    val r = if (type.actualTypeArguments.size > 1)
-        type.actualTypeArguments[1]
-    else type.actualTypeArguments[0]
-    val impl = if (r is WildcardType) r.upperBounds[0] else r
-    val wild = listOf((if (impl is ParameterizedTypeImpl) impl.rawType
-    else impl as Class<*>).kotlin)
+data class ClassContainer(val mapperClass: KClass<*>, val typeArguments: List<ClassContainer> = emptyList())
 
-    return if (impl is ParameterizedTypeImpl) wild + getGenericList(impl)
-    else wild
+internal fun getGenericList(type: ParameterizedType): List<ClassContainer> {
+    return type.actualTypeArguments.toList().map { r ->
+        val impl = if (r is WildcardType) r.upperBounds[0] else r
+        val wild = (if (impl is ParameterizedTypeImpl) impl.rawType else impl as Class<*>).kotlin
+        if (impl is ParameterizedTypeImpl) ClassContainer(wild, getGenericList(impl))
+        else ClassContainer(wild)
+    }
 }
