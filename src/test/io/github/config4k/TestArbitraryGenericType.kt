@@ -21,6 +21,19 @@ class TestArbitraryGenericType : WordSpec() {
             }
         }
 
+        "Config.extract<PetPerson<Yeti>>" should {
+            "return PetPerson" {
+                val config = ConfigFactory.parseString("""
+                                          |key = {
+                                          |  name = "foo"
+                                          |  age = 20
+                                          |  pet = { }
+                                          |}""".trimMargin())
+                val person = config.extract<PetPerson<Yeti>>("key")
+                person shouldBe PetPerson("foo", 20, Yeti)
+            }
+        }
+
         "Config.extract<TwoPetPerson<Dog, Cat>>" should {
             "return TwoPetPerson" {
                 val config = ConfigFactory.parseString("""
@@ -71,3 +84,4 @@ data class Dog(val sound: String) : Pet
 data class Cat(val meowTime: Int) : Pet
 data class Snake<out Food: Pet>(val length: Int, val food: Food) : Pet
 data class Mouse(val name: String) : Pet
+object Yeti : Pet

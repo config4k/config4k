@@ -57,6 +57,7 @@ fun Any.toConfig(name: String): Config {
         }
         clazz.primaryConstructor != null ->
             mapOf(name to getConfigMap(this, clazz))
+        clazz.objectInstance != null -> mapOf(name to emptyMap<String, Any>())
         else -> throw Config4kException.UnSupportedType(clazz)
     }
 
