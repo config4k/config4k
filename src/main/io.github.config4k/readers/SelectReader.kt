@@ -37,9 +37,9 @@ object SelectReader {
                         clazz.mapperClass.java.isArray ->
                             ArrayReader(clazz.mapperClass.java.componentType.kotlin)
                         clazz.mapperClass.java.isEnum -> EnumReader(clazz.mapperClass)
-                        else -> clazz.mapperClass.primaryConstructor?.let {
-                            ArbitraryTypeReader(clazz)
-                        } ?: throw Config4kException.UnSupportedType(clazz.mapperClass)
+                        clazz.mapperClass.primaryConstructor != null -> ArbitraryTypeReader(clazz)
+                        clazz.mapperClass.objectInstance != null -> ObjectReader(clazz)
+                        else -> throw Config4kException.UnSupportedType(clazz.mapperClass)
                     }
             }.getValue
 }
