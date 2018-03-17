@@ -17,6 +17,7 @@ object Readers {
 }
 
 internal abstract class BaseReader<out T> : Reader<T> {
+    // TODO remove the need for this method and just use readInternal. deal with absent paths elsewhere.
     final override fun read(clazz: ClassContainer, config: Config, path: String, permitEmptyPath: Boolean): T? =
             if (permitEmptyPath || config.hasPath(path))
                 readInternal(clazz, config, path, permitEmptyPath)

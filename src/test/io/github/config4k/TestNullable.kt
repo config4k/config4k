@@ -7,7 +7,6 @@ import org.jetbrains.spek.api.dsl.it
 import org.junit.Assert
 import org.junit.Assert.*
 
-
 class TestNullable : Spek({
     describe("nullability handling") {
         describe("extraction") {
@@ -20,6 +19,16 @@ class TestNullable : Spek({
             it("should return null when the value is not present") {
                 val config = ConfigFactory.parseString("")
                 Assert.assertNull(config.extract<Int?>("key"))
+            }
+
+            it("should deal with mandatory properties with default values") {
+                val config = ConfigFactory.parseString("""{  }""")
+                config.extract<NullabilityData>() shouldBe NullabilityData()
+            }
+
+            it("should correctly override mandatory properties with default values") {
+                val config = ConfigFactory.parseString("""{  path3 = "boom" }""")
+                config.extract<NullabilityData>() shouldBe NullabilityData("boom")
             }
         }
 
@@ -44,4 +53,5 @@ class TestNullable : Spek({
     }
 })
 
-data class PartialData(var path1: String? = null, var path2: String? = null)
+data class NullabilityData(val path3: String = "bang")
+data class PartialData(var path1: String? = null, var path2: String? = null, val path3: String = "bang")

@@ -13,7 +13,6 @@ internal inline fun <reified T> Config.assertEqualsAtPath(path: String, expected
 
 internal inline fun <reified T> Config.assertEqualsAfterRepositioning(path: String, expected: T) {
     getConfig(path).extract<T>().also {
-        println(it)
         Assert.assertEquals(expected, it)
     }
 }

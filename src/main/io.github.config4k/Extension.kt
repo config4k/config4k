@@ -22,8 +22,7 @@ inline fun <reified T> Config.extract(path: String): T = require(path.isNotEmpty
 
 @PublishedApi
 internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: Boolean= false): T {
-    val genericType = object : TypeReference<T>() {}.genericType()
-    val clazz = ClassContainer(T::class, genericType)
+    val clazz = ClassContainer(T::class, object : TypeReference<T>() {}.genericType())
     val result = Readers.select(clazz).read(clazz, this, path, permitEmptyPath)
 
     return try {

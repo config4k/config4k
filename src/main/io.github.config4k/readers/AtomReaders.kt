@@ -18,12 +18,12 @@ internal sealed class AtomReader<out T> : BaseReader<T>() {
                     Long::class -> LongReader
                     Duration::class -> DurationReader
                     else ->
-                        if (mapperClass.java.isEnum) EnumReader(mapperClass)
+                        if (mapperClass.java.isEnum) EnumReader
                         else null
                 }
     }
     protected abstract fun readValue(config: Config , key: String): T
-    final override fun readInternal(clazz: ClassContainer, config: Config, path: String, permitEmptyPath: Boolean): T = readValue(config, path)
+    override fun readInternal(clazz: ClassContainer, config: Config, path: String, permitEmptyPath: Boolean): T = readValue(config, path)
 }
 
 internal object BooleanReader : AtomReader<Boolean>() {
@@ -50,10 +50,14 @@ internal object StringReader : AtomReader<String>() {
     override fun readValue(config: Config, key: String): String = config.getString(key)
 }
 
-internal class EnumReader(private val clazz: KClass<*>) : AtomReader<Enum<*>>() {
+internal object EnumReader: AtomReader<Enum<*>>() {
     override fun readValue(config: Config, key: String): Enum<*> {
-        val enumName = config.extract<String>(key)
-        val enumConstants = clazz.java.enumConstants
+        throw UnsupportedOperationException("use readInternal")
+    }
+
+    override fun readInternal(clazz: ClassContainer, config: Config, path: String, permitEmptyPath: Boolean): Enum<*> {
+        val enumName = config.extract<String>(path)
+        val enumConstants = clazz.mapperClass.java.enumConstants
         return enumConstants.find { it.toString() == enumName } as? Enum<*>
                 ?: throw Config4kException
                         .WrongEnum(enumConstants.map(Any::toString), enumName)

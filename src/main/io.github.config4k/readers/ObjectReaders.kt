@@ -8,11 +8,13 @@ import io.github.config4k.getGenericList
 import io.github.config4k.toProperties
 import java.lang.reflect.ParameterizedType
 import java.util.*
+import kotlin.reflect.KParameter
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.javaType
 
 
 internal sealed class ObjectReader<out T>: BaseReader<T>() {
+    // TODO move this out of this package thus removing permitEmpty
     protected fun selectConfig(config: Config, path: String, permitEmpty: Boolean): Config =
             if (permitEmpty && path.isEmpty()) {
                 config
@@ -67,8 +69,8 @@ internal object ArbitraryTypeReader : ObjectReader<Any>() {
     override fun readInternal(clazz: ClassContainer, config: Config, path: String, permitEmptyPath: Boolean): Any {
         var typeArgumentIndex = 0
         val constructor = clazz.mapperClass.primaryConstructor!!
-
-        val parameters = constructor.parameters.map {
+        val parameters = mutableMapOf<KParameter, Any?>()
+        constructor.parameters.forEach {
             val type = it.type.javaType
             val paramClazz = (type as? ParameterizedType)?.let {
                 ClassContainer((it.rawType as Class<*>).kotlin, getGenericList(it))
@@ -77,8 +79,14 @@ internal object ArbitraryTypeReader : ObjectReader<Any>() {
             } ?: clazz.typeArguments[typeArgumentIndex++]
             val reader = Readers.select(paramClazz)
             val resolvedConfig = selectConfig(config, path, permitEmptyPath)
-            it to reader.read(paramClazz, resolvedConfig, it.name!!)
-        }.toMap()
+            val param = reader.read(paramClazz, resolvedConfig, it.name!!)
+
+            when {
+                param != null -> parameters[it] = param
+                it.isOptional -> { }
+                it.type.isMarkedNullable -> parameters[it] = null
+            }
+        }
 
         return constructor.callBy(parameters)
     }
