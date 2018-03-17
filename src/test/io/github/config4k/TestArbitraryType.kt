@@ -1,5 +1,6 @@
 package io.github.config4k
 
+import com.typesafe.config.ConfigFactory
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -8,14 +9,13 @@ import org.jetbrains.spek.api.dsl.on
 class TestArbitraryType : Spek({
     describe("TestArbitraryType extraction") {
         on("Config.extract<Person>") {
-            val config = """|key = {
-                            |   name = "foo"
-                            |   age = 20
-                            |}""".trimMargin()
-            withConfig(config) {
-                it("should return Person when a path is supplied") { assertEqualsAtPath("key", Person("foo", 20)) }
-                it("should return Person when path not supplied") { assertEqualsAfterRepositioning("key", Person("foo", 20)) }
-            }
+            val config = ConfigFactory.parseString(
+                    """|key = {
+                       |   name = "foo"
+                       |   age = 20
+                       |}""".trimMargin())
+            it("should return Person when a path is supplied") { config.assertEqualsAtPath("key", Person("foo", 20)) }
+            it("should return Person when path not supplied") { config.assertEqualsAfterRepositioning("key", Person("foo", 20)) }
         }
 
         on("Config.extract<Nest>") {

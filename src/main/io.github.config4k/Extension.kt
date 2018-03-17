@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValueType
-import io.github.config4k.readers.SelectReader
+import io.github.config4k.readers.Readers
 import java.util.*
 import kotlin.reflect.full.primaryConstructor
 
@@ -18,12 +18,13 @@ inline fun <reified T> Config.extract(): T = doExtract("", true)
  *
  * @param path the config destructuring begins at this path
  */
-inline fun <reified T> Config.extract(path: String): T = require(path.isNotEmpty()).let { doExtract(path, false) }
+inline fun <reified T> Config.extract(path: String): T = require(path.isNotEmpty()).let { doExtract(path) }
 
 @PublishedApi
-internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: Boolean): T {
+internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: Boolean= false): T {
     val genericType = object : TypeReference<T>() {}.genericType()
-    val result = SelectReader.getReader(ClassContainer(T::class, genericType), permitEmptyPath)(this, path)
+    val clazz = ClassContainer(T::class, genericType)
+    val result = Readers.select(clazz).read(clazz, this, path, permitEmptyPath)
 
     return try {
         result as T
