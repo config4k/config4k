@@ -1,43 +1,47 @@
 package io.github.config4k
 
 import com.typesafe.config.ConfigFactory
-import io.kotlintest.specs.WordSpec
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.junit.Assert
+import org.junit.Assert.*
 
 
-class TestNullable : WordSpec() {
-    init {
-        "Config.extract<T?>" should {
-            "return T" {
+class TestNullable : Spek({
+    describe("nullability handling") {
+        describe("extraction") {
+            it("should return T when the value is present") {
                 val num = 0
                 val config = ConfigFactory.parseString("""key = $num""")
-                config.extract<Int?>("key") shouldBe num
+                assertEquals(num, config.extract<Int?>("key"))
             }
 
-            "return null" {
+            it("should return null when the value is not present") {
                 val config = ConfigFactory.parseString("")
-                config.extract<Int?>("key") shouldBe null
+                Assert.assertNull(config.extract<Int?>("key"))
             }
         }
 
-        "Any.toConfig" should {
-            "omit null values from the config"{
-                val complete = PartialData(path1 = "complete",path2 = "complete").toConfig("data")
-                complete.hasPath("data.path1") shouldBe true
-                complete.hasPath("data.path2") shouldBe true
+        describe("toConfig") {
+            it("should omit null values from the config") {
+                val complete = PartialData(path1 = "complete", path2 = "complete").toConfig("data")
+                assertTrue(complete.hasPath("data.path1"))
+                assertTrue(complete.hasPath("data.path2"))
 
                 val partial = PartialData(path1 = "partial").toConfig("data")
-                partial.hasPath("data.path1") shouldBe true
-                partial.hasPath("data.path2") shouldBe false
+                assertTrue(partial.hasPath("data.path1"))
+                assertFalse(partial.hasPath("data.path2"))
 
                 val merged = partial.withFallback(complete)
-                merged.hasPath("data.path1") shouldBe true
-                merged.hasPath("data.path2") shouldBe true
+                assertTrue(merged.hasPath("data.path1"))
+                assertTrue(merged.hasPath("data.path2"))
 
-                merged.getString("data.path1") shouldBe "partial"
-                merged.getString("data.path2") shouldBe "complete"
+                assertEquals("partial", merged.getString("data.path1"))
+                assertEquals("complete", merged.getString("data.path2"))
             }
         }
     }
-}
+})
 
-data class PartialData(var path1: String?= null, var path2: String? = null)
+data class PartialData(var path1: String? = null, var path2: String? = null)

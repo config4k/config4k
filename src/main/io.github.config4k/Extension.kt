@@ -7,19 +7,21 @@ import io.github.config4k.readers.SelectReader
 import kotlin.reflect.full.primaryConstructor
 
 /**
- * An extension function that enables you to use type parameter.
- *
- * Returns a value of given type by calling method
- * in [com.typesafe.config.Config]
- *
- * As this function is an inline function, shown stacktrace is not true.
- *
- * @param path see [com.typesafe.config.Config]
+ * An extract function that does not require a starting path -- i.e., it attempts to map from the root of the object.
  */
-inline fun <reified T> Config.extract(path: String): T {
-    val genericType = object : TypeReference<T>() {}.genericType()
+inline fun <reified T> Config.extract(): T = doExtract("", true)
 
-    val result = SelectReader.getReader(ClassContainer(T::class, genericType))(this, path)
+/**
+ * Map [Config] to Kotlin types.
+ *
+ * @param path the config destructuring begins at this path
+ */
+inline fun <reified T> Config.extract(path: String): T = require(path.isNotEmpty()).let { doExtract(path, false) }
+
+@PublishedApi
+internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: Boolean): T {
+    val genericType = object : TypeReference<T>() {}.genericType()
+    val result = SelectReader.getReader(ClassContainer(T::class, genericType), permitEmptyPath)(this, path)
 
     return try {
         result as T

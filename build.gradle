@@ -1,36 +1,45 @@
 buildscript {
-    ext.kotlin_version = '1.2.0'
     repositories {
         mavenCentral()
         jcenter()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.novoda:bintray-release:0.8.0'
-        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:0.9.9'
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'kotlin'
-apply plugin: 'jacoco'
+plugins {
+    id "java"
+    id "jacoco"
+    id "org.jetbrains.kotlin.jvm" version "1.2.30"
+    id "org.jetbrains.dokka" version "0.9.16"
+}
+
 apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'org.jetbrains.dokka'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    compile 'com.typesafe:config:1.3.1'
-    testCompile 'io.kotlintest:kotlintest:1.3.5'
+    compile "org.jetbrains.kotlin:kotlin-stdlib"
+    compile "org.jetbrains.kotlin:kotlin-reflect"
+    compile 'com.typesafe:config:1.3.3'
+
+    testCompile "org.jetbrains.spek:spek-api:1.1.5"
+    testRuntimeOnly "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
+
+    testCompile 'org.junit.platform:junit-platform-runner:1.1.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
 }
 
 sourceSets {
     main.kotlin.srcDirs += 'src/main'
     test.kotlin.srcDirs += 'src/test'
+}
+
+test {
+    useJUnitPlatform() {}
 }
 
 jacocoTestReport {
@@ -41,9 +50,15 @@ jacocoTestReport {
     }
 }
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+dokka {
+    moduleName = 'config4k'
     outputFormat = 'html'
     outputDirectory = "$buildDir/tmp/kdoc"
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = "javadoc"
+    outputDirectory = "$buildDir/dokkaJavadoc"
 }
 
 task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {

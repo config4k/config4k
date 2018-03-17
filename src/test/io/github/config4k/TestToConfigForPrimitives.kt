@@ -1,20 +1,19 @@
 package io.github.config4k
 
-import io.kotlintest.specs.WordSpec
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.context
+import org.jetbrains.spek.api.dsl.it
 
 
-class TestToConfigForPrimitives : WordSpec() {
-    init {
-        "10.toConfig" should {
-            "return Config having Int value" {
-                10.toConfig("key").extract<Int>("key") shouldBe 10
-            }
-        }
+class TestToConfigForPrimitives : Spek({
+    context("10.toConfig"){
+        it("should return Config having Int value") { 10.toConfig("key").extract<Int>("key") shouldBe 10 }
+    }
 
-        "str.toConfig" should {
-            "return Config having String" {
-                "str".toConfig("key").extract<String>("key") shouldBe "str"
-            }
+    context("str.toConfig") {
+        it("should return Config having String") {
+            "str".toConfig("key").extract<String>("key") shouldBe "str"
         }
     }
-}
+})
+

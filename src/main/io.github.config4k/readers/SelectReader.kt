@@ -17,9 +17,10 @@ object SelectReader {
      * Add new case to support new type.
      *
      * @param clazz a instance got from the given type by reflection
+     * @param permitEmptyPath should the reader permit an empty path
      * @throws Config4kException.UnSupportedType if the passed type is not supported
      */
-    fun getReader(clazz: ClassContainer) =
+    fun getReader(clazz: ClassContainer, permitEmptyPath: Boolean = false) =
             when (clazz.mapperClass) {
                 Int::class -> IntReader()
                 String::class -> StringReader()
@@ -37,7 +38,7 @@ object SelectReader {
                         clazz.mapperClass.java.isArray ->
                             ArrayReader(clazz.mapperClass.java.componentType.kotlin)
                         clazz.mapperClass.java.isEnum -> EnumReader(clazz.mapperClass)
-                        clazz.mapperClass.primaryConstructor != null -> ArbitraryTypeReader(clazz)
+                        clazz.mapperClass.primaryConstructor != null -> ArbitraryTypeReader(clazz, permitEmptyPath)
                         clazz.mapperClass.objectInstance != null -> ObjectReader(clazz)
                         else -> throw Config4kException.UnSupportedType(clazz.mapperClass)
                     }

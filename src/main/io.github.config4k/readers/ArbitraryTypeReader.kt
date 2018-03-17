@@ -8,9 +8,12 @@ import java.lang.reflect.ParameterizedType
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.javaType
 
+private fun selectConfig(config: Config, path: String, permitEmpty: Boolean): Config =
+        if (permitEmpty &&  path.isEmpty()) {
+            config
+        } else config.extract(path)
 
-internal class ArbitraryTypeReader(clazz: ClassContainer) : Reader<Any>({
-    config, path ->
+internal class ArbitraryTypeReader(clazz: ClassContainer, override val permitEmptyPath: Boolean = false) : Reader<Any>({ config, path ->
     val constructor = clazz.mapperClass.primaryConstructor!!
     var typeArgumentIndex = 0
     val parameters = constructor.parameters.map {
@@ -21,7 +24,7 @@ internal class ArbitraryTypeReader(clazz: ClassContainer) : Reader<Any>({
                 } ?: (type as? Class<*>)?.let {
                     ClassContainer(it.kotlin)
                 } ?: clazz.typeArguments[typeArgumentIndex++])
-                .invoke(config.extract<Config>(path), it.name!!)
+                .invoke(selectConfig(config, path, permitEmptyPath), it.name!!)
     }.toMap()
     constructor.callBy(parameters)
 })
