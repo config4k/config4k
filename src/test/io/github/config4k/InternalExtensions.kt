@@ -7,13 +7,14 @@ import org.opentest4j.AssertionFailedError
 
 internal inline fun <reified T> Config.assertEqualsAtPath(path: String, expected: T) {
     extract<T>(path).also {
-        Assert.assertEquals(it, expected)
+        Assert.assertEquals(expected, it)
     }
 }
 
 internal inline fun <reified T> Config.assertEqualsAfterRepositioning(path: String, expected: T) {
     getConfig(path).extract<T>().also {
-        Assert.assertEquals(it, expected)
+        println(it)
+        Assert.assertEquals(expected, it)
     }
 }
 
@@ -33,6 +34,3 @@ inline fun <reified T> shouldThrow(block: () -> Unit): Exception {
 }
 
 internal inline infix fun <reified T> T.shouldBe(expected: T) { Assert.assertEquals(expected, this) }
-//inline infix fun <reified T> Comparable<T>.shouldBe(expected: T) { Assert.assertEquals(expected, this) }
-//inline infix fun <reified T, L: List<T>> L.shouldBe(expected: T) { Assert.assertEquals(expected, this) }
-//inline infix fun <K,V, reified M: Map<K,V>> M.shouldBe(expected: M) { Assert.assertEquals(expected, this) }

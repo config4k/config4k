@@ -5,13 +5,14 @@ import com.typesafe.config.ConfigValue
 import io.github.config4k.ClassContainer
 import io.github.config4k.Config4kException
 import java.time.Duration
+import java.util.*
 import kotlin.reflect.full.primaryConstructor
 
 
 object SelectReader {
     /**
      * Don't use this method.
-     * Called by an inline function [io.github.config4k.Extension.extract],
+     * Called by an inline function @see [io.github.config4k.extract],
      * this method is public even though it is just for internal.
      *
      * Add new case to support new type.
@@ -32,6 +33,7 @@ object SelectReader {
                 ConfigValue::class -> ConfigValueReader()
                 List::class -> ListReader(clazz.typeArguments)
                 Set::class -> SetReader(clazz.typeArguments)
+                Properties::class -> PropertiesReader(permitEmptyPath)
                 Map::class -> MapReader(clazz.typeArguments)
                 else ->
                     when {

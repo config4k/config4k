@@ -3,7 +3,9 @@ package io.github.config4k
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
+import com.typesafe.config.ConfigValueType
 import io.github.config4k.readers.SelectReader
+import java.util.*
 import kotlin.reflect.full.primaryConstructor
 
 /**
@@ -30,6 +32,22 @@ internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: 
                 path, "take a look at your config")
     }
 }
+
+/**
+ * Map the config object to a [java.util.Properties] object. The passed in [Config] should only contain atoms  --i.e., not [ConfigValueType.OBJECT] or
+ * [ConfigValueType.LIST]. [ConfigValueType.NULL] uses zero-value semantics --i.e., it is mapped to the empty string.
+ */
+fun Config.toProperties(): Properties =
+        Properties().also { props ->
+            this.root().forEach { prop ->
+                when(prop.value.valueType()) {
+                    ConfigValueType.LIST, ConfigValueType.OBJECT  ->
+                        throw Config4kException.InvalidShape("cannot render Properties as the Config key ${prop.key} is of type ${prop.value.valueType()}")
+                    else ->
+                        props.setProperty(prop.key, if (this.getIsNull(prop.key)) "" else this.getString(prop.key))
+                }
+            }
+        }
 
 /**
  * Converts the receiver object to Config.

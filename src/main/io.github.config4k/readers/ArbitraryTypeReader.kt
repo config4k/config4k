@@ -8,10 +8,6 @@ import java.lang.reflect.ParameterizedType
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.javaType
 
-private fun selectConfig(config: Config, path: String, permitEmpty: Boolean): Config =
-        if (permitEmpty &&  path.isEmpty()) {
-            config
-        } else config.extract(path)
 
 internal class ArbitraryTypeReader(clazz: ClassContainer, override val permitEmptyPath: Boolean = false) : Reader<Any>({ config, path ->
     val constructor = clazz.mapperClass.primaryConstructor!!
