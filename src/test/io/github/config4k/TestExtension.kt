@@ -4,68 +4,68 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValue
 import com.typesafe.config.ConfigValueType
-import io.kotlintest.specs.WordSpec
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.junit.Assert.assertEquals
 import java.time.Duration
 
 
-class TestExtension : WordSpec() {
-    init {
-        "Config.extract" should {
-            "return Int value" {
-                val num = 0
-                val config = ConfigFactory.parseString("""value = $num""")
-                config.extract<Int>("value") shouldBe num
-            }
+class TestExtension : Spek({
+    describe("Config.extract primitive handling") {
+        it("should handle Int value") {
+            val num = 0
+            val config = ConfigFactory.parseString("""value = $num""")
+            assertEquals(num, config.extract<Int>("value"))
+        }
 
-            "return String value" {
-                val str = "str"
-                val config = ConfigFactory.parseString("""value = $str""")
-                config.extract<String>("value") shouldBe str
-            }
+        it("should handle String value") {
+            val str = "str"
+            val config = ConfigFactory.parseString("""value = $str""")
+            assertEquals(str, config.extract<String>("value"))
+        }
 
-            "return Boolean value" {
-                val b = true
-                val config = ConfigFactory.parseString("""value = $b""")
-                config.extract<Boolean>("value") shouldBe b
-            }
+        it("should handle Boolean value") {
+            val b = true
+            val config = ConfigFactory.parseString("""value = $b""")
+            assertEquals(b, config.extract<Boolean>("value"))
+        }
 
-            "return Double value" {
-                val num = 0.1
-                val config = ConfigFactory.parseString("""value = $num""")
-                config.extract<Double>("value") shouldBe exactly(num)
-            }
+        it("should handle Double value") {
+            val num = 0.1
+            val config = ConfigFactory.parseString("""value = $num""")
+            assertEquals(num, config.extract("value"), 0.0)
+        }
 
-            "return Long value" {
-                val num = 1000L
-                val config = ConfigFactory.parseString("""value = $num""")
-                config.extract<Long>("value") shouldBe num
-            }
+        it("should handle Long value") {
+            val num = 1000L
+            val config = ConfigFactory.parseString("""value = $num""")
+            assertEquals(num, config.extract("value"))
+        }
 
-            "return Duration" {
-                val duration = "60minutes"
-                val config = ConfigFactory.parseString("""value = $duration""")
-                config.extract<Duration>("value") shouldBe
-                        Duration.ofMinutes(60)
-            }
-            
-            "return Config" {
-                val inner = """
+        it("should handle Duration") {
+            val duration = "60minutes"
+            val config = ConfigFactory.parseString("""value = $duration""")
+            assertEquals(Duration.ofMinutes(60), config.extract<Duration>("value"))
+        }
+
+        it("should handle Config") {
+            val inner = """
                         |{
                         | field = value
                         |}""".trimMargin()
-                val config = ConfigFactory.parseString(
-                        """nest = $inner""")
-                config.extract<Config>(
-                        "nest") shouldBe ConfigFactory.parseString(inner)
-            }
+            val config = ConfigFactory.parseString(
+                    """nest = $inner""")
+            assertEquals(ConfigFactory.parseString(inner), config.extract<Config>("nest"))
+        }
 
-            "return ConfigValue" {
-                val b = true
-                val config = ConfigFactory.parseString("value = $b")
-                val configValue = config.extract<ConfigValue>("value")
-                configValue.valueType() shouldBe ConfigValueType.BOOLEAN
-                configValue.unwrapped() shouldBe b
-            }
+        it("should handle ConfigValue") {
+            val b = true
+            val config = ConfigFactory.parseString("value = $b")
+            val configValue = config.extract<ConfigValue>("value")
+
+            assertEquals(ConfigValueType.BOOLEAN, configValue.valueType())
+            assertEquals(b, configValue.unwrapped())
         }
     }
-}
+})

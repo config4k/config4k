@@ -1,39 +1,38 @@
 package io.github.config4k
 
 import com.typesafe.config.ConfigFactory
-import io.kotlintest.specs.WordSpec
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
 
-
-class TestArbitraryType : WordSpec() {
-    init {
-        "Config.extract<Person>" should {
-            "return Person" {
-                val config = ConfigFactory.parseString("""
-                                          |key = {  
-                                          |  name = "foo"
-                                          |  age = 20
-                                          |}""".trimMargin())
-                val person = config.extract<Person>("key")
-                person shouldBe Person("foo", 20)
-            }
+class TestArbitraryType : Spek({
+    describe("TestArbitraryType extraction") {
+        on("Config.extract<Person>") {
+            val config = ConfigFactory.parseString(
+                    """|key = {
+                       |   name = "foo"
+                       |   age = 20
+                       |}""".trimMargin())
+            it("should return Person when a path is supplied") { config.assertEqualsAtPath("key", Person("foo", 20)) }
+            it("should return Person when path not supplied") { config.assertEqualsAfterRepositioning("key", Person("foo", 20)) }
         }
 
-        "Config.extract<Nest>" should {
-            "return Nest" {
-                val config = ConfigFactory.parseString("""
-                                          |key = {  
-                                          |  nest = 1
-                                          |  person = {
-                                          |    name = "foo"
-                                          |    age = 20
-                                          |  }
-                                          |}""".trimMargin())
-                val person = config.extract<Nest>("key")
-                person shouldBe Nest(1, Person("foo", 20))
+        on("Config.extract<Nest>") {
+            val config = """|key = {
+                            |  nest = 1
+                            |  person = {
+                            |    name = "foo"
+                            |    age = 20
+                            |  }
+                            |}""".trimMargin()
+            withConfig(config) {
+                it("should return Nest when a path is supplied") { assertEqualsAtPath("key", Nest(1, Person("foo", 20))) }
+                it("should return Person when a path is not supplied") { assertEqualsAfterRepositioning("key", Nest(1, Person("foo", 20))) }
             }
         }
     }
-}
+})
 
 data class Person(val name: String, val age: Int)
 

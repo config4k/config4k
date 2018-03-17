@@ -3,23 +3,27 @@ package io.github.config4k
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
-import io.github.config4k.readers.SelectReader
+import com.typesafe.config.ConfigValueType
+import io.github.config4k.readers.Readers
+import java.util.*
 import kotlin.reflect.full.primaryConstructor
 
 /**
- * An extension function that enables you to use type parameter.
- *
- * Returns a value of given type by calling method
- * in [com.typesafe.config.Config]
- *
- * As this function is an inline function, shown stacktrace is not true.
- *
- * @param path see [com.typesafe.config.Config]
+ * An extract function that does not require a starting path -- i.e., it attempts to map from the root of the object.
  */
-inline fun <reified T> Config.extract(path: String): T {
-    val genericType = object : TypeReference<T>() {}.genericType()
+inline fun <reified T> Config.extract(): T = doExtract("", true)
 
-    val result = SelectReader.getReader(ClassContainer(T::class, genericType))(this, path)
+/**
+ * Map [Config] to Kotlin types.
+ *
+ * @param path the config destructuring begins at this path
+ */
+inline fun <reified T> Config.extract(path: String): T = require(path.isNotEmpty()).let { doExtract(path) }
+
+@PublishedApi
+internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: Boolean= false): T {
+    val clazz = ClassContainer(T::class, object : TypeReference<T>() {}.genericType())
+    val result = Readers.select(clazz).read(clazz, this, path, permitEmptyPath)
 
     return try {
         result as T
@@ -28,6 +32,22 @@ inline fun <reified T> Config.extract(path: String): T {
                 path, "take a look at your config")
     }
 }
+
+/**
+ * Map the config object to a [java.util.Properties] object. The passed in [Config] should only contain atoms  --i.e., not [ConfigValueType.OBJECT] or
+ * [ConfigValueType.LIST]. [ConfigValueType.NULL] uses zero-value semantics --i.e., it is mapped to the empty string.
+ */
+fun Config.toProperties(): Properties =
+        Properties().also { props ->
+            this.root().forEach { prop ->
+                when(prop.value.valueType()) {
+                    ConfigValueType.LIST, ConfigValueType.OBJECT  ->
+                        throw Config4kException.InvalidShape("cannot render Properties as the Config key ${prop.key} is of type ${prop.value.valueType()}")
+                    else ->
+                        props.setProperty(prop.key, if (this.getIsNull(prop.key)) "" else this.getString(prop.key))
+                }
+            }
+        }
 
 /**
  * Converts the receiver object to Config.
