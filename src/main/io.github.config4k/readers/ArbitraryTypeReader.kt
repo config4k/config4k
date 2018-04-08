@@ -1,6 +1,5 @@
 package io.github.config4k.readers
 
-import com.typesafe.config.Config
 import io.github.config4k.ClassContainer
 import io.github.config4k.extract
 import io.github.config4k.getGenericList
@@ -9,8 +8,7 @@ import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.javaType
 
 
-internal class ArbitraryTypeReader(clazz: ClassContainer) : Reader<Any>({
-    config, path ->
+internal class ArbitraryTypeReader(clazz: ClassContainer) : Reader<Any>({ config, path ->
     val constructor = clazz.mapperClass.primaryConstructor!!
     var typeArgumentIndex = 0
     val parameters = constructor.parameters.map {
@@ -21,7 +19,8 @@ internal class ArbitraryTypeReader(clazz: ClassContainer) : Reader<Any>({
                 } ?: (type as? Class<*>)?.let {
                     ClassContainer(it.kotlin)
                 } ?: clazz.typeArguments[typeArgumentIndex++])
-                .invoke(config.extract<Config>(path), it.name!!)
-    }.toMap()
+                .invoke(config.extract(path), it.name!!)
+    } // if config doesn't have corresponding value, the value is omitted
+            .filter { it.second != null || !it.first.isOptional }.toMap()
     constructor.callBy(parameters)
 })
