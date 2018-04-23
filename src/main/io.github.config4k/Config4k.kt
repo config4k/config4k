@@ -1,3 +1,4 @@
+@file:JvmName("Config4k")
 package io.github.config4k
 
 import com.typesafe.config.Config
@@ -14,11 +15,26 @@ import kotlin.reflect.full.primaryConstructor
 inline fun <reified T> Config.extract(): T = doExtract("", true)
 
 /**
+ * An extract function that does not require a starting path -- i.e., it attempts to map from the root of the object.
+ */
+fun <T: Any> Config.extract(clazz: Class<T>): T =
+    clazz.cast(ClassContainer(clazz.kotlin).let { Readers.select(it).read(it, this, "", true) })
+
+/**
  * Map [Config] to Kotlin types.
  *
  * @param path the config destructuring begins at this path
  */
 inline fun <reified T> Config.extract(path: String): T = require(path.isNotEmpty()).let { doExtract(path) }
+
+/**
+ * Map [Config] to Kotlin types.
+ *
+ * @param path the config destructuring begins at this path
+ */
+fun <T: Any> Config.extract(clazz: Class<T>, path: String): T =
+        clazz.cast(ClassContainer(clazz.kotlin).let { Readers.select(it).read(it, this, path, false) })
+
 
 @PublishedApi
 internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: Boolean= false): T {
