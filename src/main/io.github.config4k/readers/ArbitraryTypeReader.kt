@@ -21,6 +21,8 @@ internal class ArbitraryTypeReader(clazz: ClassContainer) : Reader<Any>({ config
                 } ?: clazz.typeArguments[typeArgumentIndex++])
                 .invoke(config.extract(path), it.name!!)
     } // if config doesn't have corresponding value, the value is omitted
-            .filter { it.second != null || !it.first.isOptional }.toMap()
+            .filterNot {
+                it.first.isOptional && !config.hasPathOrNull("$path.${it.first.name}")
+            }.toMap()
     constructor.callBy(parameters)
 })
