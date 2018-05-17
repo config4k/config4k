@@ -15,7 +15,7 @@ import kotlin.reflect.full.primaryConstructor
 inline fun <reified T> Config.extract(): T = doExtract("", true)
 
 /**
- * An extract function that does not require a starting path -- i.e., it attempts to map from the root of the object.
+ * Java interop variant of the [Config.extract()] function.
  */
 fun <T: Any> Config.extract(clazz: Class<T>): T =
     clazz.cast(ClassContainer(clazz.kotlin).let { Readers.select(it).read(it, this, "", true) })
@@ -28,7 +28,7 @@ fun <T: Any> Config.extract(clazz: Class<T>): T =
 inline fun <reified T> Config.extract(path: String): T = require(path.isNotEmpty()).let { doExtract(path) }
 
 /**
- * Map [Config] to Kotlin types.
+ * Java interop variant of the [Config.extract()] function.
  *
  * @param path the config destructuring begins at this path
  */
@@ -48,6 +48,15 @@ internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: 
                 path, "take a look at your config")
     }
 }
+
+/**
+ * Get config using the package name of a class.
+ *
+ * @param T The class to use the package name from.
+ *
+ */
+inline fun <reified T> Config.forPackageOf(): Config =
+    getConfig(T::class.java.`package`.name)
 
 /**
  * Map the config object to a [java.util.Properties] object. The passed in [Config] should only contain atoms  --i.e., not [ConfigValueType.OBJECT] or
