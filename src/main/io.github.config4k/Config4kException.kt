@@ -1,15 +1,24 @@
 package io.github.config4k
 
+import com.typesafe.config.ConfigException
 import kotlin.reflect.KClass
 
 
-object Config4kException {
-    class UnSupportedType(type: KClass<*>) :
-            RuntimeException("type: ${type.qualifiedName} is not supported")
+open class Config4kException @PublishedApi internal constructor(
+    message: String,
+    throwable: Throwable? = null
+) : ConfigException(message, throwable) {
 
-    class WrongEnum(enumConstants: List<String>, actualValue: String) :
-            RuntimeException(
-                    "expected : $enumConstants, actually : $actualValue")
+    class UnSupportedType(
+        type: KClass<*>
+    ) : Config4kException("type: ${type.qualifiedName} is not supported")
 
-    class InvalidShape(message: String): RuntimeException(message)
+    class WrongEnum(
+        enumConstants: List<String>,
+        actualValue: String
+    ) : Config4kException("expected : $enumConstants, actually : $actualValue")
+
+    class InvalidShape(
+        message: String
+    ) : Config4kException(message)
 }

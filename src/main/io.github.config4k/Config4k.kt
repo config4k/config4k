@@ -1,4 +1,5 @@
 @file:JvmName("Config4k")
+
 package io.github.config4k
 
 import com.typesafe.config.Config
@@ -15,9 +16,9 @@ import kotlin.reflect.full.primaryConstructor
 inline fun <reified T> Config.extract(): T = doExtract("", true)
 
 /**
- * An extract function that does not require a starting path -- i.e., it attempts to map from the root of the object.
+ * Java interop variant of the [Config.extract()] function.
  */
-fun <T: Any> Config.extract(clazz: Class<T>): T =
+fun <T : Any> Config.extract(clazz: Class<T>): T =
     clazz.cast(ClassContainer(clazz.kotlin).let { Readers.select(it).read(it, this, "", true) })
 
 /**
@@ -28,16 +29,16 @@ fun <T: Any> Config.extract(clazz: Class<T>): T =
 inline fun <reified T> Config.extract(path: String): T = require(path.isNotEmpty()).let { doExtract(path) }
 
 /**
- * Map [Config] to Kotlin types.
+ * Java interop variant of the [Config.extract()] function.
  *
  * @param path the config destructuring begins at this path
  */
-fun <T: Any> Config.extract(clazz: Class<T>, path: String): T =
-        clazz.cast(ClassContainer(clazz.kotlin).let { Readers.select(it).read(it, this, path, false) })
+fun <T : Any> Config.extract(clazz: Class<T>, path: String): T =
+    clazz.cast(ClassContainer(clazz.kotlin).let { Readers.select(it).read(it, this, path, false) })
 
 
 @PublishedApi
-internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: Boolean= false): T {
+internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: Boolean = false): T {
     val clazz = ClassContainer(T::class, object : TypeReference<T>() {}.genericType())
     val result = Readers.select(clazz).read(clazz, this, path, permitEmptyPath)
 
@@ -45,25 +46,54 @@ internal inline fun <reified T> Config.doExtract(path: String, permitEmptyPath: 
         result as T
     } catch (e: Exception) {
         throw result?.let { e } ?: ConfigException.BadPath(
-                path, "take a look at your config")
+            path, "take a look at your config"
+        )
     }
 }
+
+/**
+ * Get config using the package name of a class.
+ *
+ * @param T The class to use the package name from.
+ * @see com.typesafe.config.Config.getConfig
+ */
+inline fun <reified T> Config.forPackageOf(): Config =
+    T::class.java.`package`.let { pkg ->
+        try {
+            getConfig(T::class.java.`package`.name)
+        } catch (ex: ConfigException) {
+            throw Config4kException("could not get config for class: ${T::class.java.simpleName} at path: $pkg")
+        }
+    }
+
+/**
+ * Extract a class by the package it's defined in and an optional sub-path.
+ */
+inline fun <reified T> Config.extractByPackage(path: String = ""): T =
+    forPackageOf<T>().let {
+        try {
+            it.doExtract(path, true)
+        } catch (ex: ConfigException) {
+            throw Config4kException("could not extract config from path: ${T::class.java.`package`}.$path", ex)
+
+        }
+    }
 
 /**
  * Map the config object to a [java.util.Properties] object. The passed in [Config] should only contain atoms  --i.e., not [ConfigValueType.OBJECT] or
  * [ConfigValueType.LIST]. [ConfigValueType.NULL] uses zero-value semantics --i.e., it is mapped to the empty string.
  */
 fun Config.toProperties(): Properties =
-        Properties().also { props ->
-            this.root().forEach { prop ->
-                when(prop.value.valueType()) {
-                    ConfigValueType.LIST, ConfigValueType.OBJECT  ->
-                        throw Config4kException.InvalidShape("cannot render Properties as the Config key ${prop.key} is of type ${prop.value.valueType()}")
-                    else ->
-                        props.setProperty(prop.key, if (this.getIsNull(prop.key)) "" else this.getString(prop.key))
-                }
+    Properties().also { props ->
+        this.root().forEach { prop ->
+            when (prop.value.valueType()) {
+                ConfigValueType.LIST, ConfigValueType.OBJECT ->
+                    throw Config4kException.InvalidShape("cannot render Properties as the Config key ${prop.key} is of type ${prop.value.valueType()}")
+                else ->
+                    props.setProperty(prop.key, if (this.getIsNull(prop.key)) "" else this.getString(prop.key))
             }
         }
+    }
 
 /**
  * Converts the receiver object to Config.
@@ -84,8 +114,7 @@ fun Any.toConfig(name: String): Config {
         }
         this is Map<*, *> -> {
             val map = this.mapKeys {
-                (it.key as? String) ?:
-                        throw Config4kException.UnSupportedType(clazz)
+                (it.key as? String) ?: throw Config4kException.UnSupportedType(clazz)
             }.mapValues {
                 it.value?.toConfigValue()?.unwrapped()
             }
@@ -99,3 +128,8 @@ fun Any.toConfig(name: String): Config {
 
     return ConfigFactory.parseMap(map)
 }
+
+/**
+ * Shorthand for [extract].
+ */
+inline operator fun <reified T> Config.get(key: String): T = this.extract(key)

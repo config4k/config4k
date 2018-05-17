@@ -5,7 +5,15 @@ licenses(["notice"])
 kt_jvm_library(
     name = "config4k",
     srcs = glob(["src/main/**"]),
-    deps = ["@com_typesafe_config//jar"],
-    runtime_deps = ["@com_github_jetbrains_kotlin//:kotlin-reflect"],
+    deps = [
+        "@javax_inject_javax_inject//jar",
+        "@com_typesafe_config//jar"
+    ],
+    exports = [
+        "@com_typesafe_config//jar"
+    ],
+    runtime_deps = [
+        "@com_github_jetbrains_kotlin//:kotlin-reflect"
+    ],
     visibility = ["//visibility:public"]
 )

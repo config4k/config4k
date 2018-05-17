@@ -17,7 +17,7 @@ internal inline fun <reified T> Config.assertEqualsAfterRepositioning(path: Stri
     }
 }
 
-internal fun withConfig(config: String, block: Config.() -> Unit) = ConfigFactory.parseString(config).block()
+internal fun <R> withConfig(config: String, block: Config.() -> R) = ConfigFactory.parseString(config).block()
 
 inline fun <reified T> shouldThrow(block: () -> Unit): Exception {
     try {
