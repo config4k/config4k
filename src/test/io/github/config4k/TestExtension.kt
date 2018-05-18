@@ -2,10 +2,13 @@ package io.github.config4k
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
+import com.typesafe.config.ConfigMemorySize
 import com.typesafe.config.ConfigValue
 import com.typesafe.config.ConfigValueType
 import io.kotlintest.specs.WordSpec
 import java.time.Duration
+import java.time.Period
+import java.time.temporal.TemporalAmount
 
 
 class TestExtension : WordSpec() {
@@ -41,13 +44,34 @@ class TestExtension : WordSpec() {
                 config.extract<Long>("value") shouldBe num
             }
 
+            "return ConfigMemorySize" {
+                val memorySize = "100KiB"
+                val config = ConfigFactory.parseString("""value = $memorySize""")
+                config.extract<ConfigMemorySize>("value") shouldBe
+                        ConfigMemorySize.ofBytes(100 * 1024)
+            }
+
             "return Duration" {
                 val duration = "60minutes"
                 val config = ConfigFactory.parseString("""value = $duration""")
                 config.extract<Duration>("value") shouldBe
                         Duration.ofMinutes(60)
             }
-            
+
+            "return Period" {
+                val period = "10years"
+                val config = ConfigFactory.parseString("""value = $period""")
+                config.extract<Period>("value") shouldBe
+                        Period.ofYears(10)
+            }
+
+            "return TemporalAmount" {
+                val temporalAmount = "5weeks"
+                val config = ConfigFactory.parseString("""value = $temporalAmount""")
+                config.extract<TemporalAmount>("value") shouldBe
+                        Period.ofWeeks(5)
+            }
+
             "return Config" {
                 val inner = """
                         |{
