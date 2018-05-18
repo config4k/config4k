@@ -1,10 +1,13 @@
 package io.github.config4k.readers
 
 import com.typesafe.config.Config
+import com.typesafe.config.ConfigMemorySize
 import com.typesafe.config.ConfigValue
 import io.github.config4k.ClassContainer
 import io.github.config4k.Config4kException
 import java.time.Duration
+import java.time.Period
+import java.time.temporal.TemporalAmount
 import kotlin.reflect.full.primaryConstructor
 
 
@@ -27,6 +30,9 @@ object SelectReader {
                 Double::class -> DoubleReader()
                 Long::class -> LongReader()
                 Duration::class -> DurationReader()
+                Period::class -> PeriodReader()
+                TemporalAmount::class -> TemporalAmountReader()
+                ConfigMemorySize::class -> MemorySizeReader()
                 Config::class -> ConfigReader()
                 ConfigValue::class -> ConfigValueReader()
                 List::class -> ListReader(clazz.typeArguments)
