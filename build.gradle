@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.0'
+    ext.kotlin_version = '1.2.31'
     repositories {
         mavenCentral()
         jcenter()
@@ -60,7 +60,7 @@ publish {
     repoName = 'config4k'
     groupId = 'io.github.config4k'
     artifactId = 'config4k'
-    publishVersion = '0.3.2'
+    publishVersion = '0.3.4'
     description = 'A Typesafe Config wrapper for Kotlin'
     website = 'https://github.com/config4k/config4k'
     licences = ['Apache-2.0']

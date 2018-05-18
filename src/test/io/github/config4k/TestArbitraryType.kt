@@ -16,6 +16,23 @@ class TestArbitraryType : WordSpec() {
                 val person = config.extract<Person>("key")
                 person shouldBe Person("foo", 20)
             }
+            "work if optional argument is omitted" {
+                val config = ConfigFactory.parseString("""
+                                          |key = {  
+                                          |  name = "foo"
+                                          |}""".trimMargin())
+                val person = config.extract<Person>("key")
+                person shouldBe Person("foo", 10)
+            }
+            "make optional argument null if there is a key having null" {
+                val config = ConfigFactory.parseString("""
+                                          |key = {  
+                                          |  name = "foo"
+                                          |  age = null
+                                          |}""".trimMargin())
+                val person = config.extract<Person>("key")
+                person shouldBe Person("foo", null)
+            }
         }
 
         "Config.extract<Nest>" should {
@@ -35,6 +52,6 @@ class TestArbitraryType : WordSpec() {
     }
 }
 
-data class Person(val name: String, val age: Int)
+data class Person(val name: String, val age: Int? = 10)
 
 data class Nest(val nest: Int, val person: Person)

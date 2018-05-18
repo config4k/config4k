@@ -7,12 +7,15 @@ import kotlin.reflect.full.primaryConstructor
 
 internal fun getConfigMap(receiver: Any,
                           clazz: KClass<Any>): Map<String, *> =
-        clazz.primaryConstructor!!.parameters.map {
+        clazz.primaryConstructor!!.parameters.mapNotNull {
             val parameterName = it.name!!
-            parameterName to clazz.memberProperties
+            clazz.memberProperties
                     .find { it.name == parameterName }!!
                     .get(receiver)
-                    ?.toConfigValue()
+                    ?.let {parameterValue  ->
+                        parameterName to parameterValue.toConfigValue()
+                    }
+
         }.toMap()
 
 internal fun Any.toConfigValue(): ConfigValue {
