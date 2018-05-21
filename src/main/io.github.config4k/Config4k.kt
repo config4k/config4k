@@ -8,7 +8,9 @@ import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValueType
 import io.github.config4k.readers.Readers
 import java.util.*
+import kotlin.reflect.KProperty
 import kotlin.reflect.full.primaryConstructor
+import kotlin.reflect.jvm.javaField
 
 /**
  * An extract function that does not require a starting path -- i.e., it attempts to map from the root of the object.
@@ -33,8 +35,17 @@ inline fun <reified T> Config.extract(path: String): T = require(path.isNotEmpty
  *
  * @param path the config destructuring begins at this path
  */
-fun <T : Any> Config.extract(clazz: Class<T>, path: String): T =
-    clazz.cast(ClassContainer(clazz.kotlin).let { Readers.select(it).read(it, this, path, false) })
+fun <T : Any> Config.extract(clazz: Class<T>, path: String): T {
+    val container = ClassContainer(clazz.kotlin)
+    val reader = Readers.select(container)
+    val result = reader.read(container, this, path, false) ?: throw Config4kException("path $path not present")
+    @Suppress("UNCHECKED_CAST")
+    return if (clazz.isPrimitive) {
+        result as T
+    } else {
+        clazz.cast(result)
+    }
+}
 
 
 @PublishedApi
@@ -133,3 +144,49 @@ fun Any.toConfig(name: String): Config {
  * Shorthand for [extract].
  */
 inline operator fun <reified T> Config.get(key: String): T = this.extract(key)
+
+/**
+ * A scheme for concisely binding config in a class constructor in an immutable manner. These scheme is intended to be
+ * used to read a single objects configuration properties out.
+ *
+ * The attribute name is used verbatim to extract the config, otherwise if the [Key] annotation is set on the
+ * attribute it changes the attribute name. The key can be a path.
+ *
+ * The namespace of the containing class is used for the root of the config. The [Namespace] annotation can be used to ch
+ *
+ * @param property The member property we are trying to extract from config.
+ */
+inline operator fun <reified T> Config.get(property: KProperty<T>): T {
+    check(property.isFinal) { "$property must be final" }
+
+    val declaringClass = checkNotNull(property.javaField) { "must be a field" }.declaringClass
+
+    val namespace = declaringClass.annotations.filterIsInstance<Namespace>().firstOrNull().let {
+        if (it != null) {
+            check(it.path.isNotBlank() || it.clazz != Nothing::class || it.key.path.isNotBlank()) {
+                "@Namespace annotation used but it is not setting a namespace or contributing a key element"
+            }
+            check(!(it.path.isNotBlank() && it.clazz != Nothing::class)) {
+                "can only pick a namespace from a class or override it with a new path"
+            }
+            val ns = when {
+                it.path.isNotBlank() -> it.path
+                it.clazz != Nothing::class -> it.clazz.java.`package`.name
+                else -> declaringClass.`package`.name
+            }
+            when {
+                it.key.path.isNotBlank() -> "$ns.${it.key.path}"
+                else -> ns
+            }
+        } else {
+            declaringClass.`package`.name
+        }
+    }
+
+
+    val propName = property.annotations.filterIsInstance<Key>().firstOrNull()?.path?.also {
+        check(it.isNotBlank()) { "${property.name} has a key annotation with no value" }
+    } ?: property.name
+
+    return this.getConfig(namespace).extract(propName)
+}

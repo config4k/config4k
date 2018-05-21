@@ -1,6 +1,7 @@
 package io.github.config4k
 
 import javax.inject.Qualifier
+import kotlin.reflect.KClass
 
 
 /**
@@ -14,11 +15,23 @@ import javax.inject.Qualifier
 annotation class Application(val namespace: String = "")
 
 /**
- * Applies to binding situations where there will be multiple Config objects bound. This qualifier is the root
- * [com.typesafe.config.Config]. In a modular application the modules would base their config paths off of this root.
+ * This changes the namespace of the bean object. To change the path completely use the class[clazz] or the
+ * [path] field. This annotation may also be used just to add to the package namespace -- .
  *
- * This could generally be bound directly to the result of [com.typesafe.config.ConfigFactory.defaultApplication].
- * However another path could be used if "module" config is located elsewhere -- e.g., under `plugins`.
+ * @param clazz Another clazz to inherit the path from.
+ * @param path A path to use instead of inferring it.
+ * @param key A key to use in addition to the path. This is useful when multiple services exist within the same package.
  */
-@Qualifier
-annotation class Root
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Namespace(val path: String="", val clazz: KClass<out Any> = Nothing::class, val key: Key = Key(""))
+
+/**
+ * If used on a property it changes the name of the property.
+ *
+ * If used on  a containing class it adds this to the package name. This is so that the same package can hold
+ * configuration for multiple services.
+ */
+@Target(AnnotationTarget.PROPERTY)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Key(val path: String)
