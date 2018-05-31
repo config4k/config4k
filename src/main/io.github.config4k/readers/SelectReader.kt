@@ -27,6 +27,7 @@ object SelectReader {
                 Int::class -> IntReader()
                 String::class -> StringReader()
                 Boolean::class -> BooleanReader()
+                Byte::class -> ByteReader()
                 Double::class -> DoubleReader()
                 Long::class -> LongReader()
                 Duration::class -> DurationReader()
