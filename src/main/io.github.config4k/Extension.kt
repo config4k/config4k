@@ -4,6 +4,11 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
 import io.github.config4k.readers.SelectReader
+import java.io.File
+import java.nio.file.Path
+import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.KParameter
 import kotlin.reflect.full.primaryConstructor
 
 /**
@@ -40,6 +45,8 @@ fun Any.toConfig(name: String): Config {
         clazz.javaPrimitiveType != null -> mapOf(name to this)
         this is String -> mapOf(name to this)
         this is Enum<*> -> mapOf(name to this.name)
+        this is File -> mapOf(name to this.toString())
+        this is Path -> mapOf(name to this.toString())
         this is Iterable<*> -> {
             val list = this.map {
                 it?.toConfigValue()?.unwrapped()
@@ -60,6 +67,5 @@ fun Any.toConfig(name: String): Config {
         clazz.objectInstance != null -> mapOf(name to emptyMap<String, Any>())
         else -> throw Config4kException.UnSupportedType(clazz)
     }
-
     return ConfigFactory.parseMap(map)
 }

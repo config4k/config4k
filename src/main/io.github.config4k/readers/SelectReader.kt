@@ -5,6 +5,8 @@ import com.typesafe.config.ConfigMemorySize
 import com.typesafe.config.ConfigValue
 import io.github.config4k.ClassContainer
 import io.github.config4k.Config4kException
+import java.io.File
+import java.nio.file.Path
 import java.time.Duration
 import java.time.Period
 import java.time.temporal.TemporalAmount
@@ -39,6 +41,8 @@ object SelectReader {
                 List::class -> ListReader(clazz.typeArguments)
                 Set::class -> SetReader(clazz.typeArguments)
                 Map::class -> MapReader(clazz.typeArguments)
+                File::class -> FileReader()
+                Path::class -> PathReader()
                 else ->
                     when {
                         clazz.mapperClass.java.isArray ->
