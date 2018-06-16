@@ -3,6 +3,8 @@ package io.github.config4k
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
+import com.typesafe.config.ConfigValueFactory
+import com.typesafe.config.impl.ConfigImpl
 import io.github.config4k.readers.SelectReader
 import java.io.File
 import java.nio.file.Path
@@ -41,6 +43,11 @@ inline fun <reified T> Config.extract(path: String): T {
  */
 fun Any.toConfig(name: String): Config {
     val clazz = this.javaClass.kotlin
+    for (customType in customTypeRegistry) {
+        if (customType.testToConfig(this)) {
+            return customType.toConfig(this, name)
+        }
+    }
     val map = when {
         clazz.javaPrimitiveType != null -> mapOf(name to this)
         this is String -> mapOf(name to this)
@@ -67,5 +74,6 @@ fun Any.toConfig(name: String): Config {
         clazz.objectInstance != null -> mapOf(name to emptyMap<String, Any>())
         else -> throw Config4kException.UnSupportedType(clazz)
     }
+
     return ConfigFactory.parseMap(map)
 }
