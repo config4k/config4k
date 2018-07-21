@@ -13,13 +13,13 @@ import java.time.Period
 import java.time.temporal.TemporalAmount
 import kotlin.reflect.full.primaryConstructor
 
-
+/**
+ * Don't use this class.
+ * Called by an inline function [io.github.config4k.Extension],
+ * this class is public even though it is just for internal.
+ */
 object SelectReader {
     /**
-     * Don't use this method.
-     * Called by an inline function [io.github.config4k.Extension.extract],
-     * this method is public even though it is just for internal.
-     *
      * Add new case to support new type.
      *
      * @param clazz a instance got from the given type by reflection
@@ -60,4 +60,7 @@ object SelectReader {
                 }
         }.getValue
     }
+
+    fun extractWithoutPath(clazz: ClassContainer, config: Config) =
+            extractWithParameters(clazz, config)
 }

@@ -49,9 +49,23 @@ class TestArbitraryType : WordSpec() {
                 person shouldBe Nest(1, Person("foo", 20))
             }
         }
+
+        "Config.extract<WholeConfig>()" should {
+            "return WholeConfig without path" {
+                val config = ConfigFactory.parseString("""
+                                          |key = {
+                                          |  name = "foo"
+                                          |  age = 20
+                                          |}""".trimMargin())
+                val wholeConfig = config.extract<WholeConfig>()
+                wholeConfig shouldBe WholeConfig(Person("foo", 20))
+            }
+        }
     }
 }
 
 data class Person(val name: String, val age: Int? = 10)
 
 data class Nest(val nest: Int, val person: Person)
+
+data class WholeConfig(val key: Person)
