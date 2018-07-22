@@ -2,30 +2,29 @@ package io.github.config4k
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
 
-class TestExtensibleTypes: WordSpec() {
-    init {
-        registerCustomType(ColorCustomType)
-        "Config.extract<Color>" should {
-            "return Color" {
-                val config = ConfigFactory.parseString("""
+class TestExtensibleTypes : WordSpec({
+    registerCustomType(ColorCustomType)
+    "Config.extract<Color>" should {
+        "return Color" {
+            val config = ConfigFactory.parseString("""
                                           |key = "#FF3389"
                                           |""".trimMargin())
-                val color = config.extract<Color>("key")
-                color shouldBe Color(0xFF, 0x33, 0x89)
-            }
-        }
-        "Color.toConfig" should {
-            "return string" {
-                val color = Color(0xFE, 0x22, 0x2E)
-                val config = color.toConfig("key")
-                config.getString("key") == "#FE222E"
-            }
+            val color = config.extract<Color>("key")
+            color shouldBe Color(0xFF, 0x33, 0x89)
         }
     }
-}
+    "Color.toConfig" should {
+        "return string" {
+            val color = Color(0xFE, 0x22, 0x2E)
+            val config = color.toConfig("key")
+            config.getString("key") == "#FE222E"
+        }
+    }
+})
 
 data class Color(val red: Int, val green: Int, val blue: Int) {
     fun format(): String {
@@ -35,7 +34,8 @@ data class Color(val red: Int, val green: Int, val blue: Int) {
     companion object {
         private val regex = Regex("#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})")
         fun parse(input: String): Color {
-            val match = regex.matchEntire(input) ?: throw IllegalArgumentException("Input $input not parseable as a color.")
+            val match = regex.matchEntire(input)
+                    ?: throw IllegalArgumentException("Input $input not parseable as a color.")
 
             val r = match.groupValues[1].toInt(16)
             val g = match.groupValues[2].toInt(16)

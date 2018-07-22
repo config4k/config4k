@@ -1,11 +1,11 @@
 package io.github.config4k
 
 import com.typesafe.config.ConfigFactory
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
 
-class TestArbitraryType : WordSpec() {
-    init {
+class TestArbitraryType : WordSpec({
         "Config.extract<Person>" should {
             "return Person" {
                 val config = ConfigFactory.parseString("""
@@ -61,8 +61,7 @@ class TestArbitraryType : WordSpec() {
                 wholeConfig shouldBe WholeConfig(Person("foo", 20))
             }
         }
-    }
-}
+})
 
 data class Person(val name: String, val age: Int? = 10)
 

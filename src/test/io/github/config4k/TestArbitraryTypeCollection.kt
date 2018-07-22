@@ -1,14 +1,14 @@
 package io.github.config4k
 
 import com.typesafe.config.ConfigFactory
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
 
-class TestArbitraryTypeCollection : WordSpec() {
-    init {
-        "Config.extract<Family>" should {
-            "return Family" {
-                val config = ConfigFactory.parseString("""
+class TestArbitraryTypeCollection : WordSpec({
+    "Config.extract<Family>" should {
+        "return Family" {
+            val config = ConfigFactory.parseString("""
                                           |key = {
                                           |  persons = [
                                           |   {
@@ -20,12 +20,10 @@ class TestArbitraryTypeCollection : WordSpec() {
                                           |     age = 25
                                           |   }]
                                           |}   """.trimMargin())
-                val family = config.extract<Family>("key")
-                family shouldBe
-                        Family(listOf(Person("foo", 20), Person("bar", 25)))
-            }
+            val family = config.extract<Family>("key")
+            family shouldBe Family(listOf(Person("foo", 20), Person("bar", 25)))
         }
     }
-}
+})
 
 data class Family(val persons: List<Person>)
