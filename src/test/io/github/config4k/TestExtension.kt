@@ -89,3 +89,5 @@ class TestExtension : WordSpec({
         }
     }
 })
+
+fun String.toConfig(): Config = ConfigFactory.parseString(this.trimIndent())

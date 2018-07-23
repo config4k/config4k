@@ -1,7 +1,6 @@
 package io.github.config4k
 
 import com.typesafe.config.Config
-import com.typesafe.config.ConfigFactory
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
@@ -10,9 +9,9 @@ class TestExtensibleTypes : WordSpec({
     registerCustomType(ColorCustomType)
     "Config.extract<Color>" should {
         "return Color" {
-            val config = ConfigFactory.parseString("""
-                                          |key = "#FF3389"
-                                          |""".trimMargin())
+            val config = """
+                key = "#FF3389"
+                """.toConfig()
             val color = config.extract<Color>("key")
             color shouldBe Color(0xFF, 0x33, 0x89)
         }
@@ -21,7 +20,7 @@ class TestExtensibleTypes : WordSpec({
         "return string" {
             val color = Color(0xFE, 0x22, 0x2E)
             val config = color.toConfig("key")
-            config.getString("key") == "#FE222E"
+            config.getString("key") shouldBe "#fe222e"
         }
     }
 })

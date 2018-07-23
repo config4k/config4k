@@ -9,12 +9,12 @@ class TestNullable : WordSpec({
     "Config.extract<T?>" should {
         "return T" {
             val num = 0
-            val config = ConfigFactory.parseString("""key = $num""")
+            val config = """key = $num""".toConfig()
             config.extract<Int?>("key") shouldBe num
         }
 
         "return null" {
-            val config = ConfigFactory.parseString("")
+            val config = ConfigFactory.empty()
             config.extract<Int?>("key") shouldBe null
         }
     }

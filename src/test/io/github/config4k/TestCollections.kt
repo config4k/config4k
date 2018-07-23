@@ -1,6 +1,5 @@
 package io.github.config4k
 
-import com.typesafe.config.ConfigFactory
 import io.kotlintest.matchers.haveSize
 import io.kotlintest.should
 import io.kotlintest.shouldBe
@@ -10,7 +9,7 @@ import java.util.*
 
 
 class TestCollections : WordSpec({
-    val config = ConfigFactory.parseString("key = [0m, 1m, 1m, 2m]")
+    val config = "key = [0m, 1m, 1m, 2m]".toConfig()
     "Config.extract" should {
         "return List" {
             val list = config.extract<List<Duration>>("key")
@@ -21,8 +20,7 @@ class TestCollections : WordSpec({
         }
 
         "return List<List<Int>>" {
-            val intListConfig =
-                    ConfigFactory.parseString("key = [[0, 0], [1, 1]]")
+            val intListConfig = "key = [[0, 0], [1, 1]]".toConfig()
             val list = intListConfig.extract<List<List<Int>>>("key")
             list shouldBe listOf(listOf(0, 0), listOf(1, 1))
         }
@@ -38,13 +36,11 @@ class TestCollections : WordSpec({
 
         "return Array<T>" {
             Arrays.deepEquals(
-                    ConfigFactory
-                            .parseString("""key = ["a", "b", "c", "d"]""")
+                    """key = ["a", "b", "c", "d"]""".toConfig()
                             .extract<Array<String>>("key"),
                     arrayOf("a", "b", "c", "d")) shouldBe true
             Arrays.deepEquals(
-                    ConfigFactory
-                            .parseString("""key = ["0m", "1m"]""")
+                    """key = ["0m", "1m"]""".toConfig()
                             .extract<Array<Duration>>("key"),
                     arrayOf(Duration.ofMinutes(0),
                             Duration.ofMinutes(1))) shouldBe true

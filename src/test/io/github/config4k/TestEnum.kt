@@ -1,6 +1,5 @@
 package io.github.config4k
 
-import com.typesafe.config.ConfigFactory
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
@@ -8,7 +7,7 @@ import io.kotlintest.specs.WordSpec
 class TestEnum : WordSpec({
     "Config.extract<Size>" should {
         "return SMALL" {
-            val config = ConfigFactory.parseString("""key = SMALL""")
+            val config = """key = SMALL""".toConfig()
             val small = config.extract<Size>("key")
             small shouldBe Size.SMALL
         }

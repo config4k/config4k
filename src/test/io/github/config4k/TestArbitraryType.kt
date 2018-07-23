@@ -1,6 +1,5 @@
 package io.github.config4k
 
-import com.typesafe.config.ConfigFactory
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
@@ -8,28 +7,28 @@ import io.kotlintest.specs.WordSpec
 class TestArbitraryType : WordSpec({
         "Config.extract<Person>" should {
             "return Person" {
-                val config = ConfigFactory.parseString("""
-                                          |key = {  
-                                          |  name = "foo"
-                                          |  age = 20
-                                          |}""".trimMargin())
+                val config = """
+                    key = {  
+                      name = "foo"
+                      age = 20
+                    }""".toConfig()
                 val person = config.extract<Person>("key")
                 person shouldBe Person("foo", 20)
             }
             "work if optional argument is omitted" {
-                val config = ConfigFactory.parseString("""
-                                          |key = {  
-                                          |  name = "foo"
-                                          |}""".trimMargin())
+                val config = """
+                    key = {  
+                      name = "foo"
+                    }""".toConfig()
                 val person = config.extract<Person>("key")
                 person shouldBe Person("foo", 10)
             }
             "make optional argument null if there is a key having null" {
-                val config = ConfigFactory.parseString("""
-                                          |key = {  
-                                          |  name = "foo"
-                                          |  age = null
-                                          |}""".trimMargin())
+                val config = """
+                    key = {  
+                      name = "foo"
+                      age = null
+                    }""".toConfig()
                 val person = config.extract<Person>("key")
                 person shouldBe Person("foo", null)
             }
@@ -37,14 +36,14 @@ class TestArbitraryType : WordSpec({
 
         "Config.extract<Nest>" should {
             "return Nest" {
-                val config = ConfigFactory.parseString("""
-                                          |key = {  
-                                          |  nest = 1
-                                          |  person = {
-                                          |    name = "foo"
-                                          |    age = 20
-                                          |  }
-                                          |}""".trimMargin())
+                val config = """
+                    key = {  
+                       nest = 1
+                       person = {
+                         name = "foo"
+                         age = 20
+                       }
+                     }""".toConfig()
                 val person = config.extract<Nest>("key")
                 person shouldBe Nest(1, Person("foo", 20))
             }
@@ -52,11 +51,11 @@ class TestArbitraryType : WordSpec({
 
         "Config.extract<WholeConfig>()" should {
             "return WholeConfig without path" {
-                val config = ConfigFactory.parseString("""
-                                          |key = {
-                                          |  name = "foo"
-                                          |  age = 20
-                                          |}""".trimMargin())
+                val config = """
+                    key = {
+                      name = "foo"
+                      age = 20
+                    }""".toConfig()
                 val wholeConfig = config.extract<WholeConfig>()
                 wholeConfig shouldBe WholeConfig(Person("foo", 20))
             }
