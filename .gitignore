@@ -1,6 +1,9 @@
 #IntelliJ IDEA
 .idea
+*.iml
+*.ipr
 #Gradle
 .gradle
 build/
 gradle.properties
+out/
