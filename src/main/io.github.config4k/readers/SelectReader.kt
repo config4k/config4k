@@ -44,9 +44,9 @@ object SelectReader {
             ConfigMemorySize::class -> MemorySizeReader()
             Config::class -> ConfigReader()
             ConfigValue::class -> ConfigValueReader()
-            List::class -> ListReader(clazz.typeArguments)
-            Set::class -> SetReader(clazz.typeArguments)
-            Map::class -> MapReader(clazz.typeArguments)
+            List::class -> ListReader(clazz.typeArguments.getValue("E"))
+            Set::class -> SetReader(clazz.typeArguments.getValue("E"))
+            Map::class -> MapReader(clazz.typeArguments.getValue("V"))
             File::class -> FileReader()
             Path::class -> PathReader()
             else ->

@@ -10,14 +10,14 @@ internal class TestTypeReference : WordSpec({
             val genericType =
                     object : TypeReference<List<Int>>() {}
                             .genericType()
-            genericType shouldBe listOf(ClassContainer(Int::class))
+            genericType shouldBe mapOf("E" to ClassContainer(Int::class))
         }
 
         "return List::class, Int::class" {
             val genericType =
                     object : TypeReference<List<List<Int>>>() {}
                             .genericType()
-            genericType shouldBe listOf(ClassContainer(List::class, listOf(ClassContainer(Int::class))))
+            genericType shouldBe mapOf("E" to ClassContainer(List::class, mapOf("E" to ClassContainer(Int::class))))
         }
     }
 })
