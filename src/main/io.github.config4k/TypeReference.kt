@@ -1,7 +1,6 @@
 package io.github.config4k
 
 
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.lang.reflect.TypeVariable
@@ -31,8 +30,8 @@ internal fun getGenericList(type: ParameterizedType,
         typeParameterName to if (impl is TypeVariable<*>){
             requireNotNull(typeArguments[impl.name]){ "no type argument for ${impl.name} found" }
         }else {
-            val wild = (if (impl is ParameterizedTypeImpl) impl.rawType else impl as Class<*>).kotlin
-            if (impl is ParameterizedTypeImpl) ClassContainer(wild, getGenericList(impl, typeArguments))
+            val wild = ((if (impl is ParameterizedType) impl.rawType else impl) as Class<*>).kotlin
+            if (impl is ParameterizedType) ClassContainer(wild, getGenericList(impl, typeArguments))
             else ClassContainer(wild)
         }
     }.toMap()
