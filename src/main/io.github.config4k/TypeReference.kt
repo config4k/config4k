@@ -1,7 +1,6 @@
 package io.github.config4k
 
 
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.lang.reflect.WildcardType
@@ -24,8 +23,9 @@ data class ClassContainer(val mapperClass: KClass<*>, val typeArguments: List<Cl
 internal fun getGenericList(type: ParameterizedType): List<ClassContainer> {
     return type.actualTypeArguments.toList().map { r ->
         val impl = if (r is WildcardType) r.upperBounds[0] else r
-        val wild = (if (impl is ParameterizedTypeImpl) impl.rawType else impl as Class<*>).kotlin
-        if (impl is ParameterizedTypeImpl) ClassContainer(wild, getGenericList(impl))
+        val wild = (if (impl is ParameterizedType) impl.rawType as Class<*> else impl as Class<*>)
+            .kotlin
+        if (impl is ParameterizedType) ClassContainer(wild, getGenericList(impl))
         else ClassContainer(wild)
     }
 }

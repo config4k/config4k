@@ -28,7 +28,7 @@ object SelectReader {
     fun getReader(clazz: ClassContainer): (Config, String)->Any? {
         for (customType in customTypeRegistry) {
             if (customType.testParse(clazz)) {
-                return Reader({ config, name -> customType.parse(clazz, config, name) }).getValue
+                return Reader { config, name -> customType.parse(clazz, config, name) }.getValue
             }
         }
         return when (clazz.mapperClass) {
