@@ -3,7 +3,7 @@ package io.github.config4k.readers
 import com.typesafe.config.Config
 import io.github.config4k.ClassContainer
 import io.github.config4k.extract
-import io.github.config4k.getGenericList
+import io.github.config4k.getGenericMap
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.primaryConstructor
@@ -21,7 +21,7 @@ internal fun extractWithParameters(clazz: ClassContainer,
     val map = constructor.parameters.associate { param ->
         val type = param.type.javaType
         val classContainer: ClassContainer = when(type){
-            is ParameterizedType -> ClassContainer((type.rawType as Class<*>).kotlin, getGenericList(type, clazz.typeArguments))
+            is ParameterizedType -> ClassContainer((type.rawType as Class<*>).kotlin, getGenericMap(type, clazz.typeArguments))
             is Class<*> -> ClassContainer(type.kotlin)
             else -> requireNotNull(clazz.typeArguments[type.typeName]){ "couldn't find type argument for ${type.typeName}" }
         }
