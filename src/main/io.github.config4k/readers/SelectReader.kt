@@ -46,7 +46,7 @@ object SelectReader {
             ConfigValue::class -> ConfigValueReader()
             List::class -> ListReader(clazz.typeArguments.getValue("E"))
             Set::class -> SetReader(clazz.typeArguments.getValue("E"))
-            Map::class -> MapReader(clazz.typeArguments.getValue("V"))
+            Map::class -> MapReader(clazz.typeArguments.getValue("K"), clazz.typeArguments.getValue("V"))
             File::class -> FileReader()
             Path::class -> PathReader()
             else ->
