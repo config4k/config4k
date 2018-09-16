@@ -22,4 +22,14 @@ class TestToConfigForCollection : WordSpec({
                     .extract<Map<String, Person>>("map") shouldBe map
         }
     }
+
+    "Map<Int, Person>.toConfig" should {
+        "return Config having Map<Int, Person>" {
+            val map = mapOf(
+                    7 to Person("Jon", 12),
+                    20 to Person("Doe", 15))
+            map.toConfig("map")
+                    .extract<Map<Int, Person>>("map") shouldBe map
+        }
+    }
 })
