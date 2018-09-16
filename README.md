@@ -59,6 +59,34 @@ dependencies {
 ## Usage
 ### Deserialization
 `Config.extract<T>` converts `Config` to `T`.
+#### Map
+Maps can be serialized with `String` keys
+```kotlin
+val config = ConfigFactory.parseString("""
+                                          |map {  
+                                          |  foo = 5
+                                          |  bar = 6
+                                          |}""".trimMargin())
+val person: Map<String, Int> = config.extract<Map<String, Int>>("map")
+map["foo"] == 5 // true
+map["bar"] == 6 // true
+```
+or with arbitrary keys
+```kotlin
+val config = ConfigFactory.parseString("""
+                                          |map [{  
+                                          |  key = 5
+                                          |  value = "foo"
+                                          |}
+                                          |{
+                                          |  key = 6
+                                          |  value = "bar"
+                                          |}]""".trimMargin())
+val person: Map<Int, String> = config.extract<Map<Int, String>>("map")
+map[5] == "foo" // true
+map[6] == "bar" // true
+```
+Test Class: [TestMap.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestMap.kt)
 #### Data Classes
 Config4k has no option to use different names between code and config file.
 ```kotlin
@@ -166,7 +194,7 @@ person {
 - Collections
     - `List`
     - `Set`
-    - `Map<String, T>`
+    - `Map<K, V>`
     - `Array<T>` (You can use `Array<Int>`, but can't use `Array<Array<Int>>`)
 - Nullable `T?`
 - Typesafe Config classes(Calling `toConfig` is meaningless)
