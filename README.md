@@ -163,6 +163,7 @@ person {
      - `Double`
 - `String`
 - `java.time.Duration`
+- `kotlin.text.Regex`
 - Collections
     - `List`
     - `Set`
