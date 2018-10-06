@@ -49,6 +49,7 @@ object SelectReader {
             Map::class -> MapReader(clazz.typeArguments.getValue("V"))
             File::class -> FileReader()
             Path::class -> PathReader()
+            Regex::class -> RegexReader()
             else ->
                 when {
                     clazz.mapperClass.java.isArray ->

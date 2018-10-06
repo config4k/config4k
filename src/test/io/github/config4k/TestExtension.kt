@@ -62,6 +62,12 @@ class TestExtension : WordSpec({
                     Period.ofYears(10)
         }
 
+        "return Regex" {
+            val regex = ".*"
+            val config = ConfigFactory.parseString("""value = "$regex"""")
+            config.extract<Regex>("value").toString() shouldBe ".*"
+        }
+
         "return TemporalAmount" {
             val temporalAmount = "5weeks"
             val config = ConfigFactory.parseString("""value = $temporalAmount""")
