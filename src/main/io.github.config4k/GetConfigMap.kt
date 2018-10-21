@@ -22,3 +22,5 @@ internal fun Any.toConfigValue(): ConfigValue {
     val name = "dummy"
     return this.toConfig(name).root()[name]!!
 }
+
+internal data class MapEntry<K, V>(val key: K, val value: V)

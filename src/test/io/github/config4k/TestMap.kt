@@ -45,5 +45,19 @@ class TestMap : WordSpec({
             val list = mapConfig.extract<Map<String, List<Int>>>("nest")
             list shouldBe mapOf("key1" to listOf(0, 1), "key2" to listOf(2, 3))
         }
+
+        "return Map<Int, String>" {
+            val mapConfig = """
+                        nest = [{
+                          key = 10
+                          value = "dogs"
+                        },
+                        {
+                          key = 20
+                          value = "cats"
+                        }]""".toConfig()
+            val list = mapConfig.extract<Map<Int, String>>("nest")
+            list shouldBe mapOf(10 to "dogs", 20 to "cats")
+        }
     }
 })

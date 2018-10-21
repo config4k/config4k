@@ -71,13 +71,18 @@ fun Any.toConfig(name: String): Config {
             mapOf(name to list)
         }
         this is Map<*, *> -> {
-            val map = this.mapKeys {
-                (it.key as? String) ?:
-                        throw Config4kException.UnSupportedType(clazz)
-            }.mapValues {
-                it.value?.toConfigValue()?.unwrapped()
+            val stringKeys = this.keys.all { it is String }
+            if (stringKeys) {
+                val map = this.mapKeys { it.key as String }.mapValues {
+                    it.value?.toConfigValue()?.unwrapped()
+                }
+                mapOf(name to map)
+            }else{
+                val list = this.map { (key, value) ->
+                    MapEntry(key, value).toConfigValue()
+                }
+                mapOf(name to list)
             }
-            mapOf(name to map)
         }
         clazz.primaryConstructor != null ->
             mapOf(name to getConfigMap(this, clazz))

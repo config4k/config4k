@@ -90,7 +90,7 @@ class TestArbitraryGenericType : WordSpec({
         }
     }
 
-    "Config.extract<PetPerson<HungrySnake<Mouse>, Cat>>" should {
+    "Config.extract<PetPerson<HungrySnake<Mouse>>>" should {
         "return PetPerson" {
             val config = """
                 key = {
