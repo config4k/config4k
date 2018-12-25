@@ -14,9 +14,6 @@ matrix:
     # OS X 10.11
     - os: osx
       osx_image: xcode7.3
-    # OS X 10.10
-    - os: osx
-      osx_image: xcode6.4
 
 sudo: false
 
