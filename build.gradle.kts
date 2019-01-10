@@ -13,7 +13,7 @@ buildscript {
 
 plugins {
     `java-library`
-    kotlin("jvm") version "1.3.10"
+    kotlin("jvm") version "1.3.11"
     jacoco
     id("org.jetbrains.dokka") version "0.9.17"
 }
@@ -31,6 +31,16 @@ dependencies {
     implementation("com.google.guava:guava:26.0-jre")
     testImplementation("io.kotlintest:kotlintest-runner-junit5:3.1.8")
 }
+
+sourceSets {
+    main {
+        java.srcDir("src/main")
+    }
+    test {
+        java.srcDir("src/test")
+    }
+}
+
 
 tasks {
     test {
