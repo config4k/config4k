@@ -46,6 +46,7 @@ config.extract<Family>("family")
 
 Gradle:
 
+Groovy DSL
 ```groovy
 repositories {
     jcenter()
@@ -54,6 +55,17 @@ repositories {
 
 dependencies {
     compile 'io.github.config4k:config4k:xxx' // See the `Download` badge
+}
+```
+Kotlin DSL
+```kotlin
+repositories {
+    jcenter()
+}
+
+
+dependencies {
+    compile("io.github.config4k:config4k:xxx") // See the `Download` badge
 }
 ```
 ## Usage
