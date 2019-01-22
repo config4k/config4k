@@ -35,6 +35,12 @@ class TestExtension : WordSpec({
             config.extract<Double>("value") shouldBe exactly(num)
         }
 
+        "return Float value" {
+            val num = 0.1f
+            val config = ConfigFactory.parseString("""value = $num""")
+            config.extract<Float>("value") shouldBe exactly(num)
+        }
+
         "return Long value" {
             val num = 1000L
             val config = ConfigFactory.parseString("""value = $num""")
