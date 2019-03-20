@@ -6,6 +6,7 @@ import com.typesafe.config.ConfigFactory
 import io.github.config4k.readers.SelectReader
 import java.io.File
 import java.nio.file.Path
+import kotlin.reflect.KProperty
 import kotlin.reflect.full.primaryConstructor
 
 /**
@@ -43,6 +44,28 @@ inline fun <reified T> Config.extract(): T {
         result as T
     } catch (e: Exception) {
         throw e
+    }
+}
+
+/**
+ * @param thisRef
+ *            the owner of the property
+ * @param property
+ *            the property to populate
+ * @return the configured value converted to the property's type
+ */
+inline operator fun <R, reified T> Config.getValue(thisRef: R, property: KProperty<*>): T {
+    val genericType = object : TypeReference<T>() {}.genericType()
+    val clazz = ClassContainer(T::class, genericType)
+    val reader = SelectReader.getReader(clazz)
+    val path = property.name
+    val result = reader(this, path)
+    return try {
+        result as T
+    } catch (e: Exception) {
+        throw result
+                ?.let { e }
+                ?: ConfigException.BadPath(path, "take a look at your config")
     }
 }
 
