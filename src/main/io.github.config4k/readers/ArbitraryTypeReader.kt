@@ -6,6 +6,7 @@ import io.github.config4k.extract
 import io.github.config4k.getGenericMap
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KParameter
+import kotlin.reflect.KVisibility
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.jvm.javaType
@@ -30,16 +31,10 @@ internal fun extractWithParameters(clazz: ClassContainer,
                 .invoke(if (parentPath.isEmpty()) config else config.extract(parentPath), param.name!!)
     }
     val parameters = omitValue(map, config, parentPath)
-    return if (constructor.isAccessible) {
-        constructor.callBy(parameters)
-    } else {
-        try {
-            constructor.isAccessible = true
-            constructor.callBy(parameters)
-        } finally {
-            constructor.isAccessible = false
-        }
+    if (clazz.mapperClass.visibility == KVisibility.PRIVATE) {
+        constructor.isAccessible = true
     }
+    return constructor.callBy(parameters)
 }
 
 // if config doesn't have corresponding value, the value is omitted
