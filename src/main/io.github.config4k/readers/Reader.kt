@@ -1,7 +1,5 @@
 package io.github.config4k.readers
 
-import com.google.common.base.CaseFormat.LOWER_HYPHEN
-import com.google.common.base.CaseFormat.LOWER_CAMEL
 import com.typesafe.config.Config
 
 /**
