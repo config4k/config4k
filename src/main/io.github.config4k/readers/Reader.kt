@@ -21,7 +21,16 @@ internal open class Reader<out T>(read: (Config, String) -> T) {
         preferred format
         for HOCON files.
          */
-        val hyphenPath = LOWER_CAMEL.to(LOWER_HYPHEN, path)
+        val hyphenPath = camelCaseToLowerHyphenCase(path)
         if (config.hasPath(hyphenPath)) read(config, hyphenPath) else null
+    }
+
+    companion object {
+        // see https://stackoverflow.com/questions/2559759
+        private fun camelCaseToLowerHyphenCase(camelCase: String): String =
+            "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])"
+                .toRegex()
+                .replace(camelCase, "-")
+                .toLowerCase()
     }
 }
