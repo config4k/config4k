@@ -34,6 +34,17 @@ class TestArbitraryType : WordSpec({
             }
         }
 
+        "Config.extract<PrivateEye>" should {
+            "return private data class PrivateEye" {
+                val config = """
+                              key = {
+                                target = "criminal"
+                              }""".toConfig()
+                val person = config.extract<PrivateEye>("key")
+                person shouldBe PrivateEye("criminal")
+            }
+        }
+
         "Config.extract<Nest>" should {
             "return Nest" {
                 val config = """
@@ -77,6 +88,8 @@ class TestArbitraryType : WordSpec({
 })
 
 data class Person(val name: String, val age: Int? = 10)
+
+private data class PrivateEye(val target: String)
 
 data class Nest(val nest: Int, val person: Person)
 
