@@ -1,35 +1,13 @@
 # Config4k
 
-[![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=master)](https://travis-ci.org/config4k/config4k) [![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k) [![codebeat badge](https://codebeat.co/badges/4e9682a1-cdbb-4e1f-804b-a2d801381942)](https://codebeat.co/projects/github-com-config4k-config4k) [![kotlin](https://img.shields.io/badge/kotlin-1.2.60-pink.svg)]() [ ![Download](https://api.bintray.com/packages/config4k/config4k/config4k/images/download.svg) ](https://bintray.com/config4k/config4k/config4k/_latestVersion)
+[![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=master)](https://travis-ci.org/config4k/config4k) [![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k) [![codebeat badge](https://codebeat.co/badges/4e9682a1-cdbb-4e1f-804b-a2d801381942)](https://codebeat.co/projects/github-com-config4k-config4k) [![kotlin](https://img.shields.io/badge/kotlin-1.3.10-pink.svg)]() [ ![Download](https://api.bintray.com/packages/config4k/config4k/config4k/images/download.svg) ](https://bintray.com/config4k/config4k/config4k/_latestVersion)
 
 _**Config** for **K**otlin._  
 
 **Config4k** is a lightweight [Typesafe Config](https://github.com/typesafehub/config) wrapper for Kotlin and inspired by [ficus](https://github.com/iheartradio/ficus),  providing simple extension functions `Config.extract<T>` and `Any.toConfig` to convert between `Config` and Kotlin Objects.
 
-```kotlin
-import com.typesafe.config.ConfigFactory
-import io.github.config4k.*
+![example](https://user-images.githubusercontent.com/21121197/66254407-df696f00-e7b0-11e9-839d-e47c9da16807.png)
 
-data class Person(val name: String, val age: Int)
-data class Family(val list: List<Person>)
-
-// typesafe config supports not only HOCON but also JSON
-// HOCON(Human-Optimized Config Object Notation) is the JSON superset
-val config = ConfigFactory.parseString("""
-                                         | // HOCON style
-                                         |family {
-                                         | list = [{
-                                         |  name = "foo"
-                                         |  age = 20
-                                         | }, {
-                                         |  name = "bar"
-                                         |  age = 25
-                                         | }]
-                                         |}""".trimMargin())
-
-// typesafe config + config4k
-config.extract<Family>("family")
-```
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
@@ -205,4 +183,5 @@ person {
 - Data classes
 
 ## Contribute
-PRs accepted.
+Would you like to contribute to Config4k?  
+Take a look at [CONTRIBUTING.md](https://github.com/config4k/config4k/blob/master/CONTRIBUTING.md)
