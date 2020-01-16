@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=master)](https://travis-ci.org/config4k/config4k) [![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k) [![codebeat badge](https://codebeat.co/badges/4e9682a1-cdbb-4e1f-804b-a2d801381942)](https://codebeat.co/projects/github-com-config4k-config4k) [![kotlin](https://img.shields.io/badge/kotlin-1.3.10-pink.svg)]() [ ![Download](https://api.bintray.com/packages/config4k/config4k/config4k/images/download.svg) ](https://bintray.com/config4k/config4k/config4k/_latestVersion)
 
-_**Config** for **K**otlin._  
+_**Config** for **K**otlin._
 
 **Config4k** is a lightweight [Typesafe Config](https://github.com/typesafehub/config) wrapper for Kotlin and inspired by [ficus](https://github.com/iheartradio/ficus),  providing simple extension functions `Config.extract<T>` and `Any.toConfig` to convert between `Config` and Kotlin Objects.
 
@@ -187,14 +187,20 @@ person {
 ```
 
 ## Supported types
-`extract` and `toConfig` support these types.
+Property delegation, `extract` and `toConfig` support these types:
 - Primitive types
      - `Boolean`
+     - `Byte`
      - `Int`
      - `Long`
+     - `Float`
      - `Double`
 - `String`
+- `import java.io.File`
+- `import java.nio.file.Path`
 - `java.time.Duration`
+- `java.time.Period`
+- `java.time.temporal.TemporalAmount`
 - `kotlin.text.Regex`
 - Collections
     - `List`
@@ -205,8 +211,11 @@ person {
 - Typesafe Config classes(Calling `toConfig` is meaningless)
     - `com.typesafe.config.Config`
     - `com.typesafe.config.ConfigValue`
+    - `com.typesafe.config.ConfigMemorySize`
 - Enum
 - Data classes
+
+See [SelectReader.kt](src/main/io.github.config4k/readers/SelectReader.kt) for the exhaustive list.
 
 ## Contribute
 Would you like to contribute to Config4k?  
