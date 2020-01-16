@@ -84,6 +84,7 @@ private fun outputOf(block: () -> Unit): String {
         System.setOut(PrintStream(bytes))
 
         block.invoke()
+        System.out.flush()
 
         return bytes.toString("UTF-8")
     } finally {
