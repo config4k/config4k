@@ -45,14 +45,14 @@ val config = ConfigFactory.parseString("""
                                           |  foo = 5
                                           |  bar = 6
                                           |}""".trimMargin())
-val person: Map<String, Int> = config.extract<Map<String, Int>>("map")
-map["foo"] == 5 // true
-map["bar"] == 6 // true
+val map: Map<String, Int> = config.extract<Map<String, Int>>("map")
+println(map["foo"] == 5) // true
+println(map["bar"] == 6) // true
 ```
 or with arbitrary keys
 ```kotlin
 val config = ConfigFactory.parseString("""
-                                          |map [{  
+                                          |map = [{  
                                           |  key = 5
                                           |  value = "foo"
                                           |}
@@ -60,9 +60,9 @@ val config = ConfigFactory.parseString("""
                                           |  key = 6
                                           |  value = "bar"
                                           |}]""".trimMargin())
-val person: Map<Int, String> = config.extract<Map<Int, String>>("map")
-map[5] == "foo" // true
-map[6] == "bar" // true
+val map: Map<Int, String> = config.extract<Map<Int, String>>("map")
+println(map[5] == "foo") // true
+println(map[6] == "bar") // true
 ```
 Test Class: [TestMap.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestMap.kt)
 #### Data Classes
@@ -76,8 +76,8 @@ val config = ConfigFactory.parseString("""
                                           |  age = 20
                                           |}""".trimMargin())
 val person: Person = config.extract<Person>("key")
-person.name == "foo" // true
-person.age == 20 // true
+println(person.name == "foo") // true
+println(person.age == 20) // true
 ```
 For more details, please see [TestArbitraryType.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestArbitraryType.kt)
 #### Nullable
@@ -87,8 +87,8 @@ Using `extract<T?>` is the better way than `Config.hasPath()`.
 val config = ConfigFactory.parseString("""key = 10""")
 val key = config.extract<Int?>("key")
 val foo = config.extract<Int?>("foo")
-key == 10 // true
-foo == null // true
+println(key == 10) // true
+println(foo == null) // true
 ```
 Test Class: [TestNullable.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestNullable.kt)
 #### Enum
@@ -102,7 +102,7 @@ enum class Size {
 
 val config = ConfigFactory.parseString("""key = SMALL""")
 val small = config.extract<Size>("key")
-small == Size.SMALL // true
+println(small == Size.SMALL) // true
 ```
 Test Class: [TestEnum.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestEnum.kt)
 ### Serialization
@@ -112,7 +112,7 @@ You can use [ConfigValue.render()](https://typesafehub.github.io/config/latest/a
 ```kotlin
 data class Person(val name: String, val age: Int)
 val person = Person("foo", 20).toConfig("person")
-println(person.root().render())               
+println(person.root().render())
 ```
 Output:
 ```
@@ -131,8 +131,10 @@ Test Class: [TestToConfigForArbitraryType.kt](https://github.com/config4k/config
 Typesafe Config's class `ConfigRenderOptions` is the argument of `ConfigValue.render`.
 ```kotlin
 // If setJson(false) is called, ConfigValue.render returns HOCON
+data class Person(val name: String, val age: Int)
+val person = Person("foo", 20).toConfig("person")
 val options = ConfigRenderOptions.defaults().setJson(false)
-println(person.root().render(option))
+println(person.root().render(options))
 ```
 Output:
 ```
@@ -147,10 +149,12 @@ person {
 
 ```kotlin
 // setOriginComments(false) removes comments
+data class Person(val name: String, val age: Int)
+val person = Person("foo", 20).toConfig("person")
 val options = ConfigRenderOptions.defaults()
                         .setJson(false)
                         .setOriginComments(false)
-println(person.root().render(option))
+println(person.root().render(options))
 ```
 Output:
 ```
