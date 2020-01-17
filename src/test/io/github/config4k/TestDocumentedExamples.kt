@@ -24,10 +24,18 @@ class TestDocumentedExamples : StringSpec({
                 """.trimIndent())
             }
 
-            output.nonBlankTrimmedLines() shouldBe expected.nonBlankTrimmedLines()
+            output.lines().sanitized() shouldBe expected.lines().sanitized()
         }
     }
 })
+
+private fun List<String>.sanitized(): List<String> = this
+        // ignore leading spaces since expected outputs derived from comments may have them
+        .map { it.trim() }
+        // ignore warnings that Java 13 injects into actual output
+        .filterNot { it.startsWith("warning: ")}
+        // ignore trailing newline
+        .dropLastWhile { it.isBlank() }
 
 private val engine = KotlinJsr223JvmLocalScriptEngineFactory()
         .scriptEngine
@@ -91,5 +99,3 @@ private fun outputOf(block: () -> Unit): String {
         System.setOut(out)
     }
 }
-
-private fun String.nonBlankTrimmedLines(): List<String> = lines().map { it.trim() }.filter { it.isNotBlank() }
