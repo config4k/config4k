@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=master)](https://travis-ci.org/config4k/config4k) [![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k) [![codebeat badge](https://codebeat.co/badges/4e9682a1-cdbb-4e1f-804b-a2d801381942)](https://codebeat.co/projects/github-com-config4k-config4k) [![kotlin](https://img.shields.io/badge/kotlin-1.3.10-pink.svg)]() [ ![Download](https://api.bintray.com/packages/config4k/config4k/config4k/images/download.svg) ](https://bintray.com/config4k/config4k/config4k/_latestVersion)
 
-_**Config** for **K**otlin._  
+_**Config** for **K**otlin._
 
 **Config4k** is a lightweight [Typesafe Config](https://github.com/typesafehub/config) wrapper for Kotlin and inspired by [ficus](https://github.com/iheartradio/ficus),  providing simple extension functions `Config.extract<T>` and `Any.toConfig` to convert between `Config` and Kotlin Objects.
 
@@ -11,6 +11,7 @@ _**Config** for **K**otlin._
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Delegated Properties](#delegated-properties)
   - [Deserialization](#deserialization)
     - [Data Classes](#data-classes)
     - [Nullable](#nullable)
@@ -35,6 +36,27 @@ dependencies {
 }
 ```
 ## Usage
+
+### Delegated Properties
+
+By far the simplest way to use config4k is via [Kotlin Delegated Properties](https://kotlinlang.org/docs/reference/delegated-properties.html):
+
+```kotlin
+val config = ConfigFactory.parseString("""
+                                          |stringValue = hello
+                                          |booleanValue = true
+                                          |""".trimMargin())
+
+val stringValue: String by config
+println(stringValue) // hello
+
+val nullableStringValue: String? by config
+println(nullableStringValue) // null
+
+val booleanValue: Boolean by config
+println(booleanValue) // true
+```
+
 ### Deserialization
 `Config.extract<T>` converts `Config` to `T`.
 #### Map
@@ -45,14 +67,14 @@ val config = ConfigFactory.parseString("""
                                           |  foo = 5
                                           |  bar = 6
                                           |}""".trimMargin())
-val person: Map<String, Int> = config.extract<Map<String, Int>>("map")
-map["foo"] == 5 // true
-map["bar"] == 6 // true
+val map: Map<String, Int> = config.extract<Map<String, Int>>("map")
+println(map["foo"] == 5) // true
+println(map["bar"] == 6) // true
 ```
 or with arbitrary keys
 ```kotlin
 val config = ConfigFactory.parseString("""
-                                          |map [{  
+                                          |map = [{  
                                           |  key = 5
                                           |  value = "foo"
                                           |}
@@ -60,9 +82,9 @@ val config = ConfigFactory.parseString("""
                                           |  key = 6
                                           |  value = "bar"
                                           |}]""".trimMargin())
-val person: Map<Int, String> = config.extract<Map<Int, String>>("map")
-map[5] == "foo" // true
-map[6] == "bar" // true
+val map: Map<Int, String> = config.extract<Map<Int, String>>("map")
+println(map[5] == "foo") // true
+println(map[6] == "bar") // true
 ```
 Test Class: [TestMap.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestMap.kt)
 #### Data Classes
@@ -76,8 +98,8 @@ val config = ConfigFactory.parseString("""
                                           |  age = 20
                                           |}""".trimMargin())
 val person: Person = config.extract<Person>("key")
-person.name == "foo" // true
-person.age == 20 // true
+println(person.name == "foo") // true
+println(person.age == 20) // true
 ```
 For more details, please see [TestArbitraryType.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestArbitraryType.kt)
 #### Nullable
@@ -87,8 +109,8 @@ Using `extract<T?>` is the better way than `Config.hasPath()`.
 val config = ConfigFactory.parseString("""key = 10""")
 val key = config.extract<Int?>("key")
 val foo = config.extract<Int?>("foo")
-key == 10 // true
-foo == null // true
+println(key == 10) // true
+println(foo == null) // true
 ```
 Test Class: [TestNullable.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestNullable.kt)
 #### Enum
@@ -102,7 +124,7 @@ enum class Size {
 
 val config = ConfigFactory.parseString("""key = SMALL""")
 val small = config.extract<Size>("key")
-small == Size.SMALL // true
+println(small == Size.SMALL) // true
 ```
 Test Class: [TestEnum.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestEnum.kt)
 ### Serialization
@@ -112,7 +134,7 @@ You can use [ConfigValue.render()](https://typesafehub.github.io/config/latest/a
 ```kotlin
 data class Person(val name: String, val age: Int)
 val person = Person("foo", 20).toConfig("person")
-println(person.root().render())               
+println(person.root().render())
 ```
 Output:
 ```
@@ -131,8 +153,10 @@ Test Class: [TestToConfigForArbitraryType.kt](https://github.com/config4k/config
 Typesafe Config's class `ConfigRenderOptions` is the argument of `ConfigValue.render`.
 ```kotlin
 // If setJson(false) is called, ConfigValue.render returns HOCON
+data class Person(val name: String, val age: Int)
+val person = Person("foo", 20).toConfig("person")
 val options = ConfigRenderOptions.defaults().setJson(false)
-println(person.root().render(option))
+println(person.root().render(options))
 ```
 Output:
 ```
@@ -147,10 +171,12 @@ person {
 
 ```kotlin
 // setOriginComments(false) removes comments
+data class Person(val name: String, val age: Int)
+val person = Person("foo", 20).toConfig("person")
 val options = ConfigRenderOptions.defaults()
                         .setJson(false)
                         .setOriginComments(false)
-println(person.root().render(option))
+println(person.root().render(options))
 ```
 Output:
 ```
@@ -161,14 +187,20 @@ person {
 ```
 
 ## Supported types
-`extract` and `toConfig` support these types.
+Property delegation, `extract` and `toConfig` support these types:
 - Primitive types
      - `Boolean`
+     - `Byte`
      - `Int`
      - `Long`
+     - `Float`
      - `Double`
 - `String`
+- `import java.io.File`
+- `import java.nio.file.Path`
 - `java.time.Duration`
+- `java.time.Period`
+- `java.time.temporal.TemporalAmount`
 - `kotlin.text.Regex`
 - Collections
     - `List`
@@ -179,8 +211,11 @@ person {
 - Typesafe Config classes(Calling `toConfig` is meaningless)
     - `com.typesafe.config.Config`
     - `com.typesafe.config.ConfigValue`
+    - `com.typesafe.config.ConfigMemorySize`
 - Enum
 - Data classes
+
+See [SelectReader.kt](src/main/io.github.config4k/readers/SelectReader.kt) for the exhaustive list.
 
 ## Contribute
 Would you like to contribute to Config4k?  
