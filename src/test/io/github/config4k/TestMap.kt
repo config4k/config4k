@@ -1,5 +1,6 @@
 package io.github.config4k
 
+import com.typesafe.config.ConfigFactory
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
@@ -58,6 +59,15 @@ class TestMap : WordSpec({
                         }]""".toConfig()
             val list = mapConfig.extract<Map<Int, String>>("nest")
             list shouldBe mapOf(10 to "dogs", 20 to "cats")
+        }
+        "return map with non-null values when a key contains dot" {
+            val mapConfig = """
+                        nest = {
+                          "key1.with.dot" = 10
+                          "key2.with.dot" = 20
+                        }""".toConfig()
+            val list = mapConfig.extract<Map<String, Int>>("nest")
+            list shouldBe mapOf("key1.with.dot" to 10, "key2.with.dot" to 20)
         }
     }
 })
