@@ -11,7 +11,6 @@ _**Config** for **K**otlin._
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Delegated Properties](#delegated-properties)
   - [Deserialization](#deserialization)
     - [Data Classes](#data-classes)
     - [Nullable](#nullable)
@@ -36,27 +35,6 @@ dependencies {
 }
 ```
 ## Usage
-
-### Delegated Properties
-
-By far the simplest way to use config4k is via [Kotlin Delegated Properties](https://kotlinlang.org/docs/reference/delegated-properties.html):
-
-```kotlin
-val config = ConfigFactory.parseString("""
-                                          |stringValue = hello
-                                          |booleanValue = true
-                                          |""".trimMargin())
-
-val stringValue: String by config
-println(stringValue) // hello
-
-val nullableStringValue: String? by config
-println(nullableStringValue) // null
-
-val booleanValue: Boolean by config
-println(booleanValue) // true
-```
-
 ### Deserialization
 `Config.extract<T>` converts `Config` to `T`.
 #### Map
