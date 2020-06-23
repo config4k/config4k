@@ -1,26 +1,30 @@
-matrix:
-  include:
-    # Ubuntu 14.04 LTS
-    - os: linux
-      dist: trusty
-      jdk: oraclejdk8
-    # Ubuntu 12.04 LTS
-    - os: linux
-      dist: precise
-      jdk: oraclejdk8
-    # macOS 10.12
-    - os: osx
-      osx_image: xcode8.2
-    # OS X 10.11
-    - os: osx
-      osx_image: xcode7.3
-
-sudo: false
-
 language: java
-  
+
+jdk:
+  - openjdk8
+
+env:
+  global:
+    # NOTE: Very important don't forget about escaping symbols.
+    # See https://docs.travis-ci.com/user/encryption-keys#note-on-escaping-certain-symbols
+
+    # Settings for publishing artifacts to Sonatype.
+    # travis encrypt --pro OSS_USERNAME="*****"
+    - secure: "czE+ohBf+0fvVMU1CyxuaohDAltf2IjSgUf+BJ5X1ltNfjW5sDBjupZ+YWkcfX3JYJGdQ/3iSbqRo3AOmtosuzMabaH5xWya6Vp4bQvrNiXgyMbtE2k0FjrVJ52Uu3MwKQNeIPIHxe7rUy03j1Y23N+Jzis9M0H7HV/vP2lNmo7LklbKz3jGb8sLvsksJMB4zmbevgAqOls0MCgrJJinzOmZcIS3pTq3vx39xRHOHeAReY+d2+7GA8+IgFusvZmKfY/pD9BqjyIjAKCxc4WR04GRft9edQdvN8e3Rs8e1sOrIfdKxTzvOMNA2FO+ZSLDVvuEXA1sKrsGcyXpXz4E8p8poe2OnyPRSSBFDLWidE/GkzfgowOGCJmj1hPrP8BFEH8bmxvoSZWg8I+w8AWlGFua/TmqhoGmRDu7BLpso17w/i2piZ8DtLq1yBsOYqotoO1/7LQLjp8CVDZ2QmTwndTKtbbhscd5VPxVdhGpTxBcejn+cgnSGW5wTsmn08fK0P/KgDInoaOLhp4RD/FqxukO9Rg+YMn4Wt1DuSJbxoRc9vLgo2hsxS9LXgBVhM17MOHAYpAnTWql5LDHoFtL7DJWmHTDtmjGm6vTjZPewg8Ic4cA9rKimVLXRUOWYfo8JtmOOSOdlIxXR+1NK+10vMaOOCWzOjmnFEX3jd3IfjA="
+    # travis encrypt --pro OSS_PASSWORD="*****"
+    - secure: "EFAiH4oG78OEruaeV14fDGGimr1w5Lpq1QWSs5gg7Ta66koB1Tgms2zlkDcRedJGGp3k92KgxJm0/njQOvRfu8He906AZzIsnjO4+1c49C3O4GKZsBfdZVvkzzWW2ha+djanrJ8W+Y7BG94RLQrSeySMyenX74m9gJC6+qtf+BjNuXreXW9BE3lkgE6zFkTdoD4SDseybgo2Jo3YJ6dFXyg9Uct07f2bziHKggHX1RQoVrzpfeMSsb0dL74pgSoB/f6wYHfGOFyeJbDHz3uiATYgxd9mEi7rmTq02aB8jx1SabsV/zyF0vgOsyxWmzXvI63+Uvp9rE9OVGUcKUsKe3F8Oa5965rqzid/Qp+jfL10cA558VTeY6kkQmkaEdL6eQwb2Lasqf1B7gaPxePdzeKokWhoK1Du3FLVO77r+xNb2XWbUrVyAPGyCZpc4CyMS2bCqsRQO7gY6FmqGMz0dOjcU5zThvSyAsuB3/Ou6Gf0oIgs4n4Ke64nOKyPiSTZmRcb+QiQ2II230zYyq78YiS+Y4OizdK7J+nm/9y2akqC1ry5uhIRwiZUqnHerj32/kgkGR8C3e0Fkh5q+OJRY9eUks1eHJjNQvayeVROgKPNJb8VimbOZOU1QfwYTzHPcl7xUxbXwyl7FKTTJCCysG24rHCe/6en1hQ1MYgd+N8="
+
+    # Settings for signing artifacts (public Key: http://keys.gnupg.net/pks/lookup?op=get&search=0xD14DA5798C460F2D)
+    # travis encrypt --pro GPG_KEY_NAME="8C460F2D"
+    - secure: "kgUQ5mXVOLKEo+li6eW8pcRnhDHcPuW7filnvNehoFrUaDzfoYDYyF5n0jn+12kzTtV2keMGNl1RTyLThFHV1GG9VeA/o9gBkBPYG7T3MhcMkU0myKy5rBTQbkswT3/S5h61FY9YwEXAQgSwcjoC8b36AChtNNL0Jn8Zr0df1haq2X48D/rshQRmjbQ30OMGFk+erkFhz5XZk+ocGSsJBMAVYghrrlUFOIiQa6sFPpQ8Az58vb+xbIou9BiolVB7uTL3J4YeEHVM/iVNrJGlUMz3/g0neUNGcikr9E8y49/qY/kwgmhkTQTURG5/EbsbH8lig9ymUnjnbydCFNyugctpEF1ortQAAh1QCQfDHFP9YNYsnMF2EhJKJkTlAAArtfGUKW5qR2tqOMQzz2yIfCaIfDVfDuVHeGqkNSV2Koa9O1dtq0BUNrqCcWFkA1b2ZxWuu2c2Z7OBDuElqGCyARXkdTsCeYq1T1CVPAkqC6gLRbDb416XzdqQPeDVBDmVB/6cAu4EX/uwJ9gbZ73F82ti19iEpZe0/0r+ctp8nUIgOeIkSG3rmSlLSbu+aVWZ96UadAJ7je99/h7B0reCJvpXEadDH/91rbYBNM+OiFGeSRmXzaGcsdExa4iWQvTFA11VDNx+SzIWIvFKS6/EZsfNk/w1lJEn94dFHr3ljKI="
+    # travis encrypt --pro GPG_PASSPHRASE="*****"
+    - secure: "N8ty8/YH46k0CYXQYl9HBA8ppENIVDcVqYXPqeO2cgon01JaTlVkCzNXQy8/pUpgvjVSWZ4k02mqlNhD0hEH6KnNq7BbTiy8xdZSgsu4RZVnBwubFTZl/AmvKJcDVcYOn9ljKkiJIpslFeGIWA0XBFgae9Xy+M5hc5eIfEwGnaV4kBjOlJEPpn/da0UOWFtOkggDtEaLIc4xfBlora0QrZ/s/CJXHaC2YMj/e17Vc1ZWnieQNURceuKHKY81kJ+NojR/o4Fz2y3uCJwFhvtVBZGzUrYcZLjSiUYEGK0C27IQ2F7I/H+z2vsDbL1aEaGmW6qIn00WConuMcbQ4xLJ1VI0ltlUY3LTvNT1Vj9AFgsUfJqiVd7XphfxxjJgUjYbnyU5Ow+1U+yPYhqJCiRUkw/Gbn/VXz1ogmpZ6U3FZPn7WrWtAE8A2YAsa6Gqgn1qWizr9jC49JBnj0/1pvExqxL55X+7vlihk6Cflugs8Ih+91fCM9ZM0kEo4lPGAXWqHiM2BLUDlpybEl0QckdURwEbPEvjsTLNJ/k840Ne9ptjEt/W4w+PiSR4yv2BLWACcCzvH5x88XJ4eb1CnA0iJzLmbxB6jqD9iHpUpjoQbGcduTaLmv2oGVnbDBbPiVIzUBA+p3pcHoaVvYvviBWsfFYqHTS8Un0c+rCnFlQK2Dk="
+
+matrix:
+  fast_finish: true
+
 script:
-  - ./gradlew test jacocoTestReport
+  - ./gradlew clean test
   
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -29,6 +33,36 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-    
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+before_deploy:
+  - echo $GPG_SECRET_KEYS | base64 --decode > $HOME/.gnupg/config4k.gpg
+
+deploy:
+  # Deploy releases
+  - provider: script
+    script: >-
+      ./gradlew publishToSonatype closeAndReleaseRepository -x test
+      -Psigning.keyId=$GPG_KEY_NAME
+      -Psigning.password="$GPG_PASSPHRASE"
+      -Psigning.secretKeyRingFile=$HOME/.gnupg/config4k.gpg
+      -PossrhUsername=$OSS_USERNAME
+      -PossrhPassword="$OSS_PASSWORD"
+    skip_cleanup: true
+    on:
+      tags: true
+  # Deploy snapshots
+  - provider: script
+    script: >-
+      ./gradlew publishToSonatype -x test
+      -Psigning.keyId=$GPG_KEY_NAME
+      -Psigning.password="$GPG_PASSPHRASE"
+      -Psigning.secretKeyRingFile=$HOME/.gnupg/config4k.gpg
+      -PossrhUsername=$OSS_USERNAME
+      -PossrhPassword="$OSS_PASSWORD"
+    skip_cleanup: true
+    on:
+      branch: master
+      tags: false
