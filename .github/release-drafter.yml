@@ -1,0 +1,25 @@
+categories:
+  - title: ':rocket: Features'
+    labels:
+      - 'enhancement'
+  - title: ':bug: Bug Fixes'
+    labels:
+      - 'bug'
+  - title: ':dart: Dependencies'
+    labels:
+      - 'dependencies'
+
+name-template: '$NEXT_MINOR_VERSION'
+tag-template: '$NEXT_MINOR_VERSION'
+template: |
+  # :mega: Config4k $NEXT_MINOR_VERSION released!
+
+  We are pleased to announce the release of Config4k.
+
+  ## :green_book: What’s Changed
+
+  $CHANGES
+
+  ## :bow: Credits
+
+  Special thanks to the following contributors who helped with this release: $CONTRIBUTORS
