@@ -3,7 +3,6 @@ package io.github.config4k
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
-
 class TestToConfigForPrimitives : WordSpec({
     "10.toConfig" should {
         "return Config having Int value" {

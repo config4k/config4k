@@ -6,7 +6,6 @@ import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
 
-
 class TestToConfigForFile : WordSpec({
     "myFile.txt.toConfig" should {
         "return Config having relative File value" {

@@ -3,7 +3,6 @@ package io.github.config4k
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
-
 class TestToConfigForArbitraryType : WordSpec({
     "Person.toConfig" should {
         "return Config having Person" {
@@ -16,7 +15,7 @@ class TestToConfigForArbitraryType : WordSpec({
         "return Config having Nest" {
             val nest = Nest(1, Person("foo", 20)).toConfig("nest")
             nest.extract<Nest>("nest") shouldBe
-                    Nest(1, Person("foo", 20))
+                Nest(1, Person("foo", 20))
         }
     }
 
@@ -24,13 +23,13 @@ class TestToConfigForArbitraryType : WordSpec({
         "return Config having name" {
             val person = NullableName("foo").toConfig("nullable")
             person.extract<NullableName>("nullable") shouldBe
-                    NullableName("foo")
+                NullableName("foo")
         }
 
         "return Config having null" {
             val person = NullableName(null).toConfig("nullable")
             person.extract<NullableName>("nullable") shouldBe
-                    NullableName(null)
+                NullableName(null)
         }
     }
 

@@ -24,7 +24,7 @@ matrix:
   fast_finish: true
 
 script:
-  - ./gradlew clean test
+  - ./gradlew clean check
   
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

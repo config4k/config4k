@@ -5,18 +5,19 @@ import io.kotlintest.should
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 import java.time.Duration
-import java.util.*
-
+import java.util.Arrays
 
 class TestCollections : WordSpec({
     val config = "key = [0m, 1m, 1m, 2m]".toConfig()
     "Config.extract" should {
         "return List" {
             val list = config.extract<List<Duration>>("key")
-            list shouldBe listOf(Duration.ofMinutes(0),
-                    Duration.ofMinutes(1),
-                    Duration.ofMinutes(1),
-                    Duration.ofMinutes(2))
+            list shouldBe listOf(
+                Duration.ofMinutes(0),
+                Duration.ofMinutes(1),
+                Duration.ofMinutes(1),
+                Duration.ofMinutes(2)
+            )
         }
 
         "return List<List<Int>>" {
@@ -28,22 +29,28 @@ class TestCollections : WordSpec({
         "return Set" {
             val set = config.extract<Set<Duration>>("key")
             set should haveSize(3)
-            set shouldBe setOf(Duration.ofMinutes(0),
-                    Duration.ofMinutes(1),
-                    Duration.ofMinutes(1),
-                    Duration.ofMinutes(2))
+            set shouldBe setOf(
+                Duration.ofMinutes(0),
+                Duration.ofMinutes(1),
+                Duration.ofMinutes(1),
+                Duration.ofMinutes(2)
+            )
         }
 
         "return Array<T>" {
             Arrays.deepEquals(
-                    """key = ["a", "b", "c", "d"]""".toConfig()
-                            .extract<Array<String>>("key"),
-                    arrayOf("a", "b", "c", "d")) shouldBe true
+                """key = ["a", "b", "c", "d"]""".toConfig()
+                    .extract<Array<String>>("key"),
+                arrayOf("a", "b", "c", "d")
+            ) shouldBe true
             Arrays.deepEquals(
-                    """key = ["0m", "1m"]""".toConfig()
-                            .extract<Array<Duration>>("key"),
-                    arrayOf(Duration.ofMinutes(0),
-                            Duration.ofMinutes(1))) shouldBe true
+                """key = ["0m", "1m"]""".toConfig()
+                    .extract<Array<Duration>>("key"),
+                arrayOf(
+                    Duration.ofMinutes(0),
+                    Duration.ofMinutes(1)
+                )
+            ) shouldBe true
         }
     }
 })
