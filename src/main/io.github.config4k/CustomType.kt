@@ -11,7 +11,7 @@ interface CustomType {
 
 private val mutableRegistry: MutableList<CustomType> = mutableListOf()
 
-val customTypeRegistry: List<CustomType> = object: List<CustomType> by mutableRegistry {}
+val customTypeRegistry: List<CustomType> = object : List<CustomType> by mutableRegistry {}
 
 fun registerCustomType(customType: CustomType) {
     mutableRegistry.add(customType)

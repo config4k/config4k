@@ -16,12 +16,14 @@ class TestDocumentedExamples : StringSpec({
     "examples should compile and run with expected output" {
         forall(*examples()) { _, script, expected ->
             val output = outputOf {
-                engine.eval("""
+                engine.eval(
+                    """
                     import com.typesafe.config.*
                     import io.github.config4k.*
 
                     $script
-                """.trimIndent())
+                    """.trimIndent()
+                )
             }
 
             output.lines().sanitized() shouldBe expected.lines().sanitized()
@@ -30,52 +32,53 @@ class TestDocumentedExamples : StringSpec({
 })
 
 private fun List<String>.sanitized(): List<String> = this
-        // ignore leading spaces since expected outputs derived from comments may have them
-        .map { it.trim() }
-        // ignore warnings that Java 13 injects into actual output
-        .filterNot { it.startsWith("warning: ")}
-        // ignore trailing newline
-        .dropLastWhile { it.isBlank() }
+    // ignore leading spaces since expected outputs derived from comments may have them
+    .map { it.trim() }
+    // ignore warnings that Java 13 injects into actual output
+    .filterNot { it.startsWith("warning: ") }
+    // ignore trailing newline
+    .dropLastWhile { it.isBlank() }
 
 private val engine = KotlinJsr223JvmLocalScriptEngineFactory()
-        .scriptEngine
+    .scriptEngine
 
 private fun examples(): Array<Row3<String, String, String>> = File("README.md")
-        .fencedCodeBlocks()
-        .groupedByCodeSample()
-        .toRows()
-        .filter { (lang, _, _) -> lang == "kotlin" }
-        .toTypedArray()
+    .fencedCodeBlocks()
+    .groupedByCodeSample()
+    .toRows()
+    .filter { (lang, _, _) -> lang == "kotlin" }
+    .toTypedArray()
 
 private fun File.fencedCodeBlocks(): List<FencedCodeBlock> = readText()
-        .let { text ->
-            mutableListOf<FencedCodeBlock>()
-                    .also { blocks ->
-                        Parser.builder().build().parse(text).accept(object : AbstractVisitor() {
-                            override fun visit(fencedCodeBlock: FencedCodeBlock) {
-                                blocks += fencedCodeBlock
-                            }
-                        })
+    .let { text ->
+        mutableListOf<FencedCodeBlock>()
+            .also { blocks ->
+                Parser.builder().build().parse(text).accept(object : AbstractVisitor() {
+                    override fun visit(fencedCodeBlock: FencedCodeBlock) {
+                        blocks += fencedCodeBlock
                     }
-        }
+                })
+            }
+    }
 
 private fun List<FencedCodeBlock>.groupedByCodeSample(): List<List<FencedCodeBlock>> =
-        mutableListOf<MutableList<FencedCodeBlock>>()
-                .also { grouped ->
-                    forEach { block ->
-                        when {
-                            block.info.isNotBlank() -> grouped.add(mutableListOf(block))
-                            block.info.isBlank() -> grouped.lastOrNull()?.add(block)
-                        }
-                    }
+    mutableListOf<MutableList<FencedCodeBlock>>()
+        .also { grouped ->
+            forEach { block ->
+                when {
+                    block.info.isNotBlank() -> grouped.add(mutableListOf(block))
+                    block.info.isBlank() -> grouped.lastOrNull()?.add(block)
                 }
-                .map { it.toList() }
+            }
+        }
+        .map { it.toList() }
 
 private fun List<List<FencedCodeBlock>>.toRows(): List<Row3<String, String, String>> = map { group ->
     val lang = group.first().info
     val script = group.first().literal
     val output = when (group.size) {
-        1 -> group.first().literal
+        1 ->
+            group.first().literal
                 .lines()
                 .map { it.substringAfter("//", "") }
                 .filter { it.isNotBlank() }

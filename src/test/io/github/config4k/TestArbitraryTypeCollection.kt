@@ -3,11 +3,11 @@ package io.github.config4k
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
-
 class TestArbitraryTypeCollection : WordSpec({
     "Config.extract<Family>" should {
         "return Family" {
-            val config = """
+            val config =
+                """
                 key = {
                   persons = [
                    {

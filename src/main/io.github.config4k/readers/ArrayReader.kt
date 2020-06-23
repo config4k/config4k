@@ -6,9 +6,7 @@ import io.github.config4k.extract
 import java.time.Duration
 import kotlin.reflect.KClass
 
-
-internal class ArrayReader(clazz: KClass<*>) : Reader<Array<*>>({
-    config, path ->
+internal class ArrayReader(clazz: KClass<*>) : Reader<Array<*>>({ config, path ->
     when (clazz) {
         Int::class -> config.extract<List<Int>>(path).toTypedArray()
         String::class -> config.extract<List<String>>(path).toTypedArray()

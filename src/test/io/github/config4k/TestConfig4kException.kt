@@ -6,7 +6,6 @@ import io.kotlintest.shouldBe
 import io.kotlintest.shouldThrow
 import io.kotlintest.specs.WordSpec
 
-
 class TestConfig4kException : WordSpec({
     "Config.extract" should {
         "throw Config4kException.UnSupportedType" {
@@ -24,7 +23,7 @@ class TestConfig4kException : WordSpec({
         }
 
         "throw Config4kException.WrongEnum" {
-            val config = """key = foo""".toConfig()
+            val config = "key = foo".toConfig()
             shouldThrow<Config4kException.WrongEnum> {
                 config.extract<Size>("key")
             }.message shouldBe "expected : [SMALL, MEDIUM, LARGE], actually : foo"

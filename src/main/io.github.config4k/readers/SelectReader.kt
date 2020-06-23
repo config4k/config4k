@@ -25,7 +25,7 @@ object SelectReader {
      * @param clazz a instance got from the given type by reflection
      * @throws Config4kException.UnSupportedType if the passed type is not supported
      */
-    fun getReader(clazz: ClassContainer): (Config, String)->Any? {
+    fun getReader(clazz: ClassContainer): (Config, String) -> Any? {
         for (customType in customTypeRegistry) {
             if (customType.testParse(clazz)) {
                 return Reader { config, name -> customType.parse(clazz, config, name) }.getValue
@@ -64,5 +64,5 @@ object SelectReader {
     }
 
     fun extractWithoutPath(clazz: ClassContainer, config: Config) =
-            extractWithParameters(clazz, config)
+        extractWithParameters(clazz, config)
 }

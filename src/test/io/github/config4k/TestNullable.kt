@@ -4,12 +4,11 @@ import com.typesafe.config.ConfigFactory
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
-
 class TestNullable : WordSpec({
     "Config.extract<T?>" should {
         "return T" {
             val num = 0
-            val config = """key = $num""".toConfig()
+            val config = "key = $num".toConfig()
             config.extract<Int?>("key") shouldBe num
         }
 
@@ -20,7 +19,7 @@ class TestNullable : WordSpec({
     }
 
     "Any.toConfig" should {
-        "omit null values from the config"{
+        "omit null values from the config" {
             val complete = PartialData(path1 = "complete", path2 = "complete").toConfig("data")
             complete.hasPath("data.path1") shouldBe true
             complete.hasPath("data.path2") shouldBe true

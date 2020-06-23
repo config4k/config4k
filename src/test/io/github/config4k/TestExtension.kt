@@ -1,13 +1,16 @@
 package io.github.config4k
 
-import com.typesafe.config.*
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigFactory
+import com.typesafe.config.ConfigMemorySize
+import com.typesafe.config.ConfigValue
+import com.typesafe.config.ConfigValueType
 import io.kotlintest.matchers.exactly
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 import java.time.Duration
 import java.time.Period
 import java.time.temporal.TemporalAmount
-
 
 class TestExtension : WordSpec({
     "Config.extract" should {
@@ -51,21 +54,21 @@ class TestExtension : WordSpec({
             val memorySize = "100KiB"
             val config = ConfigFactory.parseString("""value = $memorySize""")
             config.extract<ConfigMemorySize>("value") shouldBe
-                    ConfigMemorySize.ofBytes(100 * 1024)
+                ConfigMemorySize.ofBytes(100 * 1024)
         }
 
         "return Duration" {
             val duration = "60minutes"
             val config = ConfigFactory.parseString("""value = $duration""")
             config.extract<Duration>("value") shouldBe
-                    Duration.ofMinutes(60)
+                Duration.ofMinutes(60)
         }
 
         "return Period" {
             val period = "10years"
             val config = ConfigFactory.parseString("""value = $period""")
             config.extract<Period>("value") shouldBe
-                    Period.ofYears(10)
+                Period.ofYears(10)
         }
 
         "return Regex" {
@@ -78,18 +81,21 @@ class TestExtension : WordSpec({
             val temporalAmount = "5weeks"
             val config = ConfigFactory.parseString("""value = $temporalAmount""")
             config.extract<TemporalAmount>("value") shouldBe
-                    Period.ofWeeks(5)
+                Period.ofWeeks(5)
         }
 
         "return Config" {
-            val inner = """
-                        |{
-                        | field = value
-                        |}""".trimMargin()
+            val inner =
+                """
+                |{
+                | field = value
+                |}""".trimMargin()
             val config = ConfigFactory.parseString(
-                    """nest = $inner""")
+                """nest = $inner"""
+            )
             config.extract<Config>(
-                    "nest") shouldBe ConfigFactory.parseString(inner)
+                "nest"
+            ) shouldBe ConfigFactory.parseString(inner)
         }
 
         "return ConfigValue" {
@@ -179,12 +185,14 @@ class TestExtension : WordSpec({
         }
 
         "return Config" {
-            val inner = """
-                        |{
-                        | field = value
-                        |}""".trimMargin()
+            val inner =
+                """
+                |{
+                | field = value
+                |}""".trimMargin()
             val config = ConfigFactory.parseString(
-                    """nest = $inner""")
+                """nest = $inner"""
+            )
             val nest: Config by config
             nest shouldBe ConfigFactory.parseString(inner)
         }

@@ -4,12 +4,12 @@ import com.typesafe.config.Config
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
-
 class TestExtensibleTypes : WordSpec({
     registerCustomType(ColorCustomType)
     "Config.extract<Color>" should {
         "return Color" {
-            val config = """
+            val config =
+                """
                 key = "#FF3389"
                 """.toConfig()
             val color = config.extract<Color>("key")
@@ -34,7 +34,7 @@ data class Color(val red: Int, val green: Int, val blue: Int) {
         private val regex = Regex("#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})")
         fun parse(input: String): Color {
             val match = regex.matchEntire(input)
-                    ?: throw IllegalArgumentException("Input $input not parseable as a color.")
+                ?: throw IllegalArgumentException("Input $input not parseable as a color.")
 
             val r = match.groupValues[1].toInt(16)
             val g = match.groupValues[2].toInt(16)
@@ -62,5 +62,3 @@ object ColorCustomType : CustomType {
         return (obj as Color).format().toConfig(name)
     }
 }
-
-

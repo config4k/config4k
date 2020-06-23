@@ -28,7 +28,8 @@ inline fun <reified T> Config.extract(path: String): T {
         result as T
     } catch (e: Exception) {
         throw result?.let { e } ?: ConfigException.BadPath(
-                path, "take a look at your config")
+            path, "take a look at your config"
+        )
     }
 }
 
@@ -64,8 +65,8 @@ inline operator fun <R, reified T> Config.getValue(thisRef: R, property: KProper
         result as T
     } catch (e: Exception) {
         throw result
-                ?.let { e }
-                ?: ConfigException.BadPath(path, "take a look at your config")
+            ?.let { e }
+            ?: ConfigException.BadPath(path, "take a look at your config")
     }
 }
 
@@ -100,7 +101,7 @@ fun Any.toConfig(name: String): Config {
                     it.value?.toConfigValue()?.unwrapped()
                 }
                 mapOf(name to map)
-            }else{
+            } else {
                 val list = this.map { (key, value) ->
                     MapEntry(key, value).toConfigValue()
                 }

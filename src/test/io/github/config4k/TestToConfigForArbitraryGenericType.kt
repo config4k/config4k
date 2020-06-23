@@ -24,8 +24,10 @@ class TestToConfigForArbitraryGenericType : WordSpec({
 
         "return Config having TwoPetPerson<Snake<Mouse>, Cat>" {
             val person = TwoPetPerson("foo", 20, Snake(20, Mouse("Joe")), Cat(7)).toConfig("person")
-            person.extract<TwoPetPerson<Snake<Mouse>, Cat>>("person") shouldBe TwoPetPerson("foo", 20, Snake(20, Mouse("Joe")),
-                    Cat(7))
+            person.extract<TwoPetPerson<Snake<Mouse>, Cat>>("person") shouldBe TwoPetPerson(
+                "foo", 20, Snake(20, Mouse("Joe")),
+                Cat(7)
+            )
         }
     }
 

@@ -3,11 +3,11 @@ package io.github.config4k
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
 
-
 class TestArbitraryGenericType : WordSpec({
     "Config.extract<PetPerson<Dog>>" should {
         "return PetPerson" {
-            val config = """
+            val config =
+                """
                 key = {
                   name = "foo"
                   age = 20
@@ -22,7 +22,8 @@ class TestArbitraryGenericType : WordSpec({
 
     "Config.extract<PetPerson<Yeti>>" should {
         "return PetPerson" {
-            val config = """
+            val config =
+                """
                 key = {
                   name = "foo"
                   age = 20
@@ -35,7 +36,8 @@ class TestArbitraryGenericType : WordSpec({
 
     "Config.extract<TwoPetPerson<Dog, Cat>>" should {
         "return TwoPetPerson" {
-            val config = """
+            val config =
+                """
                 key = {
                   name = "foo"
                   age = 20
@@ -53,7 +55,8 @@ class TestArbitraryGenericType : WordSpec({
 
     "Config.extract<TwoPetSwapPerson<Dog, Cat>>" should {
         "return TwoPetSwapPerson" {
-            val config = """
+            val config =
+                """
                 key = {
                   name = "baz"
                   age = 2
@@ -71,7 +74,8 @@ class TestArbitraryGenericType : WordSpec({
 
     "Config.extract<TwoPetPerson<Snake<Mouse>, Cat>>" should {
         "return TwoPetPerson" {
-            val config = """
+            val config =
+                """
                 key = {
                   name = "foo"
                   age = 20
@@ -92,7 +96,8 @@ class TestArbitraryGenericType : WordSpec({
 
     "Config.extract<PetPerson<HungrySnake<Mouse>>>" should {
         "return PetPerson" {
-            val config = """
+            val config =
+                """
                 key = {
                   name = "bar"
                   age = 22

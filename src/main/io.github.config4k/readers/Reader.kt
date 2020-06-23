@@ -11,8 +11,7 @@ import com.typesafe.config.Config
  * @param T support type
  */
 internal open class Reader<out T>(read: (Config, String) -> T) {
-    val getValue: (Config, String) -> T? = value@{
-        config, path ->
+    val getValue: (Config, String) -> T? = value@{ config, path ->
         if (config.hasPath(path)) return@value read(config, path)
         /*
         If path not present, try converting it to hyphenated case and try again. This is the
