@@ -1,6 +1,10 @@
 # Config4k
 
-[![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=master)](https://travis-ci.org/config4k/config4k) [![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k) [![codebeat badge](https://codebeat.co/badges/4e9682a1-cdbb-4e1f-804b-a2d801381942)](https://codebeat.co/projects/github-com-config4k-config4k) [![kotlin](https://img.shields.io/badge/kotlin-1.3.10-pink.svg)]() [ ![Download](https://api.bintray.com/packages/config4k/config4k/config4k/images/download.svg) ](https://bintray.com/config4k/config4k/config4k/_latestVersion)
+[![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=master)](https://travis-ci.org/config4k/config4k)
+[![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k)
+[![codebeat badge](https://codebeat.co/badges/4e9682a1-cdbb-4e1f-804b-a2d801381942)](https://codebeat.co/projects/github-com-config4k-config4k)
+[![kotlin](https://img.shields.io/badge/kotlin-1.3.10-pink.svg)]()
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.config4k/config4k.svg?label=Download&color=blue)](https://search.maven.org/search?q=a:config4k%20AND%20g:io.github.config4k)
 
 _**Config** for **K**otlin._
 
@@ -27,7 +31,7 @@ Gradle:
 
 ```groovy
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 
@@ -216,6 +220,10 @@ Property delegation, `extract` and `toConfig` support these types:
 - Data classes
 
 See [SelectReader.kt](src/main/io.github.config4k/readers/SelectReader.kt) for the exhaustive list.
+
+## Snapshots
+
+All **snapshot** artifacts are available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/io/github/config4k/config4k/).
 
 ## Contribute
 Would you like to contribute to Config4k?  
