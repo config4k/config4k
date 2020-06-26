@@ -2,9 +2,9 @@ package io.github.config4k
 
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
-import io.kotlintest.shouldBe
-import io.kotlintest.shouldThrow
-import io.kotlintest.specs.WordSpec
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.shouldBe
 
 class TestConfig4kException : WordSpec({
     "Config.extract" should {

@@ -1,8 +1,8 @@
 package io.github.config4k
 
-import io.kotlintest.shouldBe
-import io.kotlintest.shouldThrow
-import io.kotlintest.specs.WordSpec
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.shouldBe
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.javaType

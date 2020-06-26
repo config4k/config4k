@@ -26,7 +26,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     api("com.typesafe", "config", "1.3.3")
-    testImplementation("io.kotlintest", "kotlintest-runner-junit5", "3.1.8")
+    testImplementation("io.kotest", "kotest-runner-junit5-jvm", "4.1.0")
     testImplementation("com.atlassian.commonmark", "commonmark", "0.13.1")
     testImplementation(kotlin("script-util"))
     testImplementation(kotlin("compiler-embeddable"))
@@ -41,6 +41,14 @@ val dokkaJar by tasks.creating(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     classifier = "javadoc"
     from(tasks.dokka)
+}
+
+tasks.compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 tasks.jacocoTestReport {

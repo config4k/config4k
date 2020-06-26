@@ -1,9 +1,9 @@
 package io.github.config4k
 
-import io.kotlintest.matchers.haveSize
-import io.kotlintest.should
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.WordSpec
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.collections.haveSize
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
 import java.time.Duration
 import java.util.Arrays
 

@@ -1,8 +1,8 @@
 package io.github.config4k
 
 import com.typesafe.config.ConfigFactory
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.WordSpec
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.shouldBe
 
 class TestNullable : WordSpec({
     "Config.extract<T?>" should {
