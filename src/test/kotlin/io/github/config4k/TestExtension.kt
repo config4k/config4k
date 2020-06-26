@@ -5,9 +5,10 @@ import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigMemorySize
 import com.typesafe.config.ConfigValue
 import com.typesafe.config.ConfigValueType
-import io.kotlintest.matchers.exactly
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.WordSpec
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.doubles.shouldBeExactly
+import io.kotest.matchers.floats.shouldBeExactly
+import io.kotest.matchers.shouldBe
 import java.time.Duration
 import java.time.Period
 import java.time.temporal.TemporalAmount
@@ -35,13 +36,13 @@ class TestExtension : WordSpec({
         "return Double value" {
             val num = 0.1
             val config = ConfigFactory.parseString("""value = $num""")
-            config.extract<Double>("value") shouldBe exactly(num)
+            config.extract<Double>("value") shouldBeExactly(num)
         }
 
         "return Float value" {
             val num = 0.1f
             val config = ConfigFactory.parseString("""value = $num""")
-            config.extract<Float>("value") shouldBe exactly(num)
+            config.extract<Float>("value") shouldBeExactly(num)
         }
 
         "return Long value" {

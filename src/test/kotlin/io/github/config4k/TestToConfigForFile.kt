@@ -1,7 +1,7 @@
 package io.github.config4k
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.WordSpec
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.shouldBe
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths

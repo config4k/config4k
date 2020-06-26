@@ -1,9 +1,9 @@
 package io.github.config4k
 
-import io.kotlintest.data.forall
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
-import io.kotlintest.tables.Row3
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.data.Row3
+import io.kotest.data.forAll
+import io.kotest.matchers.shouldBe
 import org.commonmark.node.AbstractVisitor
 import org.commonmark.node.FencedCodeBlock
 import org.commonmark.parser.Parser
@@ -14,7 +14,7 @@ import java.io.PrintStream
 
 class TestDocumentedExamples : StringSpec({
     "examples should compile and run with expected output" {
-        forall(*examples()) { _, script, expected ->
+        forAll(*examples()) { _, script, expected ->
             val output = outputOf {
                 engine.eval(
                     """
