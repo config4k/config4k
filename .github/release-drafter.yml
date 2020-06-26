@@ -5,6 +5,9 @@ categories:
   - title: ':bug: Bug Fixes'
     labels:
       - 'bug'
+  - title: ':toolbox: Maintenance'
+    labels:
+      - 'maintenance'
   - title: ':dart: Dependencies'
     labels:
       - 'dependencies'
