@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=master)](https://travis-ci.org/config4k/config4k)
 [![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k)
+[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.config4k/config4k.svg?label=latest&color=blue)](https://search.maven.org/search?q=a:config4k%20AND%20g:io.github.config4k)
 [![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.config4k/config4k?label=snapshot&server=https%3A%2F%2Foss.sonatype.org)](https://oss.sonatype.org/content/repositories/snapshots/io/github/config4k/config4k/)
 [![javadoc](https://javadoc.io/badge2/io.github.config4k/config4k/javadoc.svg)](https://javadoc.io/doc/io.github.config4k/config4k)
