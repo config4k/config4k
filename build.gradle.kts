@@ -13,7 +13,7 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm") version "1.3.10"
+    kotlin("jvm") version "1.3.72"
     id("org.jetbrains.dokka") version "0.10.1"
     id("org.jlleitschuh.gradle.ktlint") version "8.2.0"
     id("io.codearte.nexus-staging") version "0.21.2"
@@ -30,6 +30,7 @@ dependencies {
     testImplementation("com.atlassian.commonmark", "commonmark", "0.13.1")
     testImplementation(kotlin("script-util"))
     testImplementation(kotlin("compiler-embeddable"))
+    testImplementation(kotlin("scripting-compiler-embeddable"))
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
