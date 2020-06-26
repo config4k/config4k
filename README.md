@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=master)](https://travis-ci.org/config4k/config4k)
 [![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k)
-[![codebeat badge](https://codebeat.co/badges/4e9682a1-cdbb-4e1f-804b-a2d801381942)](https://codebeat.co/projects/github-com-config4k-config4k)
-[![kotlin](https://img.shields.io/badge/kotlin-1.3.10-pink.svg)]()
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.config4k/config4k.svg?label=Download&color=blue)](https://search.maven.org/search?q=a:config4k%20AND%20g:io.github.config4k)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.config4k/config4k.svg?label=latest&color=blue)](https://search.maven.org/search?q=a:config4k%20AND%20g:io.github.config4k)
+[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.config4k/config4k?label=snapshot&server=https%3A%2F%2Foss.sonatype.org)](https://oss.sonatype.org/content/repositories/snapshots/io/github/config4k/config4k/)
+[![GitHub](https://img.shields.io/github/license/config4k/config4k)](https://github.com/config4k/config4k/blob/master/LICENSE)
 
 _**Config** for **K**otlin._
 
