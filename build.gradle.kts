@@ -43,12 +43,20 @@ val dokkaJar by tasks.creating(Jar::class) {
     from(tasks.dokka)
 }
 
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+        html.destination = file("$buildDir/jacocoHtml")
+    }
+    dependsOn(tasks.test)
+}
+
 tasks.test {
     useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed")
     }
-    finalizedBy("jacocoTestReport")
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.dokka {
