@@ -22,9 +22,6 @@ plugins {
     jacoco
 }
 
-kotlin.sourceSets["main"].kotlin.srcDir("src/main")
-kotlin.sourceSets["test"].kotlin.srcDir("src/test")
-
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
