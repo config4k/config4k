@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/config4k/config4k/branch/master/graph/badge.svg)](https://codecov.io/gh/config4k/config4k)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.config4k/config4k.svg?label=latest&color=blue)](https://search.maven.org/search?q=a:config4k%20AND%20g:io.github.config4k)
 [![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.config4k/config4k?label=snapshot&server=https%3A%2F%2Foss.sonatype.org)](https://oss.sonatype.org/content/repositories/snapshots/io/github/config4k/config4k/)
+[![javadoc](https://javadoc.io/badge2/io.github.config4k/config4k/javadoc.svg)](https://javadoc.io/doc/io.github.config4k/config4k)
 [![GitHub](https://img.shields.io/github/license/config4k/config4k)](https://github.com/config4k/config4k/blob/master/LICENSE)
 
 _**Config** for **K**otlin._
