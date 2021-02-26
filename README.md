@@ -92,7 +92,7 @@ val map: Map<Int, String> = config.extract<Map<Int, String>>("map")
 println(map[5] == "foo") // true
 println(map[6] == "bar") // true
 ```
-Test Class: [TestMap.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestMap.kt)
+Test Class: [TestMap.kt](src/test/kotlin/io/github/config4k/TestMap.kt)
 #### Data Classes
 Config4k has no option to use different names between code and config file.
 ```kotlin
@@ -107,7 +107,7 @@ val person: Person = config.extract<Person>("key")
 println(person.name == "foo") // true
 println(person.age == 20) // true
 ```
-For more details, please see [TestArbitraryType.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestArbitraryType.kt)
+For more details, please see [TestArbitraryType.kt](src/test/kotlin/io/github/config4k/TestArbitraryType.kt)
 #### Nullable
 Using `extract<T?>` is the better way than `Config.hasPath()`.
 `extract<T?>` returns `T` when the path exists and `null` when it does not exist.
@@ -118,7 +118,7 @@ val foo = config.extract<Int?>("foo")
 println(key == 10) // true
 println(foo == null) // true
 ```
-Test Class: [TestNullable.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestNullable.kt)
+Test Class: [TestNullable.kt](src/test/kotlin/io/github/config4k/TestNullable.kt)
 #### Enum
 Config4k also supports Enum. Enum is converted to String of its name in the config file.
 ```kotlin
@@ -132,11 +132,11 @@ val config = ConfigFactory.parseString("""key = SMALL""")
 val small = config.extract<Size>("key")
 println(small == Size.SMALL) // true
 ```
-Test Class: [TestEnum.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestEnum.kt)
+Test Class: [TestEnum.kt](src/test/kotlin/io/github/config4k/TestEnum.kt)
 ### Serialization
 `Any.toConfig` converts the receiver object to `Config`.
 #### String
-You can use [ConfigValue.render()](https://typesafehub.github.io/config/latest/api/com/typesafe/config/ConfigValue.html#render--) to serialize `Config`. Config4k helps getting `Config` of the class you want to serialize.
+You can use [ConfigValue.render()](https://lightbend.github.io/config/latest/api/com/typesafe/config/ConfigValue.html#render--) to serialize `Config`. Config4k helps getting `Config` of the class you want to serialize.
 ```kotlin
 data class Person(val name: String, val age: Int)
 val person = Person("foo", 20).toConfig("person")
@@ -154,7 +154,7 @@ Output:
     }
 }
 ```
-Test Class: [TestToConfigForArbitraryType.kt](https://github.com/config4k/config4k/blob/master/src/test/io/github/config4k/TestToConfigForArbitraryType.kt)
+Test Class: [TestToConfigForArbitraryType.kt](src/test/kotlin/io/github/config4k/TestToConfigForArbitraryType.kt)
 #### ConfigRenderOptions
 Typesafe Config's class `ConfigRenderOptions` is the argument of `ConfigValue.render`.
 ```kotlin
@@ -221,7 +221,7 @@ Property delegation, `extract` and `toConfig` support these types:
 - Enum
 - Data classes
 
-See [SelectReader.kt](src/main/io.github.config4k/readers/SelectReader.kt) for the exhaustive list.
+See [SelectReader.kt](src/main/kotlin/io/github/config4k/readers/SelectReader.kt) for the exhaustive list.
 
 ## Snapshots
 
@@ -229,4 +229,4 @@ All **snapshot** artifacts are available in the [Sonatype snapshots repository](
 
 ## Contribute
 Would you like to contribute to Config4k?  
-Take a look at [CONTRIBUTING.md](https://github.com/config4k/config4k/blob/master/CONTRIBUTING.md)
+Take a look at [CONTRIBUTING.md](CONTRIBUTING.md)
