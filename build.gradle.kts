@@ -1,5 +1,3 @@
-import org.jetbrains.dokka.DokkaDefaults.jdkVersion
-import org.jetbrains.dokka.gradle.DokkaTask
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.time.Duration
 
