@@ -13,8 +13,8 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm") version "1.3.72"
-    id("org.jetbrains.dokka") version "0.10.1"
+    kotlin("jvm") version "1.4.31"
+    id("org.jetbrains.dokka") version "1.4.20"
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
     id("io.codearte.nexus-staging") version "0.21.2"
     id("de.marcphilipp.nexus-publish") version "0.4.0"
@@ -26,8 +26,8 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     api("com.typesafe", "config", "1.3.3")
-    testImplementation("io.kotest", "kotest-runner-junit5-jvm", "4.1.0")
-    testImplementation("com.atlassian.commonmark", "commonmark", "0.13.1")
+    testImplementation("io.kotest", "kotest-runner-junit5-jvm", "4.4.3")
+    testImplementation("org.commonmark", "commonmark", "0.17.1")
     testImplementation(kotlin("script-util"))
     testImplementation(kotlin("compiler-embeddable"))
     testImplementation(kotlin("scripting-compiler-embeddable"))
@@ -41,7 +41,7 @@ val sourcesJar by tasks.creating(Jar::class) {
 val dokkaJar by tasks.creating(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     archiveClassifier.set("javadoc")
-    from(tasks.dokka)
+    from(tasks.dokkaJavadoc)
 }
 
 tasks.compileKotlin {
@@ -66,14 +66,6 @@ tasks.test {
         events("passed", "skipped", "failed")
     }
     finalizedBy(tasks.jacocoTestReport)
-}
-
-tasks.dokka {
-    outputFormat = "javadoc"
-    outputDirectory = "$buildDir/javadoc"
-    configuration {
-        jdkVersion = 8
-    }
 }
 
 tasks.wrapper {
