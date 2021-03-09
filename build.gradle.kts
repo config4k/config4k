@@ -2,7 +2,7 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.time.Duration
 
 group = "io.github.config4k"
-version = "0.6.0-SNAPSHOT"
+version = "0.5.0-SNAPSHOT"
 
 val ossrhUsername: String? by project
 val ossrhPassword: String? by project
