@@ -21,4 +21,4 @@ bundle install
 rm -rf _site/ && bundle exec jekyll serve -H 0.0.0.0 --incremental
 ```
 
-Open [http://localhost:4000/config4k](http://localhost:4000/config4k) in your browser.
+Open [http://localhost:4000/config4k](http://localhost:4000/config4k/) in your browser.

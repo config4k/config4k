@@ -21,11 +21,12 @@ import kotlin.reflect.full.primaryConstructor
  * As this function is an inline function, shown stacktrace is not true.
  *
  * @param path see [com.typesafe.config.Config]
+ * @param defaultValue will be return if Config doesn't contain value by path
  */
-public inline fun <reified T> Config.extract(path: String): T {
+public inline fun <reified T> Config.extract(path: String, defaultValue: T? = null): T {
     val genericType = object : TypeReference<T>() {}.genericType()
 
-    val result = SelectReader.getReader(ClassContainer(T::class, genericType))(this, path)
+    val result = SelectReader.getReader(ClassContainer(T::class, genericType))(this, path) ?: defaultValue
 
     return try {
         result as T
