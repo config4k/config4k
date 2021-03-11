@@ -28,6 +28,13 @@ class TestConfig4kException : WordSpec({
                 config.extract<Size>("key")
             }.message shouldBe "expected : [SMALL, MEDIUM, LARGE], actually : foo"
         }
+
+        "throw ConfigException.BadPath if default value is null with not nullable type" {
+            val config = ConfigFactory.empty()
+            shouldThrow<ConfigException.BadPath> {
+                config.extract<Int>("value", null)
+            }.message shouldBe "Invalid path 'value': take a look at your config"
+        }
     }
 })
 

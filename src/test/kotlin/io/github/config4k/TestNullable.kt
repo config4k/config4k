@@ -16,6 +16,11 @@ class TestNullable : WordSpec({
             val config = ConfigFactory.empty()
             config.extract<Int?>("key") shouldBe null
         }
+
+        "return null with default value" {
+            val config = ConfigFactory.empty()
+            config.extract<Int?>("key", null) shouldBe null
+        }
     }
 
     "Any.toConfig" should {
