@@ -13,6 +13,7 @@ fun main() {
     DocExamples.serializeString()
     DocExamples.serializeHocon()
     DocExamples.serializeWithoutComments()
+    DocExamples.extractDefaultValues()
 }
 
 object DocExamples {
@@ -148,6 +149,14 @@ object DocExamples {
             .setJson(false)
             .setOriginComments(false)
         println(person.root().render(options))
+        // end-snippet
+    }
+
+    fun extractDefaultValues() {
+        // begin-snippet: deserialization-default-values
+        val config = ConfigFactory.parseString("""key = 10""")
+        val key = config.extract("unknown", 20)
+        println(key) // 20
         // end-snippet
     }
 }
