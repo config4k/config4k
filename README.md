@@ -119,6 +119,17 @@ println(key == 10) // true
 println(foo == null) // true
 ```
 Test Class: [TestNullable.kt](src/test/kotlin/io/github/config4k/TestNullable.kt)
+
+#### Default values
+Config4k also default values.
+`extract<T, T?>` returns `T` when the path exists and default value converted to `T` when it does not exist.
+```kotlin
+val config = ConfigFactory.parseString("""key = 10""")
+val foo = config.extract("foo", 11)
+println(foo == 11) // true
+```
+Test Class: [TestExtension.kt](src/test/kotlin/io/github/config4k/TestExtension.kt)
+
 #### Enum
 Config4k also supports Enum. Enum is converted to String of its name in the config file.
 ```kotlin
