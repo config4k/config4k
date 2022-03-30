@@ -4,6 +4,7 @@ import com.typesafe.config.ConfigValue
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
+import kotlin.reflect.jvm.isAccessible
 
 internal fun getConfigMap(
     receiver: Any,
@@ -12,7 +13,8 @@ internal fun getConfigMap(
     clazz.primaryConstructor!!.parameters.mapNotNull {
         val parameterName = it.name!!
         clazz.memberProperties
-            .find { it.name == parameterName }!!
+            .find { member -> member.name == parameterName }!!
+            .apply { isAccessible = true }
             .get(receiver)
             ?.let { parameterValue ->
                 parameterName to parameterValue.toConfigValue()
