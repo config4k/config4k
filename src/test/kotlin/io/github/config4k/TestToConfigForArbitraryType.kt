@@ -39,6 +39,15 @@ class TestToConfigForArbitraryType : WordSpec({
             person.extract<Size>("size") shouldBe Size.SMALL
         }
     }
+
+    "PrivatePerson.toConfig" should {
+        "return Config having Person" {
+            val person = PrivatePerson("foo", 20).toConfig("person")
+            person.extract<PrivatePerson>("person") shouldBe PrivatePerson("foo", 20)
+        }
+    }
 })
 
 data class NullableName(val name: String?)
+
+private data class PrivatePerson(val name: String, val age: Int? = 10)
