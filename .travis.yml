@@ -64,5 +64,5 @@ deploy:
       -PossrhPassword="$OSS_PASSWORD"
     skip_cleanup: true
     on:
-      branch: master
+      branch: main
       tags: false
