@@ -1,0 +1,52 @@
+name: Check
+
+on:
+  pull_request:
+
+  push:
+    branches:
+      - main # Check branch after merge
+
+concurrency:
+  # Only run once for latest commit per ref and cancel other (previous) runs.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Run Gradle Wrapper Validation to verify the wrapper's checksum
+  gradle_validation:
+    name: Gradle Wrapper
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
+          fetch-depth: 0
+          ref: ${{ inputs.ref }}
+
+      - name: Gradle Wrapper Validation
+        uses: gradle/wrapper-validation-action@v1
+
+  check:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
+          fetch-depth: 0
+          ref: ${{ inputs.ref }}
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Check
+        run: ./gradlew clean check
