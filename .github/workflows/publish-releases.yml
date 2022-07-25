@@ -1,16 +1,8 @@
-name: Check
+name: Publish Releases
 
 on:
-  pull_request:
-
   push:
-    branches:
-      - main # Check branch after merge
-
-concurrency:
-  # Only run once for latest commit per ref and cancel other (previous) runs.
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+    tags: ["**"]
 
 jobs:
   # Run Gradle Wrapper Validation to verify the wrapper's checksum
@@ -28,8 +20,8 @@ jobs:
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1
 
-  check:
-    name: Build
+  publish-artifacts:
+    name: Publish Artifacts
     runs-on: ubuntu-latest
     needs: gradle_validation
     steps:
@@ -46,8 +38,19 @@ jobs:
           java-version: '8'
           check-latest: true
           cache: 'gradle'
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
-      - name: Check
-        run: ./gradlew clean check --no-daemon
+      - name: Publish Snapshots
+        run: >-
+          ./gradlew --no-daemon publishToSonatype closeAndReleaseSonatypeStagingRepository -x test
+          -Psigning.gnupg.keyName=$GPG_KEY_ID
+          -Psigning.gnupg.passphrase="$GPG_PASSPHRASE"
+          -PsonatypeUsername="$OSSRH_USERNAME"
+          -PsonatypePassword="$OSSRH_TOKEN"
+        env:
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
 
-      - uses: codecov/codecov-action@v3

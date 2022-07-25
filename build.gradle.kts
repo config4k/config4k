@@ -4,9 +4,6 @@ import java.time.Duration
 group = "io.github.config4k"
 version = "0.5.0-SNAPSHOT"
 
-val ossrhUsername: String? by project
-val ossrhPassword: String? by project
-
 repositories {
     mavenCentral()
     jcenter()
@@ -16,8 +13,8 @@ plugins {
     kotlin("jvm") version "1.4.31"
     id("org.jetbrains.dokka") version "1.4.20"
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
-    id("io.codearte.nexus-staging") version "0.21.2"
-    id("de.marcphilipp.nexus-publish") version "0.4.0"
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    `maven-publish`
     signing
     jacoco
 }
@@ -73,18 +70,11 @@ tasks.wrapper {
 }
 
 nexusPublishing {
+    packageGroup.set(project.group.toString())
+    clientTimeout.set(Duration.ofMinutes(60))
     repositories {
         sonatype()
     }
-    clientTimeout.set(Duration.parse("PT10M")) // 10 minutes
-}
-
-nexusStaging {
-    packageGroup = project.group.toString()
-    username = ossrhUsername
-    password = ossrhPassword
-    numberOfRetries = 360 // 1 hour if 10 seconds delay
-    delayBetweenRetriesInMillis = 10000 // 10 seconds
 }
 
 ktlint {
@@ -135,5 +125,6 @@ publishing {
 }
 
 signing {
+    useGpgCmd()
     sign(publishing.publications["maven"])
 }
