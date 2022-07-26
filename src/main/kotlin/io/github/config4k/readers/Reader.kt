@@ -28,6 +28,6 @@ internal open class Reader<out T>(read: (Config, String) -> T) {
             "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])"
                 .toRegex()
                 .replace(camelCase, "-")
-                .toLowerCase()
+                .lowercase()
     }
 }
