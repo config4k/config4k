@@ -9,10 +9,10 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm") version "1.7.10"
-    id("org.jetbrains.dokka") version "1.4.20"
-    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.nexus.publish)
     `maven-publish`
     signing
     jacoco
@@ -21,9 +21,9 @@ plugins {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    api("com.typesafe", "config", "1.3.3")
-    testImplementation("io.kotest", "kotest-runner-junit5-jvm", "4.4.3")
-    testImplementation("org.commonmark", "commonmark", "0.17.1")
+    api(libs.typesafe.config)
+    testImplementation(libs.kotest)
+    testImplementation(libs.commonmark)
     testImplementation(kotlin("script-util"))
     testImplementation(kotlin("compiler-embeddable"))
     testImplementation(kotlin("scripting-compiler-embeddable"))
@@ -73,7 +73,7 @@ nexusPublishing {
 }
 
 ktlint {
-    version.set("0.45.2")
+    version.set(libs.versions.ktlint.get())
     outputToConsole.set(true)
     reporters {
         reporter(ReporterType.CHECKSTYLE)
@@ -98,7 +98,7 @@ publishing {
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
                 developers {
