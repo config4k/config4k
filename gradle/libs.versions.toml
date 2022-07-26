@@ -4,7 +4,7 @@ ktlint = "0.45.2"
 gradle-ktlint = "10.3.0"
 dokka = "1.4.20"
 nexus-publish = "1.1.0"
-typesafe-config = "1.3.3"
+typesafe-config = "1.4.2"
 kotest = "4.4.3"
 commonmark = "0.17.1"
 
