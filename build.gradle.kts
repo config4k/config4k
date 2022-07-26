@@ -10,7 +10,7 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm") version "1.4.31"
+    kotlin("jvm") version "1.7.10"
     id("org.jetbrains.dokka") version "1.4.20"
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
