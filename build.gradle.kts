@@ -65,10 +65,6 @@ tasks.test {
     finalizedBy(tasks.jacocoTestReport)
 }
 
-tasks.wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-}
-
 nexusPublishing {
     packageGroup.set(project.group.toString())
     clientTimeout.set(Duration.ofMinutes(60))
