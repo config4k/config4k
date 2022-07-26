@@ -36,13 +36,13 @@ class TestExtension : WordSpec({
         "return Double value" {
             val num = 0.1
             val config = ConfigFactory.parseString("""value = $num""")
-            config.extract<Double>("value") shouldBeExactly(num)
+            config.extract<Double>("value") shouldBeExactly (num)
         }
 
         "return Float value" {
             val num = 0.1f
             val config = ConfigFactory.parseString("""value = $num""")
-            config.extract<Float>("value") shouldBeExactly(num)
+            config.extract<Float>("value") shouldBeExactly (num)
         }
 
         "return Long value" {
@@ -90,7 +90,8 @@ class TestExtension : WordSpec({
                 """
                 |{
                 | field = value
-                |}""".trimMargin()
+                |}"""
+                    .trimMargin()
             val config = ConfigFactory.parseString(
                 """nest = $inner"""
             )
@@ -190,7 +191,8 @@ class TestExtension : WordSpec({
                 """
                 |{
                 | field = value
-                |}""".trimMargin()
+                |}"""
+                    .trimMargin()
             val config = ConfigFactory.parseString(
                 """nest = $inner"""
             )
