@@ -6,13 +6,12 @@ version = "0.5.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 plugins {
     kotlin("jvm") version "1.7.10"
     id("org.jetbrains.dokka") version "1.4.20"
-    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     `maven-publish`
     signing
@@ -51,8 +50,8 @@ tasks.compileTestKotlin {
 
 tasks.jacocoTestReport {
     reports {
-        xml.isEnabled = true
-        html.destination = file("$buildDir/jacocoHtml")
+        xml.required.set(true) // For Codecov
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
     }
     dependsOn(tasks.test)
 }
@@ -74,7 +73,7 @@ nexusPublishing {
 }
 
 ktlint {
-    version.set("0.37.2")
+    version.set("0.45.2")
     outputToConsole.set(true)
     reporters {
         reporter(ReporterType.CHECKSTYLE)
