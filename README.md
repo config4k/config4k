@@ -1,6 +1,6 @@
 # Config4k
 
-[![Build Status](https://travis-ci.org/config4k/config4k.svg?branch=main)](https://travis-ci.org/config4k/config4k)
+[![Build Status](https://github.com/config4k/config4k/actions/workflows/build-test.yml/badge.svg)](https://github.com/config4k/config4k/actions/workflows/build-test.yml)
 [![codecov](https://codecov.io/gh/config4k/config4k/branch/main/graph/badge.svg)](https://codecov.io/gh/config4k/config4k)
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.config4k/config4k.svg?label=latest&color=blue)](https://search.maven.org/search?q=a:config4k%20AND%20g:io.github.config4k)
