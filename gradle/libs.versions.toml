@@ -5,7 +5,7 @@ gradle-ktlint = "10.3.0"
 dokka = "1.7.10"
 nexus-publish = "1.1.0"
 typesafe-config = "1.4.2"
-kotest = "5.4.0"
+kotest = "5.4.1"
 commonmark = "0.19.0"
 
 [libraries]
