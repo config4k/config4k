@@ -10,6 +10,7 @@ jobs:
   gradle-validation:
     name: Gradle Wrapper
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'config4k'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,6 +25,7 @@ jobs:
   publish-artifacts:
     name: Publish Artifacts
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'config4k'
     needs: gradle-validation
     steps:
       - name: Checkout
@@ -58,6 +60,7 @@ jobs:
   publish-docs:
     name: Publish documentation
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'config4k'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
