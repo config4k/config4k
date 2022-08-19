@@ -3,6 +3,9 @@
   "extends": [
     "config:base"
   ],
+  "ruby": {
+    "enabled": false
+  },
   "labels": [
     "dependencies"
   ],
