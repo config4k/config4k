@@ -1,6 +1,0 @@
-{
-  "name": "Config4k",
-  "tagline": "A Kotlin wrapper for Typesafe Config",
-  "body": "# Config4k\r\nA Typesafe Config wrapper for Kotlin.\r\n",
-  "note": "Don't delete this file! It's used internally to help with page regeneration."
-}
