@@ -70,7 +70,7 @@ jobs:
           ref: ${{ inputs.ref }}
 
       # Use GitHub Actions' cache to shorten build times and decrease load on servers
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: docs/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
