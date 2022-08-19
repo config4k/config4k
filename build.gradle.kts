@@ -23,10 +23,6 @@ dependencies {
     implementation(kotlin("reflect"))
     api(libs.typesafe.config)
     testImplementation(libs.kotest)
-    testImplementation(libs.commonmark)
-    testImplementation(kotlin("script-util"))
-    testImplementation(kotlin("compiler-embeddable"))
-    testImplementation(kotlin("scripting-compiler-embeddable"))
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
