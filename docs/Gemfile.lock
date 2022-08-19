@@ -71,7 +71,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  http_parser.rb (~> 0.6.0)
+  http_parser.rb (~> 0.8.0)
   jekyll (~> 4.2.2)
   jekyll-include_snippet (~> 0.2.0)
   just-the-docs (~> 0.3.3)
