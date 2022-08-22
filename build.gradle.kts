@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.jgitver)
+    alias(libs.plugins.binary.compatibility.validator)
     `maven-publish`
     signing
     jacoco
