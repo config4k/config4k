@@ -1,0 +1,53 @@
+public final class io/github/config4k/ClassContainer {
+	public fun <init> (Lkotlin/reflect/KClass;Ljava/util/Map;)V
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lkotlin/reflect/KClass;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Lkotlin/reflect/KClass;Ljava/util/Map;)Lio/github/config4k/ClassContainer;
+	public static synthetic fun copy$default (Lio/github/config4k/ClassContainer;Lkotlin/reflect/KClass;Ljava/util/Map;ILjava/lang/Object;)Lio/github/config4k/ClassContainer;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMapperClass ()Lkotlin/reflect/KClass;
+	public final fun getTypeArguments ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/config4k/Config4kException {
+	public fun <init> ()V
+}
+
+public final class io/github/config4k/Config4kException$UnSupportedType : java/lang/RuntimeException {
+	public fun <init> (Lkotlin/reflect/KClass;)V
+}
+
+public final class io/github/config4k/Config4kException$WrongEnum : java/lang/RuntimeException {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+}
+
+public abstract interface class io/github/config4k/CustomType {
+	public abstract fun parse (Lio/github/config4k/ClassContainer;Lcom/typesafe/config/Config;Ljava/lang/String;)Ljava/lang/Object;
+	public abstract fun testParse (Lio/github/config4k/ClassContainer;)Z
+	public abstract fun testToConfig (Ljava/lang/Object;)Z
+	public abstract fun toConfig (Ljava/lang/Object;Ljava/lang/String;)Lcom/typesafe/config/Config;
+}
+
+public final class io/github/config4k/CustomTypeKt {
+	public static final fun getCustomTypeRegistry ()Ljava/util/List;
+	public static final fun registerCustomType (Lio/github/config4k/CustomType;)V
+}
+
+public final class io/github/config4k/ExtensionKt {
+	public static final fun toConfig (Ljava/lang/Object;Ljava/lang/String;)Lcom/typesafe/config/Config;
+}
+
+public class io/github/config4k/TypeReference {
+	public fun <init> ()V
+	public final fun genericType ()Ljava/util/Map;
+}
+
+public final class io/github/config4k/readers/SelectReader {
+	public static final field INSTANCE Lio/github/config4k/readers/SelectReader;
+	public final fun extractWithoutPath (Lio/github/config4k/ClassContainer;Lcom/typesafe/config/Config;)Ljava/lang/Object;
+	public final fun getReader (Lio/github/config4k/ClassContainer;)Lkotlin/jvm/functions/Function2;
+}
+

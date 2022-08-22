@@ -7,6 +7,7 @@ nexus-publish = "1.1.0"
 typesafe-config = "1.4.2"
 kotest = "5.4.2"
 jgitver = "0.9.1"
+binary-compatibility-validator = "0.11.0"
 
 [libraries]
 typesafe-config = { group = "com.typesafe", name = "config", version.ref = "typesafe-config" }
@@ -18,3 +19,4 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
 jgitver = { id = "fr.brouillard.oss.gradle.jgitver", version.ref = "jgitver" }
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
