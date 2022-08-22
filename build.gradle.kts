@@ -1,8 +1,8 @@
+import fr.brouillard.oss.jgitver.Strategies.MAVEN
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.time.Duration
 
 group = "io.github.config4k"
-version = "0.5.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.jgitver)
     `maven-publish`
     signing
     jacoco
@@ -118,4 +119,9 @@ publishing {
 signing {
     useGpgCmd()
     sign(publishing.publications["maven"])
+}
+
+jgitver {
+    strategy(MAVEN)
+    nonQualifierBranches = "main"
 }
