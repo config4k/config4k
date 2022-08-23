@@ -9,8 +9,8 @@ import kotlin.reflect.KClass
 /**
  * see [io.github.config4k.readers.SelectReader.getReader]
  */
-open class TypeReference<T> {
-    fun genericType(): Map<String, ClassContainer> {
+public open class TypeReference<T> {
+    public fun genericType(): Map<String, ClassContainer> {
         val type: Type =
             (this.javaClass.genericSuperclass as ParameterizedType)
                 .actualTypeArguments[0]
@@ -18,7 +18,7 @@ open class TypeReference<T> {
     }
 }
 
-data class ClassContainer(val mapperClass: KClass<*>, val typeArguments: Map<String, ClassContainer> = emptyMap())
+public data class ClassContainer(val mapperClass: KClass<*>, val typeArguments: Map<String, ClassContainer> = emptyMap())
 
 internal fun getGenericMap(
     type: ParameterizedType,
