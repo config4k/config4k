@@ -40,10 +40,12 @@ val dokkaJar by tasks.creating(Jar::class) {
 
 tasks.compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.allWarningsAsErrors = true
 }
 
 tasks.compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.allWarningsAsErrors = false
 }
 
 tasks.jacocoTestReport {
@@ -60,6 +62,10 @@ tasks.test {
         events("passed", "skipped", "failed")
     }
     finalizedBy(tasks.jacocoTestReport)
+}
+
+kotlin {
+    explicitApi()
 }
 
 nexusPublishing {

@@ -18,14 +18,14 @@ import kotlin.reflect.full.primaryConstructor
  * Called by an inline function [io.github.config4k.Extension],
  * this class is public even though it is just for internal.
  */
-object SelectReader {
+public object SelectReader {
     /**
      * Add new case to support new type.
      *
      * @param clazz a instance got from the given type by reflection
      * @throws Config4kException.UnSupportedType if the passed type is not supported
      */
-    fun getReader(clazz: ClassContainer): (Config, String) -> Any? {
+    public fun getReader(clazz: ClassContainer): (Config, String) -> Any? {
         for (customType in customTypeRegistry) {
             if (customType.testParse(clazz)) {
                 return Reader { config, name -> customType.parse(clazz, config, name) }.getValue
@@ -63,6 +63,6 @@ object SelectReader {
         }.getValue
     }
 
-    fun extractWithoutPath(clazz: ClassContainer, config: Config) =
+    public fun extractWithoutPath(clazz: ClassContainer, config: Config): Any =
         extractWithParameters(clazz, config)
 }

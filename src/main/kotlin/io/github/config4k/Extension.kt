@@ -19,7 +19,7 @@ import kotlin.reflect.full.primaryConstructor
  *
  * @param path see [com.typesafe.config.Config]
  */
-inline fun <reified T> Config.extract(path: String): T {
+public inline fun <reified T> Config.extract(path: String): T {
     val genericType = object : TypeReference<T>() {}.genericType()
 
     val result = SelectReader.getReader(ClassContainer(T::class, genericType))(this, path)
@@ -36,7 +36,7 @@ inline fun <reified T> Config.extract(path: String): T {
 /**
  * Loads whole config into one data class.
  */
-inline fun <reified T> Config.extract(): T {
+public inline fun <reified T> Config.extract(): T {
     val genericType = object : TypeReference<T>() {}.genericType()
 
     val result = SelectReader.extractWithoutPath(ClassContainer(T::class, genericType), this)
@@ -55,7 +55,7 @@ inline fun <reified T> Config.extract(): T {
  *            the property to populate
  * @return the configured value converted to the property's type
  */
-inline operator fun <R, reified T> Config.getValue(thisRef: R, property: KProperty<*>): T {
+public inline operator fun <R, reified T> Config.getValue(thisRef: R, property: KProperty<*>): T {
     val genericType = object : TypeReference<T>() {}.genericType()
     val clazz = ClassContainer(T::class, genericType)
     val reader = SelectReader.getReader(clazz)
@@ -75,7 +75,7 @@ inline operator fun <R, reified T> Config.getValue(thisRef: R, property: KProper
  *
  * @param name the returned config's name
  */
-fun Any.toConfig(name: String): Config {
+public fun Any.toConfig(name: String): Config {
     val clazz = this.javaClass.kotlin
     for (customType in customTypeRegistry) {
         if (customType.testToConfig(this)) {
