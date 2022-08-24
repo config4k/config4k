@@ -1,6 +1,7 @@
 package io.github.config4k.readers
 
 import com.typesafe.config.Config
+import com.typesafe.config.ConfigBeanFactory
 import com.typesafe.config.ConfigMemorySize
 import com.typesafe.config.ConfigValue
 import io.github.config4k.ClassContainer
@@ -15,7 +16,7 @@ import kotlin.reflect.full.primaryConstructor
 
 /**
  * Don't use this class.
- * Called by an inline function [io.github.config4k.Extension],
+ * Called by an inline function [io.github.config4k.extract],
  * this class is public even though it is just for internal.
  */
 public object SelectReader {
@@ -58,11 +59,13 @@ public object SelectReader {
                     clazz.mapperClass.java.isEnum -> EnumReader(clazz.mapperClass)
                     clazz.mapperClass.primaryConstructor != null -> ArbitraryTypeReader(clazz)
                     clazz.mapperClass.objectInstance != null -> ObjectReader(clazz)
+                    clazz.mapperClass.constructors.any { it.parameters.isEmpty() } -> JavaBeanReader(clazz.mapperClass)
                     else -> throw Config4kException.UnSupportedType(clazz.mapperClass)
                 }
         }.getValue
     }
 
     public fun extractWithoutPath(clazz: ClassContainer, config: Config): Any =
-        extractWithParameters(clazz, config)
+        if (clazz.mapperClass.primaryConstructor != null) extractWithParameters(clazz, config)
+        else ConfigBeanFactory.create(config, clazz.mapperClass.java)
 }

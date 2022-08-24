@@ -91,6 +91,37 @@ class TestArbitraryType : WordSpec({
             nestHyphenated shouldBe NestHyphenated(Person("foo", 20))
         }
     }
+
+    "Config.extract<TestJavaBean>()" should {
+        "return TestJavaBean" {
+            val config =
+                """
+                {
+                    name = "foo"
+                    age = 20
+                }""".toConfig()
+            val javaBean = config.extract<TestJavaBean>()
+            javaBean.name shouldBe "foo"
+            javaBean.age shouldBe 20
+        }
+    }
+
+    "Config.extract<NestJavaBean>()" should {
+        "return TestJavaBean" {
+            val config =
+                """
+                {
+                  person {
+                    name = "foo"
+                    age = 20
+                  }
+                }""".toConfig()
+            val nestJavaBean = config.extract<NestJavaBean>()
+            nestJavaBean.person.name shouldBe "foo"
+            nestJavaBean.person.age shouldBe 20
+            nestJavaBean.person2 shouldBe null
+        }
+    }
 })
 
 data class Person(val name: String, val age: Int? = 10)
@@ -101,3 +132,5 @@ data class Nest(val nest: Int, val person: Person)
 
 data class WholeConfig(val key: Person)
 data class NestHyphenated(val nestedPerson: Person)
+
+data class NestJavaBean(val person: TestJavaBean, val person2: TestJavaBean?)
