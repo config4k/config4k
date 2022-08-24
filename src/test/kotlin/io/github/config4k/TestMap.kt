@@ -73,4 +73,19 @@ class TestMap : WordSpec({
             list shouldBe mapOf("key1.with.dot" to 10, "key2.with.dot" to 20)
         }
     }
+
+    "Config.extract<MutableMap<String, T>>" should {
+        "return MutableMap<String, T>" {
+            val mapConfig =
+                """
+                nest = {
+                  key1 = 10
+                  key2 = 20
+                }""".toConfig()
+            val map = mapConfig.extract<MutableMap<String, Int>>("nest")
+            map shouldBe mapOf("key1" to 10, "key2" to 20)
+            map["key3"] = 30
+            map shouldBe mapOf("key1" to 10, "key2" to 20, "key3" to 30)
+        }
+    }
 })
