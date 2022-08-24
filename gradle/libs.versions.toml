@@ -1,7 +1,7 @@
 [versions]
 kotlin = "1.7.10"
 ktlint = "0.45.2"
-gradle-ktlint = "10.3.0"
+gradle-ktlint = "11.0.0"
 dokka = "1.7.10"
 nexus-publish = "1.1.0"
 typesafe-config = "1.4.2"
