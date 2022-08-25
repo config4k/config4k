@@ -2,6 +2,7 @@ package io.github.config4k
 
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
+import java.util.UUID
 
 class TestArbitraryType : WordSpec({
     "Config.extract<Person>" should {
@@ -122,6 +123,18 @@ class TestArbitraryType : WordSpec({
             nestJavaBean.person2 shouldBe null
         }
     }
+
+    "Config.extract<DataWithUUID>()" should {
+        "return DataWithUUID" {
+            val config =
+                """
+                {
+                  uuid = 3f5f1d2f-38b7-4a14-9e67-c618d8f83189
+                }""".toConfig()
+            val data = config.extract<DataWithUUID>()
+            data shouldBe DataWithUUID(UUID.fromString("3f5f1d2f-38b7-4a14-9e67-c618d8f83189"))
+        }
+    }
 })
 
 data class Person(val name: String, val age: Int? = 10)
@@ -134,3 +147,5 @@ data class WholeConfig(val key: Person)
 data class NestHyphenated(val nestedPerson: Person)
 
 data class NestJavaBean(val person: TestJavaBean, val person2: TestJavaBean?)
+
+data class DataWithUUID(val uuid: UUID)
