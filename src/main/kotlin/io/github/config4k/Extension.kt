@@ -97,9 +97,9 @@ public fun Any.toConfig(name: String): Config {
         this is Map<*, *> -> {
             val stringKeys = this.keys.all { it is String }
             if (stringKeys) {
-                val map = this.mapKeys { it.key as String }.mapValues {
-                    it.value?.toConfigValue()?.unwrapped()
-                }
+                val map = this
+                    .mapKeys { "\"${it.key}\"" }
+                    .mapValues { it.value?.toConfigValue()?.unwrapped() }
                 mapOf(name to map)
             } else {
                 val list = this.map { (key, value) ->
