@@ -16,7 +16,8 @@ class TestToConfigForCollection : WordSpec({
         "return Config having Map<String, Person>" {
             val map = mapOf(
                 "foo" to Person("foo", 20),
-                "bar" to Person("bar", 25)
+                "bar" to Person("bar", 25),
+                "@foobar" to Person("bar", 30)
             )
             map.toConfig("map")
                 .extract<Map<String, Person>>("map") shouldBe map
