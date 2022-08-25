@@ -12,6 +12,7 @@ import java.nio.file.Path
 import java.time.Duration
 import java.time.Period
 import java.time.temporal.TemporalAmount
+import java.util.UUID
 import kotlin.reflect.full.primaryConstructor
 
 /**
@@ -44,6 +45,7 @@ public object SelectReader {
             Period::class -> PeriodReader()
             TemporalAmount::class -> TemporalAmountReader()
             ConfigMemorySize::class -> MemorySizeReader()
+            UUID::class -> UUIDReader()
             Config::class -> ConfigReader()
             ConfigValue::class -> ConfigValueReader()
             MutableList::class -> ListReader(clazz.typeArguments.getValue("E"), mutable = true)

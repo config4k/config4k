@@ -2,6 +2,7 @@ package io.github.config4k
 
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
+import java.util.*
 
 class TestToConfigForArbitraryType : WordSpec({
     "Person.toConfig" should {
@@ -44,6 +45,14 @@ class TestToConfigForArbitraryType : WordSpec({
         "return Config having Person" {
             val person = PrivatePerson("foo", 20).toConfig("person")
             person.extract<PrivatePerson>("person") shouldBe PrivatePerson("foo", 20)
+        }
+    }
+
+    "DataWithUUID.toConfig" should {
+        "return Config having DataWithUUID" {
+            val data = DataWithUUID(UUID.fromString("3f5f1d2f-38b7-4a14-9e67-c618d8f83189"))
+            val config = data.toConfig("data")
+            config.extract<DataWithUUID>("data") shouldBe data
         }
     }
 })

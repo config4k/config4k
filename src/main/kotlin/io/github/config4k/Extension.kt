@@ -6,6 +6,7 @@ import com.typesafe.config.ConfigFactory
 import io.github.config4k.readers.SelectReader
 import java.io.File
 import java.nio.file.Path
+import java.util.UUID
 import kotlin.reflect.KProperty
 import kotlin.reflect.full.primaryConstructor
 
@@ -88,6 +89,7 @@ public fun Any.toConfig(name: String): Config {
         this is Enum<*> -> mapOf(name to this.name)
         this is File -> mapOf(name to this.toString())
         this is Path -> mapOf(name to this.toString())
+        this is UUID -> mapOf(name to this.toString())
         this is Iterable<*> -> {
             val list = this.map {
                 it?.toConfigValue()?.unwrapped()

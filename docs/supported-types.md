@@ -18,6 +18,7 @@ Property delegation, `extract` and `toConfig` support these types:
 - `java.time.Duration`
 - `java.time.Period`
 - `java.time.temporal.TemporalAmount`
+- `java.util.UUID`
 - `kotlin.text.Regex`
 - Collections
     - `List`
