@@ -2,6 +2,7 @@ package io.github.config4k
 
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
+import java.time.Duration
 import java.util.*
 
 class TestToConfigForArbitraryType : WordSpec({
@@ -53,6 +54,18 @@ class TestToConfigForArbitraryType : WordSpec({
             val data = DataWithUUID(UUID.fromString("3f5f1d2f-38b7-4a14-9e67-c618d8f83189"))
             val config = data.toConfig("data")
             config.extract<DataWithUUID>("data") shouldBe data
+        }
+    }
+
+    "DataWithDuration.toConfig" should {
+        "return Config having DataWithDuration" {
+            val data = DataWithDuration(Duration.ofMinutes(15))
+            val config = data.toConfig("data")
+            config.extract<DataWithDuration>("data") shouldBe data
+
+            val dataNanos = DataWithDuration(Duration.ofHours(8).plusNanos(123))
+            val configNanos = dataNanos.toConfig("data")
+            configNanos.extract<DataWithDuration>("data") shouldBe dataNanos
         }
     }
 })

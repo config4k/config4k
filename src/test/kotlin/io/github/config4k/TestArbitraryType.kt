@@ -2,6 +2,7 @@ package io.github.config4k
 
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
+import java.time.Duration
 import java.util.UUID
 
 class TestArbitraryType : WordSpec({
@@ -149,3 +150,5 @@ data class NestHyphenated(val nestedPerson: Person)
 data class NestJavaBean(val person: TestJavaBean, val person2: TestJavaBean?)
 
 data class DataWithUUID(val uuid: UUID)
+
+data class DataWithDuration(val duration: Duration)
