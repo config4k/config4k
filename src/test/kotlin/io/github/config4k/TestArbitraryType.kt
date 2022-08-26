@@ -2,6 +2,7 @@ package io.github.config4k
 
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
+import java.net.URL
 import java.time.Duration
 import java.util.UUID
 
@@ -136,6 +137,19 @@ class TestArbitraryType : WordSpec({
             data shouldBe DataWithUUID(UUID.fromString("3f5f1d2f-38b7-4a14-9e67-c618d8f83189"))
         }
     }
+
+    "Config.extract<DataWithURL>()" should {
+        "return DataWithURL" {
+            val url = "https://config4k.github.io/config4k/"
+            val config =
+                """
+                {
+                  url = "$url"
+                }""".toConfig()
+            val data = config.extract<DataWithURL>()
+            data.url.toString() shouldBe url
+        }
+    }
 })
 
 data class Person(val name: String, val age: Int? = 10)
@@ -152,3 +166,5 @@ data class NestJavaBean(val person: TestJavaBean, val person2: TestJavaBean?)
 data class DataWithUUID(val uuid: UUID)
 
 data class DataWithDuration(val duration: Duration)
+
+data class DataWithURL(val url: URL)

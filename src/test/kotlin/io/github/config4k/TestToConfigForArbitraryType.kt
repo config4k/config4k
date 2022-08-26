@@ -2,6 +2,7 @@ package io.github.config4k
 
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
+import java.net.URL
 import java.time.Duration
 import java.util.*
 
@@ -54,6 +55,14 @@ class TestToConfigForArbitraryType : WordSpec({
             val data = DataWithUUID(UUID.fromString("3f5f1d2f-38b7-4a14-9e67-c618d8f83189"))
             val config = data.toConfig("data")
             config.extract<DataWithUUID>("data") shouldBe data
+        }
+    }
+
+    "DataWithURL.toConfig" should {
+        "return Config having DataWithURL" {
+            val data = DataWithURL(URL("https://config4k.github.io/config4k/"))
+            val config = data.toConfig("data")
+            config.extract<DataWithURL>("data") shouldBe data
         }
     }
 

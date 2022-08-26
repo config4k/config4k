@@ -5,6 +5,7 @@ import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
 import io.github.config4k.readers.SelectReader
 import java.io.File
+import java.net.URL
 import java.nio.file.Path
 import java.time.Duration
 import java.util.UUID
@@ -91,6 +92,7 @@ public fun Any.toConfig(name: String): Config {
         this is File -> mapOf(name to this.toString())
         this is Path -> mapOf(name to this.toString())
         this is UUID -> mapOf(name to this.toString())
+        this is URL -> mapOf(name to this.toString())
         this is Duration -> mapOf(name to if (this.nano == 0) "${this.seconds} s" else "${this.toNanos()} ns")
         this is Iterable<*> -> {
             val list = this.map {
