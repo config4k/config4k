@@ -8,6 +8,7 @@ import io.github.config4k.ClassContainer
 import io.github.config4k.Config4kException
 import io.github.config4k.customTypeRegistry
 import java.io.File
+import java.net.URL
 import java.nio.file.Path
 import java.time.Duration
 import java.time.Period
@@ -46,6 +47,7 @@ public object SelectReader {
             TemporalAmount::class -> TemporalAmountReader()
             ConfigMemorySize::class -> MemorySizeReader()
             UUID::class -> UUIDReader()
+            URL::class -> URLReader()
             Config::class -> ConfigReader()
             ConfigValue::class -> ConfigValueReader()
             MutableList::class -> ListReader(clazz.typeArguments.getValue("E"), mutable = true)
