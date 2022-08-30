@@ -43,7 +43,7 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
-      - name: Publish Snapshots
+      - name: Publish Releases
         run: >-
           ./gradlew --no-daemon publishToSonatype closeAndReleaseSonatypeStagingRepository -x test
           -Psigning.gnupg.keyName=$GPG_KEY_ID
