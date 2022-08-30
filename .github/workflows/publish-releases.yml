@@ -14,9 +14,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
+          # we don't know what commit the last tag was
           fetch-depth: 0
-          ref: ${{ inputs.ref }}
 
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1
@@ -30,9 +29,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
+          # we don't know what commit the last tag was
           fetch-depth: 0
-          ref: ${{ inputs.ref }}
+      - run: git fetch --tags --force origin # WA: https://github.com/actions/checkout/issues/882
 
       - uses: actions/setup-java@v3
         with:
@@ -42,10 +41,9 @@ jobs:
           cache: 'gradle'
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
-
       - name: Publish Releases
         run: >-
-          ./gradlew --no-daemon publishToSonatype closeAndReleaseSonatypeStagingRepository -x test
+          ./gradlew --no-daemon version publishToSonatype closeAndReleaseSonatypeStagingRepository -x test
           -Psigning.gnupg.keyName=$GPG_KEY_ID
           -Psigning.gnupg.passphrase="$GPG_PASSPHRASE"
           -PsonatypeUsername="$OSSRH_USERNAME"
