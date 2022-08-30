@@ -15,9 +15,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
+          # we don't know what commit the last tag was
           fetch-depth: 0
-          ref: ${{ inputs.ref }}
 
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1
@@ -31,9 +30,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
+          # we don't know what commit the last tag was
           fetch-depth: 0
-          ref: ${{ inputs.ref }}
 
       - uses: actions/setup-java@v3
         with:
@@ -46,7 +44,7 @@ jobs:
 
       - name: Publish Snapshots
         run: >-
-          ./gradlew --no-daemon publishToSonatype -x test
+          ./gradlew --no-daemon version publishToSonatype -x test
           -Psigning.gnupg.keyName=$GPG_KEY_ID
           -Psigning.gnupg.passphrase="$GPG_PASSPHRASE"
           -PsonatypeUsername="$OSSRH_USERNAME"
@@ -65,9 +63,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
+          # we don't know what commit the last tag was
           fetch-depth: 0
-          ref: ${{ inputs.ref }}
 
       # Use GitHub Actions' cache to shorten build times and decrease load on servers
       - uses: actions/cache@v3
