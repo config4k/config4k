@@ -11,6 +11,14 @@ class TestEnum : WordSpec({
             small shouldBe Size.SMALL
         }
     }
+
+    "Config.extract<Size lowercase>" should {
+        "return SMALL" {
+            val config = "key = small".toConfig()
+            val small = config.extract<Size>("key")
+            small shouldBe Size.SMALL
+        }
+    }
 })
 
 enum class Size {
