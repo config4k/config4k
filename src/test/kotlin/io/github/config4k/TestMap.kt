@@ -88,4 +88,28 @@ class TestMap : WordSpec({
             map shouldBe mapOf("key1" to 10, "key2" to 20, "key3" to 30)
         }
     }
+
+    "Config.extract<Map<WeekDay, T>>" should {
+        "return Map<WeekDay, T>" {
+            val mapConfig =
+                """
+                nest = {
+                  Monday = 1
+                  TUESDAY = 35
+                  wednesday = 42
+                }""".toConfig()
+            val list = mapConfig.extract<Map<WeekDay, Int>>("nest")
+            list shouldBe mapOf(WeekDay.MONDAY to 1, WeekDay.TUESDAY to 35, WeekDay.WEDNESDAY to 42)
+        }
+    }
 })
+
+enum class WeekDay {
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY,
+}
