@@ -88,4 +88,18 @@ class TestMap : WordSpec({
             map shouldBe mapOf("key1" to 10, "key2" to 20, "key3" to 30)
         }
     }
+
+    "Config.extract<Map<Size, T>>" should {
+        "return Map<Size, T>" {
+            val mapConfig =
+                """
+                nest = {
+                  Small = 1
+                  MEDIUM = 35
+                  large = 42
+                }""".toConfig()
+            val map = mapConfig.extract<Map<Size, Int>>("nest")
+            map shouldBe mapOf(Size.SMALL to 1, Size.MEDIUM to 35, Size.LARGE to 42)
+        }
+    }
 })
