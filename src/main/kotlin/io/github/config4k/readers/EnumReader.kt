@@ -5,9 +5,13 @@ import io.github.config4k.extract
 import kotlin.reflect.KClass
 
 internal class EnumReader(clazz: KClass<*>) : Reader<Enum<*>>({ config, path ->
-    val enumName = config.extract<String>(path)
-    val enumConstants = clazz.java.enumConstants
-    enumConstants.find { it.toString().equals(enumName, true) } as? Enum<*>
-        ?: throw Config4kException
-            .WrongEnum(enumConstants.map(Any::toString), enumName)
-})
+    stringToEnum(config.extract(path), clazz)
+}) {
+    companion object {
+        fun stringToEnum(value: String, clazz: KClass<*>): Enum<*> =
+            clazz.java.enumConstants.let { enumValues ->
+                enumValues.find { it.toString().equals(value, true) } as? Enum<*>
+                    ?: throw Config4kException.WrongEnum(enumValues.map(Any::toString), value)
+            }
+    }
+}
