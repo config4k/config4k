@@ -73,7 +73,7 @@ kotlin {
 nexusPublishing {
     packageGroup.set(project.group.toString())
     clientTimeout.set(Duration.ofMinutes(60))
-    repositories {
+    this.repositories {
         sonatype()
     }
 }
