@@ -24,7 +24,7 @@ internal open class Reader<out T>(read: (Config, String) -> T) {
 
     companion object {
         // see https://stackoverflow.com/questions/2559759
-        private fun camelCaseToLowerHyphenCase(camelCase: String): String =
+        internal fun camelCaseToLowerHyphenCase(camelCase: String): String =
             "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])"
                 .toRegex()
                 .replace(camelCase, "-")

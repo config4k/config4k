@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import io.github.config4k.ClassContainer
 import io.github.config4k.extract
 import io.github.config4k.getGenericMap
+import io.github.config4k.readers.Reader.Companion.camelCaseToLowerHyphenCase
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KParameter
 import kotlin.reflect.KVisibility
@@ -47,5 +48,6 @@ internal fun omitValue(
     map.filterNot { (param, _) ->
         val path = if (parentPath.isEmpty()) param.name
         else "$parentPath.${param.name}"
-        param.isOptional && !config.hasPathOrNull(path)
+        param.isOptional && !config.hasPathOrNull(path) &&
+            !config.hasPathOrNull(camelCaseToLowerHyphenCase(path.orEmpty()))
     }

@@ -150,6 +150,20 @@ class TestArbitraryType : WordSpec({
             data.url.toString() shouldBe url
         }
     }
+
+    "Config.extract<NamingStrategy>()" should {
+        "return NamingStrategy" {
+            val config =
+                """
+                {
+                  fizzBuzz: "fizzBuzz"
+                  foo-bar: "fooBar"
+                }""".toConfig()
+            val data = config.extract<NamingStrategy>()
+            data.fizzBuzz shouldBe "fizzBuzz"
+            data.fooBar shouldBe "fooBar"
+        }
+    }
 })
 
 data class Person(val name: String, val age: Int? = 10)
@@ -168,3 +182,8 @@ data class DataWithUUID(val uuid: UUID)
 data class DataWithDuration(val duration: Duration)
 
 data class DataWithURL(val url: URL)
+
+data class NamingStrategy(
+    val fizzBuzz: String? = null,
+    val fooBar: String? = null,
+)
