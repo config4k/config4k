@@ -38,6 +38,8 @@ val dokkaJar by tasks.creating(Jar::class) {
     from(tasks.dokkaJavadoc)
 }
 
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+
 tasks.compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
     kotlinOptions.allWarningsAsErrors = true
