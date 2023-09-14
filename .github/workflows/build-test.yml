@@ -48,7 +48,9 @@ jobs:
       - name: Check
         run: ./gradlew clean check --no-daemon
 
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   docs:
     name: Validate docs
