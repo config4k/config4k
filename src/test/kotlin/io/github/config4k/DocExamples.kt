@@ -17,16 +17,16 @@ fun main() {
 }
 
 object DocExamples {
-
     fun delegatedProperties() {
         // begin-snippet: delegated-properties
-        val config = ConfigFactory.parseString(
-            """
+        val config =
+            ConfigFactory.parseString(
+                """
         |stringValue = hello
         |booleanValue = true
         |"""
-                .trimMargin()
-        )
+                    .trimMargin(),
+            )
 
         val stringValue: String by config
         println(stringValue) // hello
@@ -41,14 +41,15 @@ object DocExamples {
 
     fun deserializationMap() {
         // begin-snippet: deserialization-map
-        val config = ConfigFactory.parseString(
-            """
+        val config =
+            ConfigFactory.parseString(
+                """
         |map {  
         |  foo = 5
         |  bar = 6
         |}"""
-                .trimMargin()
-        )
+                    .trimMargin(),
+            )
         val map: Map<String, Int> = config.extract("map")
         println(map["foo"] == 5) // true
         println(map["bar"] == 6) // true
@@ -57,8 +58,9 @@ object DocExamples {
 
     fun deserializationMapKey() {
         // begin-snippet: deserialization-map-key
-        val config = ConfigFactory.parseString(
-            """
+        val config =
+            ConfigFactory.parseString(
+                """
         |map = [{  
         |  key = 5
         |  value = "foo"
@@ -67,8 +69,8 @@ object DocExamples {
         |  key = 6
         |  value = "bar"
         |}]"""
-                .trimMargin()
-        )
+                    .trimMargin(),
+            )
         val map: Map<Int, String> = config.extract("map")
         println(map[5] == "foo") // true
         println(map[6] == "bar") // true
@@ -79,14 +81,15 @@ object DocExamples {
         // begin-snippet: deserialization-data-class
         data class Person(val name: String, val age: Int)
 
-        val config = ConfigFactory.parseString(
-            """
+        val config =
+            ConfigFactory.parseString(
+                """
         |key {  
         |  name = "foo"
         |  age = 20
         |}"""
-                .trimMargin()
-        )
+                    .trimMargin(),
+            )
         val person: Person = config.extract("key")
         println(person.name) // foo
         println(person.age) // 20
@@ -107,7 +110,7 @@ object DocExamples {
     enum class Size {
         SMALL,
         MEDIUM,
-        LARGE
+        LARGE,
     }
     // end-snippet
 
@@ -145,9 +148,10 @@ object DocExamples {
         data class Person(val name: String, val age: Int)
 
         val person = Person("foo", 20).toConfig("person")
-        val options = ConfigRenderOptions.defaults()
-            .setJson(false)
-            .setOriginComments(false)
+        val options =
+            ConfigRenderOptions.defaults()
+                .setJson(false)
+                .setOriginComments(false)
         println(person.root().render(options))
         // end-snippet
     }

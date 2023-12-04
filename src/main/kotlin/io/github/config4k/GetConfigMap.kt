@@ -8,7 +8,7 @@ import kotlin.reflect.jvm.isAccessible
 
 internal fun getConfigMap(
     receiver: Any,
-    clazz: KClass<Any>
+    clazz: KClass<Any>,
 ): Map<String, *> =
     clazz.primaryConstructor!!.parameters.mapNotNull {
         val parameterName = it.name!!

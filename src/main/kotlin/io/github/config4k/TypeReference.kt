@@ -22,18 +22,22 @@ public data class ClassContainer(val mapperClass: KClass<*>, val typeArguments: 
 
 internal fun getGenericMap(
     type: ParameterizedType,
-    typeArguments: Map<String, ClassContainer> = emptyMap()
+    typeArguments: Map<String, ClassContainer> = emptyMap(),
 ): Map<String, ClassContainer> {
     val typeParameters = (type.rawType as Class<*>).kotlin.typeParameters
     return type.actualTypeArguments.mapIndexed { index, r ->
         val typeParameterName = typeParameters[index].name
         val impl = if (r is WildcardType) r.upperBounds[0] else r
-        typeParameterName to if (impl is TypeVariable<*>) {
-            requireNotNull(typeArguments[impl.name]) { "no type argument for ${impl.name} found" }
-        } else {
-            val wild = ((if (impl is ParameterizedType) impl.rawType else impl) as Class<*>).kotlin
-            if (impl is ParameterizedType) ClassContainer(wild, getGenericMap(impl, typeArguments))
-            else ClassContainer(wild)
-        }
+        typeParameterName to
+            if (impl is TypeVariable<*>) {
+                requireNotNull(typeArguments[impl.name]) { "no type argument for ${impl.name} found" }
+            } else {
+                val wild = ((if (impl is ParameterizedType) impl.rawType else impl) as Class<*>).kotlin
+                if (impl is ParameterizedType) {
+                    ClassContainer(wild, getGenericMap(impl, typeArguments))
+                } else {
+                    ClassContainer(wild)
+                }
+            }
     }.toMap()
 }

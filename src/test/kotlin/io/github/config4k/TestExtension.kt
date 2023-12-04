@@ -88,11 +88,12 @@ class TestExtension : WordSpec({
                 | field = value
                 |}"""
                     .trimMargin()
-            val config = ConfigFactory.parseString(
-                """nest = $inner"""
-            )
+            val config =
+                ConfigFactory.parseString(
+                    """nest = $inner""",
+                )
             config.extract<Config>(
-                "nest"
+                "nest",
             ) shouldBe ConfigFactory.parseString(inner)
         }
 
@@ -201,9 +202,10 @@ class TestExtension : WordSpec({
                 | field = value
                 |}"""
                     .trimMargin()
-            val config = ConfigFactory.parseString(
-                """nest = $inner"""
-            )
+            val config =
+                ConfigFactory.parseString(
+                    """nest = $inner""",
+                )
             val nest: Config by config
             nest shouldBe ConfigFactory.parseString(inner)
         }

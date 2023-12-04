@@ -19,19 +19,22 @@ internal class ArbitraryTypeReader(clazz: ClassContainer) : Reader<Any>({ config
 internal fun extractWithParameters(
     clazz: ClassContainer,
     config: Config,
-    parentPath: String = ""
+    parentPath: String = "",
 ): Any {
     val constructor = clazz.mapperClass.primaryConstructor!!
-    val map = constructor.parameters.associate { param ->
-        val type = param.type.javaType
-        val classContainer: ClassContainer = when (type) {
-            is ParameterizedType -> ClassContainer((type.rawType as Class<*>).kotlin, getGenericMap(type, clazz.typeArguments))
-            is Class<*> -> ClassContainer(type.kotlin)
-            else -> requireNotNull(clazz.typeArguments[type.typeName]) { "couldn't find type argument for ${type.typeName}" }
+    val map =
+        constructor.parameters.associate { param ->
+            val type = param.type.javaType
+            val classContainer: ClassContainer =
+                when (type) {
+                    is ParameterizedType -> ClassContainer((type.rawType as Class<*>).kotlin, getGenericMap(type, clazz.typeArguments))
+                    is Class<*> -> ClassContainer(type.kotlin)
+                    else -> requireNotNull(clazz.typeArguments[type.typeName]) { "couldn't find type argument for ${type.typeName}" }
+                }
+            param to
+                SelectReader.getReader(classContainer)
+                    .invoke(if (parentPath.isEmpty()) config else config.extract(parentPath), param.name!!)
         }
-        param to SelectReader.getReader(classContainer)
-            .invoke(if (parentPath.isEmpty()) config else config.extract(parentPath), param.name!!)
-    }
     val parameters = omitValue(map, config, parentPath)
     if (clazz.mapperClass.visibility == KVisibility.PRIVATE) {
         constructor.isAccessible = true
@@ -43,11 +46,15 @@ internal fun extractWithParameters(
 internal fun omitValue(
     map: Map<KParameter, Any?>,
     config: Config,
-    parentPath: String
+    parentPath: String,
 ): Map<KParameter, Any?> =
     map.filterNot { (param, _) ->
-        val path = if (parentPath.isEmpty()) param.name
-        else "$parentPath.${param.name}"
+        val path =
+            if (parentPath.isEmpty()) {
+                param.name
+            } else {
+                "$parentPath.${param.name}"
+            }
         param.isOptional && !config.hasPathOrNull(path) &&
             !config.hasPathOrNull(camelCaseToLowerHyphenCase(path.orEmpty()))
     }

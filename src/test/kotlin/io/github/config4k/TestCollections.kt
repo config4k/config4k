@@ -11,30 +11,33 @@ class TestCollections : WordSpec({
     "Config.extract" should {
         "return List" {
             val list = config.extract<List<Duration>>("key")
-            list shouldBe listOf(
-                Duration.ofMinutes(0),
-                Duration.ofMinutes(1),
-                Duration.ofMinutes(1),
-                Duration.ofMinutes(2)
-            )
+            list shouldBe
+                listOf(
+                    Duration.ofMinutes(0),
+                    Duration.ofMinutes(1),
+                    Duration.ofMinutes(1),
+                    Duration.ofMinutes(2),
+                )
         }
 
         "return MutableList" {
             val list = config.extract<MutableList<Duration>>("key")
-            list shouldBe listOf(
-                Duration.ofMinutes(0),
-                Duration.ofMinutes(1),
-                Duration.ofMinutes(1),
-                Duration.ofMinutes(2)
-            )
+            list shouldBe
+                listOf(
+                    Duration.ofMinutes(0),
+                    Duration.ofMinutes(1),
+                    Duration.ofMinutes(1),
+                    Duration.ofMinutes(2),
+                )
             list.add(Duration.ofMinutes(10))
-            list shouldBe listOf(
-                Duration.ofMinutes(0),
-                Duration.ofMinutes(1),
-                Duration.ofMinutes(1),
-                Duration.ofMinutes(2),
-                Duration.ofMinutes(10)
-            )
+            list shouldBe
+                listOf(
+                    Duration.ofMinutes(0),
+                    Duration.ofMinutes(1),
+                    Duration.ofMinutes(1),
+                    Duration.ofMinutes(2),
+                    Duration.ofMinutes(10),
+                )
         }
 
         "return List<List<Int>>" {
@@ -46,11 +49,12 @@ class TestCollections : WordSpec({
         "return Set" {
             val set = config.extract<Set<Duration>>("key")
             set should haveSize(3)
-            set shouldBe setOf(
-                Duration.ofMinutes(0),
-                Duration.ofMinutes(1),
-                Duration.ofMinutes(2)
-            )
+            set shouldBe
+                setOf(
+                    Duration.ofMinutes(0),
+                    Duration.ofMinutes(1),
+                    Duration.ofMinutes(2),
+                )
         }
 
         "return MutableSet" {
@@ -60,17 +64,18 @@ class TestCollections : WordSpec({
             set shouldBe setOf(Duration.ofMinutes(1))
             set.add(Duration.ofMinutes(10))
             set should haveSize(2)
-            set shouldBe setOf(
-                Duration.ofMinutes(1),
-                Duration.ofMinutes(10)
-            )
+            set shouldBe
+                setOf(
+                    Duration.ofMinutes(1),
+                    Duration.ofMinutes(10),
+                )
         }
 
         "return Array<T>" {
             """key = ["a", "b", "c", "d"]""".toConfig()
                 .extract<Array<String>>("key")
                 .contentDeepEquals(
-                    arrayOf("a", "b", "c", "d")
+                    arrayOf("a", "b", "c", "d"),
                 ) shouldBe true
 
             """key = ["0m", "1m"]""".toConfig()
@@ -78,8 +83,8 @@ class TestCollections : WordSpec({
                 .contentDeepEquals(
                     arrayOf(
                         Duration.ofMinutes(0),
-                        Duration.ofMinutes(1)
-                    )
+                        Duration.ofMinutes(1),
+                    ),
                 ) shouldBe true
         }
     }

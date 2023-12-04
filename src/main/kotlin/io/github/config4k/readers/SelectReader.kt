@@ -72,7 +72,13 @@ public object SelectReader {
         }.getValue
     }
 
-    public fun extractWithoutPath(clazz: ClassContainer, config: Config): Any =
-        if (clazz.mapperClass.primaryConstructor != null) extractWithParameters(clazz, config)
-        else ConfigBeanFactory.create(config, clazz.mapperClass.java)
+    public fun extractWithoutPath(
+        clazz: ClassContainer,
+        config: Config,
+    ): Any =
+        if (clazz.mapperClass.primaryConstructor != null) {
+            extractWithParameters(clazz, config)
+        } else {
+            ConfigBeanFactory.create(config, clazz.mapperClass.java)
+        }
 }

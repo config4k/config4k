@@ -23,7 +23,10 @@ import kotlin.reflect.full.primaryConstructor
  * @param path see [com.typesafe.config.Config]
  * @param defaultValue will be return if Config doesn't contain value by path
  */
-public inline fun <reified T> Config.extract(path: String, defaultValue: T? = null): T {
+public inline fun <reified T> Config.extract(
+    path: String,
+    defaultValue: T? = null,
+): T {
     val genericType = object : TypeReference<T>() {}.genericType()
 
     val result = SelectReader.getReader(ClassContainer(T::class, genericType))(this, path) ?: defaultValue
@@ -32,7 +35,7 @@ public inline fun <reified T> Config.extract(path: String, defaultValue: T? = nu
         result as T
     } catch (e: Exception) {
         throw result?.let { e } ?: ConfigException.BadPath(
-            path, "take a look at your config"
+            path, "take a look at your config",
         )
     }
 }
@@ -59,7 +62,10 @@ public inline fun <reified T> Config.extract(): T {
  *            the property to populate
  * @return the configured value converted to the property's type
  */
-public inline operator fun <R, reified T> Config.getValue(thisRef: R, property: KProperty<*>): T {
+public inline operator fun <R, reified T> Config.getValue(
+    thisRef: R,
+    property: KProperty<*>,
+): T {
     val genericType = object : TypeReference<T>() {}.genericType()
     val clazz = ClassContainer(T::class, genericType)
     val reader = SelectReader.getReader(clazz)
@@ -86,40 +92,44 @@ public fun Any.toConfig(name: String): Config {
             return customType.toConfig(this, name)
         }
     }
-    val map = when {
-        clazz.javaPrimitiveType != null -> mapOf(name to this)
-        this is String -> mapOf(name to this)
-        this is Enum<*> -> mapOf(name to this.name)
-        this is File -> mapOf(name to this.toString())
-        this is Path -> mapOf(name to this.toString())
-        this is UUID -> mapOf(name to this.toString())
-        this is URL -> mapOf(name to this.toString())
-        this is Duration -> mapOf(name to if (this.nano == 0) "${this.seconds} s" else "${this.toNanos()} ns")
-        this is Iterable<*> -> {
-            val list = this.map {
-                it?.toConfigValue()?.unwrapped()
-            }
-            mapOf(name to list)
-        }
-        this is Map<*, *> -> {
-            val stringKeys = this.keys.all { it is String }
-            if (stringKeys) {
-                val map = this
-                    .mapKeys { "\"${it.key}\"" }
-                    .mapValues { it.value?.toConfigValue()?.unwrapped() }
-                mapOf(name to map)
-            } else {
-                val list = this.map { (key, value) ->
-                    MapEntry(key, value).toConfigValue()
-                }
+    val map =
+        when {
+            clazz.javaPrimitiveType != null -> mapOf(name to this)
+            this is String -> mapOf(name to this)
+            this is Enum<*> -> mapOf(name to this.name)
+            this is File -> mapOf(name to this.toString())
+            this is Path -> mapOf(name to this.toString())
+            this is UUID -> mapOf(name to this.toString())
+            this is URL -> mapOf(name to this.toString())
+            this is Duration -> mapOf(name to if (this.nano == 0) "${this.seconds} s" else "${this.toNanos()} ns")
+            this is Iterable<*> -> {
+                val list =
+                    this.map {
+                        it?.toConfigValue()?.unwrapped()
+                    }
                 mapOf(name to list)
             }
+            this is Map<*, *> -> {
+                val stringKeys = this.keys.all { it is String }
+                if (stringKeys) {
+                    val map =
+                        this
+                            .mapKeys { "\"${it.key}\"" }
+                            .mapValues { it.value?.toConfigValue()?.unwrapped() }
+                    mapOf(name to map)
+                } else {
+                    val list =
+                        this.map { (key, value) ->
+                            MapEntry(key, value).toConfigValue()
+                        }
+                    mapOf(name to list)
+                }
+            }
+            clazz.primaryConstructor != null ->
+                mapOf(name to getConfigMap(this, clazz))
+            clazz.objectInstance != null -> mapOf(name to emptyMap<String, Any>())
+            else -> throw Config4kException.UnSupportedType(clazz)
         }
-        clazz.primaryConstructor != null ->
-            mapOf(name to getConfigMap(this, clazz))
-        clazz.objectInstance != null -> mapOf(name to emptyMap<String, Any>())
-        else -> throw Config4kException.UnSupportedType(clazz)
-    }
 
     return ConfigFactory.parseMap(map)
 }

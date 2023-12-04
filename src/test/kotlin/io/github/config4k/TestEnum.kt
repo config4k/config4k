@@ -24,5 +24,5 @@ class TestEnum : WordSpec({
 enum class Size {
     SMALL,
     MEDIUM,
-    LARGE
+    LARGE,
 }

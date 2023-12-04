@@ -32,9 +32,11 @@ data class Color(val red: Int, val green: Int, val blue: Int) {
 
     companion object {
         private val regex = Regex("#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})")
+
         fun parse(input: String): Color {
-            val match = regex.matchEntire(input)
-                ?: throw IllegalArgumentException("Input $input not parseable as a color.")
+            val match =
+                regex.matchEntire(input)
+                    ?: throw IllegalArgumentException("Input $input not parseable as a color.")
 
             val r = match.groupValues[1].toInt(16)
             val g = match.groupValues[2].toInt(16)
@@ -54,11 +56,18 @@ object ColorCustomType : CustomType {
         return Color::class.isInstance(obj)
     }
 
-    override fun parse(clazz: ClassContainer, config: Config, name: String): Any? {
+    override fun parse(
+        clazz: ClassContainer,
+        config: Config,
+        name: String,
+    ): Any? {
         return Color.parse(config.getString(name))
     }
 
-    override fun toConfig(obj: Any, name: String): Config {
+    override fun toConfig(
+        obj: Any,
+        name: String,
+    ): Config {
         return (obj as Color).format().toConfig(name)
     }
 }

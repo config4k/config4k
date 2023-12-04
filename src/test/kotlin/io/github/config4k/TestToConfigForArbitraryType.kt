@@ -4,7 +4,7 @@ import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 import java.net.URL
 import java.time.Duration
-import java.util.*
+import java.util.UUID
 
 class TestToConfigForArbitraryType : WordSpec({
     "Person.toConfig" should {
