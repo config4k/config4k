@@ -120,12 +120,19 @@ class TestArbitraryGenericType : WordSpec({
 interface Pet
 
 data class PetPerson<out P : Pet>(val name: String, val age: Int, val pet: P)
+
 data class TwoPetPerson<out P1 : Pet, out P2 : Pet>(val name: String, val age: Int, val pet1: P1, val pet2: P2)
+
 data class TwoPetSwapPerson<out P1 : Pet, out P2 : Pet>(val name: String, val age: Int, val secondPet: P2, val firstPet: P1)
 
 data class Dog(val sound: String) : Pet
+
 data class Cat(val meowTime: Int) : Pet
+
 data class Snake<out Food : Pet>(val length: Int, val food: Food) : Pet
+
 data class HungrySnake<out Food : Pet>(val length: Int, val food: List<Food>) : Pet
+
 data class Mouse(val name: String) : Pet
+
 object Yeti : Pet

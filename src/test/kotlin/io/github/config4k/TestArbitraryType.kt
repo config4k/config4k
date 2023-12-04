@@ -173,6 +173,7 @@ private data class PrivateEye(val target: String)
 data class Nest(val nest: Int, val person: Person)
 
 data class WholeConfig(val key: Person)
+
 data class NestHyphenated(val nestedPerson: Person)
 
 data class NestJavaBean(val person: TestJavaBean, val person2: TestJavaBean?)

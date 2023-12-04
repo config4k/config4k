@@ -29,12 +29,14 @@ class TestMap : WordSpec({
                     key4 = 40
                   }
                 }""".toConfig()
-            val list = mapConfig
-                .extract<Map<String, Map<String, Int>>>("nest")
-            list shouldBe mapOf(
-                "nest1" to mapOf("key1" to 10, "key2" to 20),
-                "nest2" to mapOf("key3" to 30, "key4" to 40)
-            )
+            val list =
+                mapConfig
+                    .extract<Map<String, Map<String, Int>>>("nest")
+            list shouldBe
+                mapOf(
+                    "nest1" to mapOf("key1" to 10, "key2" to 20),
+                    "nest2" to mapOf("key3" to 30, "key4" to 40),
+                )
         }
 
         "return Map<String, List<T>>" {

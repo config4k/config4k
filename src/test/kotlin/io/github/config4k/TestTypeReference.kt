@@ -51,10 +51,11 @@ internal class TestTypeReference : WordSpec({
 
             val genericType = getGenericMap(type, clazz.typeArguments)
 
-            genericType shouldBe mapOf(
-                "K" to ClassContainer(String::class),
-                "V" to ClassContainer(List::class, mapOf("E" to ClassContainer(Long::class)))
-            )
+            genericType shouldBe
+                mapOf(
+                    "K" to ClassContainer(String::class),
+                    "V" to ClassContainer(List::class, mapOf("E" to ClassContainer(Long::class))),
+                )
         }
 
         "throw exception when clazz container type arguments don't match" {
@@ -64,9 +65,10 @@ internal class TestTypeReference : WordSpec({
             val param = constructor.parameters[2] // List<Float>
             val type = param.type.javaType as ParameterizedType
 
-            val exception = shouldThrow<IllegalArgumentException> {
-                getGenericMap(type, clazz.typeArguments)
-            }
+            val exception =
+                shouldThrow<IllegalArgumentException> {
+                    getGenericMap(type, clazz.typeArguments)
+                }
 
             exception.message shouldBe "no type argument for T2 found"
         }
@@ -77,5 +79,5 @@ data class GenericTestClass<T1 : Number, T2 : Number>(
     val number1: T2,
     val number2: T1,
     val list: List<T2>,
-    val map: Map<String, List<T1>>
+    val map: Map<String, List<T1>>,
 )

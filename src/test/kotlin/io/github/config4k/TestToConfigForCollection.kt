@@ -14,11 +14,12 @@ class TestToConfigForCollection : WordSpec({
 
     "Map<String, Person>.toConfig" should {
         "return Config having Map<String, Person>" {
-            val map = mapOf(
-                "foo" to Person("foo", 20),
-                "bar" to Person("bar", 25),
-                "@foobar" to Person("bar", 30)
-            )
+            val map =
+                mapOf(
+                    "foo" to Person("foo", 20),
+                    "bar" to Person("bar", 25),
+                    "@foobar" to Person("bar", 30),
+                )
             map.toConfig("map")
                 .extract<Map<String, Person>>("map") shouldBe map
         }
@@ -26,10 +27,11 @@ class TestToConfigForCollection : WordSpec({
 
     "Map<Int, Person>.toConfig" should {
         "return Config having Map<Int, Person>" {
-            val map = mapOf(
-                7 to Person("Jon", 12),
-                20 to Person("Doe", 15)
-            )
+            val map =
+                mapOf(
+                    7 to Person("Jon", 12),
+                    20 to Person("Doe", 15),
+                )
             map.toConfig("map")
                 .extract<Map<Int, Person>>("map") shouldBe map
         }
