@@ -1,0 +1,26 @@
+name: Dependency Graph
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  # Only run once for latest commit per ref and cancel other (previous) runs.
+  group: dependency-graph-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write # this permission is needed to submit the dependency graph
+
+jobs:
+  dependency-graph:
+    name: Submit dependencies to GitHub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.ref }}
+      - name: Gradle Dependency Submission
+        uses: mikepenz/gradle-dependency-submission@v0.9.1
+
