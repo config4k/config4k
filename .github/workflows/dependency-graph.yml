@@ -23,4 +23,5 @@ jobs:
           ref: ${{ inputs.ref }}
       - name: Gradle Dependency Submission
         uses: mikepenz/gradle-dependency-submission@v0.9.1
-
+        with:
+          gradle-build-configuration: "runtimeClasspath"
