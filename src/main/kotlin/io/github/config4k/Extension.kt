@@ -29,13 +29,15 @@ public inline fun <reified T> Config.extract(
 ): T {
     val genericType = object : TypeReference<T>() {}.genericType()
 
-    val result = SelectReader.getReader(ClassContainer(T::class, genericType))(this, path) ?: defaultValue
+    val result =
+        SelectReader.getReader(ClassContainer(T::class, genericType))(this, path) ?: defaultValue
 
     return try {
         result as T
     } catch (e: Exception) {
         throw result?.let { e } ?: ConfigException.BadPath(
-            path, "take a look at your config",
+            path,
+            "take a look at your config",
         )
     }
 }
@@ -109,6 +111,7 @@ public fun Any.toConfig(name: String): Config {
                     }
                 mapOf(name to list)
             }
+
             this is Map<*, *> -> {
                 val stringKeys = this.keys.all { it is String }
                 if (stringKeys) {
@@ -125,8 +128,10 @@ public fun Any.toConfig(name: String): Config {
                     mapOf(name to list)
                 }
             }
+
             clazz.primaryConstructor != null ->
                 mapOf(name to getConfigMap(this, clazz))
+
             clazz.objectInstance != null -> mapOf(name to emptyMap<String, Any>())
             else -> throw Config4kException.UnSupportedType(clazz)
         }
