@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
 
       - name: Gradle Wrapper Validation
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/wrapper-validation-action@v2
 
   publish-artifacts:
     name: Publish Artifacts
