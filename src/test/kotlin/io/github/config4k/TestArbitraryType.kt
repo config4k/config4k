@@ -163,6 +163,17 @@ class TestArbitraryType : WordSpec({
             data.fizzBuzz shouldBe "fizzBuzz"
             data.fooBar shouldBe "fooBar"
         }
+        "work with a path" {
+            val config =
+                """
+                app {
+                  fizzBuzz: "fizzBuzz"
+                  foo-bar: "fooBar"
+                }""".toConfig()
+            val data = config.extract<NamingStrategy>("app")
+            data.fizzBuzz shouldBe "fizzBuzz"
+            data.fooBar shouldBe "fooBar"
+        }
     }
 })
 
