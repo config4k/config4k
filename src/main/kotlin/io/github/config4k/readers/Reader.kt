@@ -29,11 +29,11 @@ internal open class Reader<out T>(
         internal fun camelCaseToLowerHyphenCase(camelCase: String): String =
             camelCase
                 .split('.')
-                .map {
+                .joinToString(".") {
                     "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])"
                         .toRegex()
                         .replace(it, "-")
                         .lowercase()
-                }.joinToString(".")
+                }
     }
 }

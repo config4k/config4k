@@ -25,10 +25,9 @@ internal fun extractWithParameters(
 ): Any {
     val constructor = clazz.mapperClass.primaryConstructor!!
     val map =
-        constructor.parameters.associate { param ->
-            val type = param.type.javaType
+        constructor.parameters.associateWith { param ->
             val classContainer: ClassContainer =
-                when (type) {
+                when (val type = param.type.javaType) {
                     is ParameterizedType ->
                         ClassContainer(
                             (type.rawType as Class<*>).kotlin,
@@ -38,13 +37,12 @@ internal fun extractWithParameters(
                     is Class<*> -> ClassContainer(type.kotlin)
                     else -> requireNotNull(clazz.typeArguments[type.typeName]) { "couldn't find type argument for ${type.typeName}" }
                 }
-            param to
-                SelectReader
-                    .getReader(classContainer)
-                    .invoke(
-                        if (parentPath.isEmpty()) config else config.extract(parentPath),
-                        param.name!!,
-                    )
+            SelectReader
+                .getReader(classContainer)
+                .invoke(
+                    if (parentPath.isEmpty()) config else config.extract(parentPath),
+                    param.name!!,
+                )
         }
     val parameters = omitValue(map, config, parentPath)
     if (clazz.mapperClass.visibility == KVisibility.PRIVATE) {
