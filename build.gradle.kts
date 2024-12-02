@@ -1,4 +1,5 @@
 import fr.brouillard.oss.jgitver.Strategies.MAVEN
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.time.Duration
 
@@ -40,14 +41,11 @@ val dokkaJar by tasks.creating(Jar::class) {
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))
 
-tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.allWarningsAsErrors = true
-}
-
-tasks.compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.allWarningsAsErrors = false
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_1_8
+        allWarningsAsErrors = true
+    }
 }
 
 tasks.jacocoTestReport {
