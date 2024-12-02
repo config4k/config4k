@@ -12,9 +12,11 @@ import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.jvm.javaType
 
-internal class ArbitraryTypeReader(clazz: ClassContainer) : Reader<Any>({ config, path ->
-    extractWithParameters(clazz, config, path)
-})
+internal class ArbitraryTypeReader(
+    clazz: ClassContainer,
+) : Reader<Any>({ config, path ->
+        extractWithParameters(clazz, config, path)
+    })
 
 internal fun extractWithParameters(
     clazz: ClassContainer,
@@ -27,13 +29,22 @@ internal fun extractWithParameters(
             val type = param.type.javaType
             val classContainer: ClassContainer =
                 when (type) {
-                    is ParameterizedType -> ClassContainer((type.rawType as Class<*>).kotlin, getGenericMap(type, clazz.typeArguments))
+                    is ParameterizedType ->
+                        ClassContainer(
+                            (type.rawType as Class<*>).kotlin,
+                            getGenericMap(type, clazz.typeArguments),
+                        )
+
                     is Class<*> -> ClassContainer(type.kotlin)
                     else -> requireNotNull(clazz.typeArguments[type.typeName]) { "couldn't find type argument for ${type.typeName}" }
                 }
             param to
-                SelectReader.getReader(classContainer)
-                    .invoke(if (parentPath.isEmpty()) config else config.extract(parentPath), param.name!!)
+                SelectReader
+                    .getReader(classContainer)
+                    .invoke(
+                        if (parentPath.isEmpty()) config else config.extract(parentPath),
+                        param.name!!,
+                    )
         }
     val parameters = omitValue(map, config, parentPath)
     if (clazz.mapperClass.visibility == KVisibility.PRIVATE) {
@@ -55,6 +66,7 @@ internal fun omitValue(
             } else {
                 "$parentPath.${param.name}"
             }
-        param.isOptional && !config.hasPathOrNull(path) &&
+        param.isOptional &&
+            !config.hasPathOrNull(path) &&
             !config.hasPathOrNull(camelCaseToLowerHyphenCase(path.orEmpty()))
     }

@@ -3,11 +3,12 @@ package io.github.config4k
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 
-class TestArbitraryTypeCollection : WordSpec({
-    "Config.extract<Family>" should {
-        "return Family" {
-            val config =
-                """
+class TestArbitraryTypeCollection :
+    WordSpec({
+        "Config.extract<Family>" should {
+            "return Family" {
+                val config =
+                    """
                 key = {
                   persons = [
                    {
@@ -19,10 +20,12 @@ class TestArbitraryTypeCollection : WordSpec({
                      age = 25
                    }]
                 }""".toConfig()
-            val family = config.extract<Family>("key")
-            family shouldBe Family(listOf(Person("foo", 20), Person("bar", 25)))
+                val family = config.extract<Family>("key")
+                family shouldBe Family(listOf(Person("foo", 20), Person("bar", 25)))
+            }
         }
-    }
-})
+    })
 
-data class Family(val persons: List<Person>)
+data class Family(
+    val persons: List<Person>,
+)

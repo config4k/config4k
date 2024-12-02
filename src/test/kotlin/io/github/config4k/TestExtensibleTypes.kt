@@ -4,31 +4,34 @@ import com.typesafe.config.Config
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 
-class TestExtensibleTypes : WordSpec({
-    registerCustomType(ColorCustomType)
-    "Config.extract<Color>" should {
-        "return Color" {
-            val config =
-                """
+class TestExtensibleTypes :
+    WordSpec({
+        registerCustomType(ColorCustomType)
+        "Config.extract<Color>" should {
+            "return Color" {
+                val config =
+                    """
                 key = "#FF3389"
                 """.toConfig()
-            val color = config.extract<Color>("key")
-            color shouldBe Color(0xFF, 0x33, 0x89)
+                val color = config.extract<Color>("key")
+                color shouldBe Color(0xFF, 0x33, 0x89)
+            }
         }
-    }
-    "Color.toConfig" should {
-        "return string" {
-            val color = Color(0xFE, 0x22, 0x2E)
-            val config = color.toConfig("key")
-            config.getString("key") shouldBe "#fe222e"
+        "Color.toConfig" should {
+            "return string" {
+                val color = Color(0xFE, 0x22, 0x2E)
+                val config = color.toConfig("key")
+                config.getString("key") shouldBe "#fe222e"
+            }
         }
-    }
-})
+    })
 
-data class Color(val red: Int, val green: Int, val blue: Int) {
-    fun format(): String {
-        return "#${red.toString(16)}${green.toString(16)}${blue.toString(16)}"
-    }
+data class Color(
+    val red: Int,
+    val green: Int,
+    val blue: Int,
+) {
+    fun format(): String = "#${red.toString(16)}${green.toString(16)}${blue.toString(16)}"
 
     companion object {
         private val regex = Regex("#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})")
@@ -48,26 +51,18 @@ data class Color(val red: Int, val green: Int, val blue: Int) {
 }
 
 object ColorCustomType : CustomType {
-    override fun testParse(clazz: ClassContainer): Boolean {
-        return clazz.mapperClass == Color::class
-    }
+    override fun testParse(clazz: ClassContainer): Boolean = clazz.mapperClass == Color::class
 
-    override fun testToConfig(obj: Any): Boolean {
-        return Color::class.isInstance(obj)
-    }
+    override fun testToConfig(obj: Any): Boolean = Color::class.isInstance(obj)
 
     override fun parse(
         clazz: ClassContainer,
         config: Config,
         name: String,
-    ): Any? {
-        return Color.parse(config.getString(name))
-    }
+    ): Any? = Color.parse(config.getString(name))
 
     override fun toConfig(
         obj: Any,
         name: String,
-    ): Config {
-        return (obj as Color).format().toConfig(name)
-    }
+    ): Config = (obj as Color).format().toConfig(name)
 }
