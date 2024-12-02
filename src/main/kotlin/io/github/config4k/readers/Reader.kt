@@ -10,7 +10,9 @@ import com.typesafe.config.Config
  *
  * @param T support type
  */
-internal open class Reader<out T>(read: (Config, String) -> T) {
+internal open class Reader<out T>(
+    read: (Config, String) -> T,
+) {
     val getValue: (Config, String) -> T? = value@{ config, path ->
         if (config.hasPath(path)) return@value read(config, path)
         /*
@@ -25,11 +27,13 @@ internal open class Reader<out T>(read: (Config, String) -> T) {
     companion object {
         // see https://stackoverflow.com/questions/2559759
         internal fun camelCaseToLowerHyphenCase(camelCase: String): String =
-            camelCase.split('.').map {
-                "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])"
-                    .toRegex()
-                    .replace(it, "-")
-                    .lowercase()
-            }.joinToString(".")
+            camelCase
+                .split('.')
+                .map {
+                    "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])"
+                        .toRegex()
+                        .replace(it, "-")
+                        .lowercase()
+                }.joinToString(".")
     }
 }

@@ -24,8 +24,8 @@ object DocExamples {
                 """
         |stringValue = hello
         |booleanValue = true
-        |"""
-                    .trimMargin(),
+        |
+                """.trimMargin(),
             )
 
         val stringValue: String by config
@@ -47,8 +47,8 @@ object DocExamples {
         |map {  
         |  foo = 5
         |  bar = 6
-        |}"""
-                    .trimMargin(),
+        |}
+                """.trimMargin(),
             )
         val map: Map<String, Int> = config.extract("map")
         println(map["foo"] == 5) // true
@@ -68,8 +68,8 @@ object DocExamples {
         |{
         |  key = 6
         |  value = "bar"
-        |}]"""
-                    .trimMargin(),
+        |}]
+                """.trimMargin(),
             )
         val map: Map<Int, String> = config.extract("map")
         println(map[5] == "foo") // true
@@ -79,7 +79,10 @@ object DocExamples {
 
     fun deserializationDataClasses() {
         // begin-snippet: deserialization-data-class
-        data class Person(val name: String, val age: Int)
+        data class Person(
+            val name: String,
+            val age: Int,
+        )
 
         val config =
             ConfigFactory.parseString(
@@ -87,8 +90,8 @@ object DocExamples {
         |key {  
         |  name = "foo"
         |  age = 20
-        |}"""
-                    .trimMargin(),
+        |}
+                """.trimMargin(),
             )
         val person: Person = config.extract("key")
         println(person.name) // foo
@@ -124,7 +127,10 @@ object DocExamples {
 
     fun serializeString() {
         // begin-snippet: serialization-string
-        data class Person(val name: String, val age: Int)
+        data class Person(
+            val name: String,
+            val age: Int,
+        )
 
         val person = Person("foo", 20).toConfig("person")
         println(person.root().render())
@@ -134,7 +140,10 @@ object DocExamples {
     fun serializeHocon() {
         // begin-snippet: serialization-hocon
         // If setJson(false) is called, ConfigValue.render returns HOCON
-        data class Person(val name: String, val age: Int)
+        data class Person(
+            val name: String,
+            val age: Int,
+        )
 
         val person = Person("foo", 20).toConfig("person")
         val options = ConfigRenderOptions.defaults().setJson(false)
@@ -145,11 +154,15 @@ object DocExamples {
     fun serializeWithoutComments() {
         // begin-snippet: serialization-without-comments
         // setOriginComments(false) removes comments
-        data class Person(val name: String, val age: Int)
+        data class Person(
+            val name: String,
+            val age: Int,
+        )
 
         val person = Person("foo", 20).toConfig("person")
         val options =
-            ConfigRenderOptions.defaults()
+            ConfigRenderOptions
+                .defaults()
                 .setJson(false)
                 .setOriginComments(false)
         println(person.root().render(options))

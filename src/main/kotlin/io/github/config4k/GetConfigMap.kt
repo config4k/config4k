@@ -10,20 +10,25 @@ internal fun getConfigMap(
     receiver: Any,
     clazz: KClass<Any>,
 ): Map<String, *> =
-    clazz.primaryConstructor!!.parameters.mapNotNull {
-        val parameterName = it.name!!
-        clazz.memberProperties
-            .find { member -> member.name == parameterName }!!
-            .apply { isAccessible = true }
-            .get(receiver)
-            ?.let { parameterValue ->
-                parameterName to parameterValue.toConfigValue()
-            }
-    }.toMap()
+    clazz.primaryConstructor!!
+        .parameters
+        .mapNotNull {
+            val parameterName = it.name!!
+            clazz.memberProperties
+                .find { member -> member.name == parameterName }!!
+                .apply { isAccessible = true }
+                .get(receiver)
+                ?.let { parameterValue ->
+                    parameterName to parameterValue.toConfigValue()
+                }
+        }.toMap()
 
 internal fun Any.toConfigValue(): ConfigValue {
     val name = "dummy"
     return this.toConfig(name).root()[name]!!
 }
 
-internal data class MapEntry<K, V>(val key: K, val value: V)
+internal data class MapEntry<K, V>(
+    val key: K,
+    val value: V,
+)
