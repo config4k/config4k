@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.1.0"
-ktlint = "1.4.1"
+ktlint = "1.5.0"
 gradle-ktlint = "12.1.2"
 dokka = "1.9.20"
 nexus-publish = "2.0.0"
