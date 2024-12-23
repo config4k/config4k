@@ -28,15 +28,15 @@ dependencies {
     testImplementation(libs.kotest)
 }
 
-val sourcesJar by tasks.creating(Jar::class) {
+val sourcesJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
 }
 
-val dokkaJar by tasks.creating(Jar::class) {
+val dokkaJar by tasks.registering(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     archiveClassifier.set("javadoc")
-    from(tasks.dokkaJavadoc)
+    from(tasks.dokkaGeneratePublicationHtml)
 }
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))

@@ -1,7 +1,7 @@
 #IntelliJ IDEA
 .idea
 #Gradle
-gradle.properties
+!gradle.properties
 
 # Created by https://www.gitignore.io/api/gradle,intellij
 
