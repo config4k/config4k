@@ -220,5 +220,3 @@ class TestExtension :
             }
         }
     })
-
-fun String.toConfig(): Config = ConfigFactory.parseString(this.trimIndent())
