@@ -11,6 +11,7 @@ repositories {
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.dokka)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.nexus.publish)
@@ -25,7 +26,14 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     api(libs.typesafe.config)
+    api(libs.kotlinx.serialization.hocon)
+    testImplementation(platform(libs.junit5))
+    testImplementation(platform(libs.assertj))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.assertj:assertj-core")
+    testImplementation(libs.mockk)
     testImplementation(libs.kotest)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 val sourcesJar by tasks.registering(Jar::class) {
@@ -45,6 +53,7 @@ kotlin {
     compilerOptions {
         jvmTarget = JvmTarget.JVM_1_8
         allWarningsAsErrors = true
+        optIn.add("kotlinx.serialization.ExperimentalSerializationApi")
     }
 }
 

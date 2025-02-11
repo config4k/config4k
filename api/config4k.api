@@ -24,6 +24,10 @@ public final class io/github/config4k/Config4kException$WrongEnum : java/lang/Ru
 	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
 }
 
+public final class io/github/config4k/Config4kKt {
+	public static final fun getConfig4k ()Lkotlinx/serialization/hocon/Hocon;
+}
+
 public abstract interface class io/github/config4k/CustomType {
 	public abstract fun parse (Lio/github/config4k/ClassContainer;Lcom/typesafe/config/Config;Ljava/lang/String;)Ljava/lang/Object;
 	public abstract fun testParse (Lio/github/config4k/ClassContainer;)Z
@@ -49,5 +53,14 @@ public final class io/github/config4k/readers/SelectReader {
 	public static final field INSTANCE Lio/github/config4k/readers/SelectReader;
 	public final fun extractWithoutPath (Lio/github/config4k/ClassContainer;Lcom/typesafe/config/Config;)Ljava/lang/Object;
 	public final fun getReader (Lio/github/config4k/ClassContainer;)Lkotlin/jvm/functions/Function2;
+}
+
+public final class io/github/config4k/serializers/ConfigSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lio/github/config4k/serializers/ConfigSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/typesafe/config/Config;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/typesafe/config/Config;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
 }
 

@@ -5,17 +5,24 @@ gradle-ktlint = "12.1.2"
 dokka = "2.0.0"
 nexus-publish = "2.0.0"
 typesafe-config = "1.4.3"
+kotlinx-serialization = "1.8.0"
 kotest = "5.9.1"
+mockk = "1.13.16"
 jgitver = "0.9.1"
 binary-compatibility-validator = "0.17.0"
 
 [libraries]
+assertj = { module = "org.assertj:assertj-bom", version = "3.26.3" }
 typesafe-config = { group = "com.typesafe", name = "config", version.ref = "typesafe-config" }
+kotlinx-serialization-hocon = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-hocon", version.ref = "kotlinx-serialization" }
 kotest = { group = "io.kotest", name = "kotest-runner-junit5-jvm", version.ref = "kotest" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+junit5 = { module = "org.junit:junit-bom", version = "5.11.2" }
 ktlint = { group = "com.pinterest.ktlint", name = "ktlint-bom", version.ref = "ktlint" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
