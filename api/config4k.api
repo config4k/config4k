@@ -64,3 +64,12 @@ public final class io/github/config4k/serializers/ConfigSerializer : kotlinx/ser
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
 }
 
+public final class io/github/config4k/serializers/ConfigValueSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lio/github/config4k/serializers/ConfigValueSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/typesafe/config/ConfigValue;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/typesafe/config/ConfigValue;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
