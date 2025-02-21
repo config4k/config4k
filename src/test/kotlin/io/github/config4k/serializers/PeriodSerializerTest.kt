@@ -4,8 +4,6 @@ import com.typesafe.config.Config
 import io.github.config4k.Config4k
 import io.github.config4k.render
 import io.github.config4k.toConfig
-import io.kotest.matchers.should
-import io.kotest.matchers.throwable.shouldHaveMessage
 import io.mockk.mockk
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.MissingFieldException
@@ -14,9 +12,10 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.hocon.decodeFromConfig
 import kotlinx.serialization.hocon.encodeToConfig
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.assertj.core.api.Assertions.catchThrowableOfType
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.time.Period
 
 class PeriodSerializerTest {
@@ -37,14 +36,15 @@ class PeriodSerializerTest {
             val test: Conf = Config4k.decodeFromConfig("p = 1 y".toConfig())
             assertThat(test.p).isEqualTo(OneYear)
 
-            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
-                .should { assertThat(it.missingFields).contains("p") }
+            val thrown = catchThrowableOfType(MissingFieldException::class.java) { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
+            assertThat(thrown.missingFields).contains("p")
         }
 
         @Test
         fun checkIncorrectDecoder() {
-            assertThrows<SerializationException> { PeriodSerializer.deserialize(mockk()) }
-                .shouldHaveMessage("This class can be decoded only by Hocon format")
+            assertThatThrownBy { PeriodSerializer.deserialize(mockk()) }
+                .isInstanceOf(SerializationException::class.java)
+                .hasMessage("This class can be decoded only by Hocon format")
         }
 
         @Test
@@ -88,14 +88,16 @@ class PeriodSerializerTest {
             test = Config4k.encodeToConfig(Conf(Period.of(1, 20, 0)))
             assertThat(test.render()).isEqualTo("p=\"32 mo\"")
 
-            assertThrows<SerializationException> { Config4k.encodeToConfig(Conf(Period.of(1, 0, 2))) }
-                .shouldHaveMessage("java.time.Period can be specified by only one time unit")
+            assertThatThrownBy { Config4k.encodeToConfig(Conf(Period.of(1, 0, 2))) }
+                .isInstanceOf(SerializationException::class.java)
+                .hasMessage("java.time.Period can be specified by only one time unit")
         }
 
         @Test
         fun checkIncorrectEncoder() {
-            assertThrows<SerializationException> { PeriodSerializer.serialize(mockk(), mockk()) }
-                .shouldHaveMessage("This class can be encoded only by Hocon format")
+            assertThatThrownBy { PeriodSerializer.serialize(mockk(), mockk()) }
+                .isInstanceOf(SerializationException::class.java)
+                .hasMessage("This class can be encoded only by Hocon format")
         }
     }
 
@@ -114,8 +116,8 @@ class PeriodSerializerTest {
             val test: Conf = Config4k.decodeFromConfig("ps = [10 d, 1 y]".toConfig())
             assertThat(test.ps).containsExactly(TenDays, OneYear)
 
-            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
-                .should { assertThat(it.missingFields).contains("ps") }
+            val thrown = catchThrowableOfType(MissingFieldException::class.java) { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
+            assertThat(thrown.missingFields).contains("ps")
         }
 
         @Test
@@ -179,8 +181,8 @@ class PeriodSerializerTest {
                 .containsEntry("key1", OneYear)
                 .containsEntry("key2", TenDays)
 
-            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
-                .should { assertThat(it.missingFields).contains("ps") }
+            val thrown = catchThrowableOfType(MissingFieldException::class.java) { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
+            assertThat(thrown.missingFields).contains("ps")
         }
 
         @Test

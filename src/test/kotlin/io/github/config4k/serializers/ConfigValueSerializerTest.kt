@@ -10,8 +10,6 @@ import io.github.config4k.Config4k
 import io.github.config4k.render
 import io.github.config4k.toConfig
 import io.github.config4k.toConfigValue
-import io.kotest.matchers.should
-import io.kotest.matchers.throwable.shouldHaveMessage
 import io.mockk.mockk
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.MissingFieldException
@@ -20,10 +18,11 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.hocon.decodeFromConfig
 import kotlinx.serialization.hocon.encodeToConfig
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.assertj.core.api.Assertions.catchThrowableOfType
 import org.assertj.core.api.InstanceOfAssertFactories.MAP
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 class ConfigValueSerializerTest {
     @Nested
@@ -39,14 +38,15 @@ class ConfigValueSerializerTest {
             assertThat(test.conf.valueType()).isEqualTo(OBJECT)
             assertThat(test.conf).asInstanceOf(MAP).containsKey("foo")
 
-            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
-                .should { assertThat(it.missingFields).contains("conf") }
+            val thrown = catchThrowableOfType(MissingFieldException::class.java) { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
+            assertThat(thrown.missingFields).contains("conf")
         }
 
         @Test
         fun checkIncorrectDecoder() {
-            assertThrows<SerializationException> { ConfigValueSerializer.deserialize(mockk()) }
-                .shouldHaveMessage("This class can be decoded only by Hocon format")
+            assertThatThrownBy { ConfigValueSerializer.deserialize(mockk()) }
+                .isInstanceOf(SerializationException::class.java)
+                .hasMessage("This class can be decoded only by Hocon format")
         }
 
         @Test
@@ -92,8 +92,9 @@ class ConfigValueSerializerTest {
 
         @Test
         fun checkIncorrectEncoder() {
-            assertThrows<SerializationException> { ConfigValueSerializer.serialize(mockk(), mockk()) }
-                .shouldHaveMessage("This class can be encoded only by Hocon format")
+            assertThatThrownBy { ConfigValueSerializer.serialize(mockk(), mockk()) }
+                .isInstanceOf(SerializationException::class.java)
+                .hasMessage("This class can be encoded only by Hocon format")
         }
     }
 
@@ -116,8 +117,8 @@ class ConfigValueSerializerTest {
             assertThat(test.conf[1].valueType()).isEqualTo(OBJECT)
             assertThat(test.conf[1]).asInstanceOf(MAP).containsKey("fizz")
 
-            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
-                .should { assertThat(it.missingFields).contains("conf") }
+            val thrown = catchThrowableOfType(MissingFieldException::class.java) { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
+            assertThat(thrown.missingFields).contains("conf")
         }
 
         @Test
@@ -206,8 +207,8 @@ class ConfigValueSerializerTest {
             assertThat(test.conf["key2"]?.valueType()).isEqualTo(OBJECT)
             assertThat(test.conf["key2"]).asInstanceOf(MAP).containsKey("fizz")
 
-            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
-                .should { assertThat(it.missingFields).contains("conf") }
+            val thrown = catchThrowableOfType(MissingFieldException::class.java) { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
+            assertThat(thrown.missingFields).contains("conf")
         }
 
         @Test
