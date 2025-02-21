@@ -19,10 +19,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.time.Period
 
-val OneYear: Period = Period.ofYears(1)
-val TenDays: Period = Period.ofDays(10)
-
 class PeriodSerializerTest {
+    private companion object {
+        val OneYear: Period = Period.ofYears(1)
+        val TenDays: Period = Period.ofDays(10)
+    }
+
     @Nested
     inner class SimpleTest {
         @Test
@@ -80,11 +82,11 @@ class PeriodSerializerTest {
             var test = Config4k.encodeToConfig(Conf(OneYear))
             assertThat(test.render()).isEqualTo("p=\"1 y\"")
             test = Config4k.encodeToConfig(Conf(Period.ofMonths(10)))
-            assertThat(test.render()).isEqualTo("p=\"10 m\"")
+            assertThat(test.render()).isEqualTo("p=\"10 mo\"")
             test = Config4k.encodeToConfig(Conf(TenDays))
             assertThat(test.render()).isEqualTo("p=\"10 d\"")
             test = Config4k.encodeToConfig(Conf(Period.of(1, 20, 0)))
-            assertThat(test.render()).isEqualTo("p=\"32 m\"")
+            assertThat(test.render()).isEqualTo("p=\"32 mo\"")
 
             assertThrows<SerializationException> { Config4k.encodeToConfig(Conf(Period.of(1, 0, 2))) }
                 .shouldHaveMessage("java.time.Period can be specified by only one time unit")
