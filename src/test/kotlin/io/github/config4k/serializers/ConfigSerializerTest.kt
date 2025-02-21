@@ -3,7 +3,8 @@ package io.github.config4k.serializers
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigObject
-import com.typesafe.config.ConfigValueType
+import com.typesafe.config.ConfigValueType.NULL
+import com.typesafe.config.ConfigValueType.OBJECT
 import io.github.config4k.Config4k
 import io.github.config4k.render
 import io.github.config4k.toConfig
@@ -23,19 +24,19 @@ import org.junit.jupiter.api.assertThrows
 
 class ConfigSerializerTest {
     @Nested
-    inner class SimpleConfigTest {
+    inner class SimpleTest {
         @Test
-        fun checkConfigDecoding() {
+        fun checkDecoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 @Contextual val conf: Config,
             )
 
-            val test: TestConfig = Config4k.decodeFromConfig("conf { foo = bar }".toConfig())
+            val test: Conf = Config4k.decodeFromConfig("conf { foo = bar }".toConfig())
             assertThat(test.conf).isNotNull()
             assertThat(test.conf.hasPath("foo")).isTrue()
 
-            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<TestConfig>("foo = bar".toConfig()) }
+            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
                 .should { assertThat(it.missingFields).contains("conf") }
         }
 
@@ -46,40 +47,40 @@ class ConfigSerializerTest {
         }
 
         @Test
-        fun checkNullableConfigDecoding() {
+        fun checkNullableDecoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 @Contextual val conf: Config? = null,
             )
 
-            val test: TestConfig = Config4k.decodeFromConfig("foo = bar".toConfig())
+            val test: Conf = Config4k.decodeFromConfig("foo = bar".toConfig())
             assertThat(test.conf).isNull()
         }
 
         @Test
-        fun checkDefaultConfigDecoding() {
+        fun checkDefaultDecoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 @Contextual val conf: Config = ConfigFactory.empty(),
             )
 
-            val test: TestConfig = Config4k.decodeFromConfig("conf { foo = bar }".toConfig())
+            val test: Conf = Config4k.decodeFromConfig("conf { foo = bar }".toConfig())
             assertThat(test.conf).isNotNull()
             assertThat(test.conf.hasPath("foo")).isTrue()
 
-            val default: TestConfig = Config4k.decodeFromConfig("foo = bar".toConfig())
+            val default: Conf = Config4k.decodeFromConfig("foo = bar".toConfig())
             assertThat(default.conf).isNotNull()
             assertThat(default.conf.hasPath("foo")).isFalse()
         }
 
         @Test
-        fun checkConfigEncoding() {
+        fun checkEncoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 @Contextual val conf: Config,
             )
 
-            val test: Config = Config4k.encodeToConfig(TestConfig("foo = bar".toConfig()))
+            val test: Config = Config4k.encodeToConfig(Conf("foo = bar".toConfig()))
             assertThat(test.hasPath("conf")).isTrue()
             assertThat(test.hasPath("conf.foo")).isTrue()
             assertThat(test.getString("conf.foo")).isEqualTo("bar")
@@ -94,42 +95,40 @@ class ConfigSerializerTest {
     }
 
     @Nested
-    inner class ListConfigTest {
+    inner class ListTest {
         @Test
-        fun checkListConfigDecoding() {
+        fun checkDecoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 val conf: List<@Contextual Config>,
             )
 
-            val emptyTest: TestConfig = Config4k.decodeFromConfig("conf = []".toConfig())
+            val emptyTest: Conf = Config4k.decodeFromConfig("conf = []".toConfig())
             assertThat(emptyTest.conf).isNotNull().isEmpty()
 
-            val test: TestConfig =
-                Config4k.decodeFromConfig("conf = [{ foo = bar }, { fizz = buzz }]".toConfig())
+            val test: Conf = Config4k.decodeFromConfig("conf = [{ foo = bar }, { fizz = buzz }]".toConfig())
             assertThat(test.conf).isNotNull().hasSize(2)
             assertThat(test.conf[0].hasPath("foo")).isTrue()
             assertThat(test.conf[1].hasPath("fizz")).isTrue()
 
-            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<TestConfig>("foo = bar".toConfig()) }
+            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
                 .should { assertThat(it.missingFields).contains("conf") }
         }
 
         @Test
-        fun checkNullableListConfigDecoding() {
+        fun checkNullableDecoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 val conf: List<@Contextual Config?>? = null,
             )
 
-            val nullTest: TestConfig = Config4k.decodeFromConfig("foo = bar".toConfig())
+            val nullTest: Conf = Config4k.decodeFromConfig("foo = bar".toConfig())
             assertThat(nullTest.conf).isNull()
 
-            val emptyTest: TestConfig = Config4k.decodeFromConfig("conf = []".toConfig())
+            val emptyTest: Conf = Config4k.decodeFromConfig("conf = []".toConfig())
             assertThat(emptyTest.conf).isNotNull().isEmpty()
 
-            val test: TestConfig =
-                Config4k.decodeFromConfig("conf = [{ foo = bar }, null, { fizz = buzz }]".toConfig())
+            val test: Conf = Config4k.decodeFromConfig("conf = [{ foo = bar }, null, { fizz = buzz }]".toConfig())
             assertThat(test.conf).isNotNull().hasSize(3)
             assertThat(test.conf?.get(0)?.hasPath("foo")).isTrue()
             assertThat(test.conf?.get(1)).isNull()
@@ -137,54 +136,52 @@ class ConfigSerializerTest {
         }
 
         @Test
-        fun checkDefaultListConfigDecoding() {
+        fun checkDefaultDecoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 val conf: List<@Contextual Config> = listOf(ConfigFactory.empty()),
             )
 
-            val test: TestConfig =
-                Config4k.decodeFromConfig("conf = [{ foo = bar }, { fizz = buzz }]".toConfig())
+            val test: Conf = Config4k.decodeFromConfig("conf = [{ foo = bar }, { fizz = buzz }]".toConfig())
             assertThat(test.conf).isNotNull().hasSize(2)
             assertThat(test.conf[0].hasPath("foo")).isTrue()
             assertThat(test.conf[1].hasPath("fizz")).isTrue()
 
-            val default: TestConfig = Config4k.decodeFromConfig("foo = bar".toConfig())
+            val default: Conf = Config4k.decodeFromConfig("foo = bar".toConfig())
             assertThat(default.conf).isNotNull()
             assertThat(default.conf[0].hasPath("foo")).isFalse()
         }
 
         @Test
-        fun checkListConfigEncoding() {
+        fun checkEncoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 val conf: List<@Contextual Config?>,
             )
 
-            val test: Config =
-                Config4k.encodeToConfig(TestConfig(listOf("foo = bar".toConfig(), null)))
+            val test: Config = Config4k.encodeToConfig(Conf(listOf("foo = bar".toConfig(), null)))
             assertThat(test.hasPath("conf")).isTrue()
             assertThat(test.getList("conf")).hasSize(2)
-            assertThat(test.getList("conf")[0].valueType()).isEqualTo(ConfigValueType.OBJECT)
+            assertThat(test.getList("conf")[0].valueType()).isEqualTo(OBJECT)
             assertThat(test.getList("conf")[0] as ConfigObject).containsKeys("foo")
-            assertThat(test.getList("conf")[1].valueType()).isEqualTo(ConfigValueType.NULL)
+            assertThat(test.getList("conf")[1].valueType()).isEqualTo(NULL)
             assertThat(test.render()).isEqualTo("conf=[{foo=bar},null]")
         }
     }
 
     @Nested
-    inner class MapConfigTest {
+    inner class MapTest {
         @Test
-        fun checkMapConfigDecoding() {
+        fun checkDecoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 val conf: Map<String, @Contextual Config>,
             )
 
-            val emptyTest: TestConfig = Config4k.decodeFromConfig("conf = {}".toConfig())
+            val emptyTest: Conf = Config4k.decodeFromConfig("conf = {}".toConfig())
             assertThat(emptyTest.conf).isNotNull().isEmpty()
 
-            val test: TestConfig =
+            val test: Conf =
                 Config4k.decodeFromConfig(
                     "conf { key1 { foo = bar }, key2 { fizz = buzz } }".toConfig(),
                 )
@@ -192,24 +189,24 @@ class ConfigSerializerTest {
             assertThat(test.conf["key1"]?.hasPath("foo")).isTrue()
             assertThat(test.conf["key2"]?.hasPath("fizz")).isTrue()
 
-            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<TestConfig>("foo = bar".toConfig()) }
+            assertThrows<MissingFieldException> { Config4k.decodeFromConfig<Conf>("foo = bar".toConfig()) }
                 .should { assertThat(it.missingFields).contains("conf") }
         }
 
         @Test
-        fun checkNullableMapConfigDecoding() {
+        fun checkNullableDecoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 val conf: Map<String, @Contextual Config?>? = null,
             )
 
-            val nullTest: TestConfig = Config4k.decodeFromConfig("foo = bar".toConfig())
+            val nullTest: Conf = Config4k.decodeFromConfig("foo = bar".toConfig())
             assertThat(nullTest.conf).isNull()
 
-            val emptyTest: TestConfig = Config4k.decodeFromConfig("conf = {}".toConfig())
+            val emptyTest: Conf = Config4k.decodeFromConfig("conf = {}".toConfig())
             assertThat(emptyTest.conf).isNotNull().isEmpty()
 
-            val test: TestConfig =
+            val test: Conf =
                 Config4k.decodeFromConfig("conf = { key1 { foo = bar }, key2 = null, key3 { fizz = buzz } }".toConfig())
             assertThat(test.conf).isNotNull().hasSize(3)
             assertThat(test.conf?.get("key1")?.hasPath("foo")).isTrue()
@@ -218,33 +215,32 @@ class ConfigSerializerTest {
         }
 
         @Test
-        fun checkDefaultMapConfigDecoding() {
+        fun checkDefaultDecoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 val conf: Map<String, @Contextual Config> = mapOf("key" to ConfigFactory.empty()),
             )
 
-            val test: TestConfig =
-                Config4k.decodeFromConfig("conf = { key1 { foo = bar }, key2 { fizz = buzz } }".toConfig())
+            val test: Conf = Config4k.decodeFromConfig("conf = { key1 { foo = bar }, key2 { fizz = buzz } }".toConfig())
             assertThat(test.conf).isNotNull().hasSize(2)
             assertThat(test.conf["key1"]?.hasPath("foo")).isTrue()
             assertThat(test.conf["key2"]?.hasPath("fizz")).isTrue()
 
-            val default: TestConfig = Config4k.decodeFromConfig("foo = bar".toConfig())
+            val default: Conf = Config4k.decodeFromConfig("foo = bar".toConfig())
             assertThat(default.conf).isNotNull()
             assertThat(default.conf["key"]?.hasPath("foo")).isFalse()
         }
 
         @Test
-        fun checkMapConfigEncoding() {
+        fun checkEncoding() {
             @Serializable
-            data class TestConfig(
+            data class Conf(
                 val conf: Map<String, @Contextual Config?>,
             )
 
             val test: Config =
                 Config4k.encodeToConfig(
-                    TestConfig(
+                    Conf(
                         mapOf(
                             "key1" to "foo = bar".toConfig(),
                             "key2" to null,
