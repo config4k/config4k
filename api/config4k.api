@@ -83,3 +83,12 @@ public final class io/github/config4k/serializers/PeriodSerializer : kotlinx/ser
 	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/time/Period;)V
 }
 
+public final class io/github/config4k/serializers/TemporalAmountSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lio/github/config4k/serializers/TemporalAmountSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/time/temporal/TemporalAmount;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/time/temporal/TemporalAmount;)V
+}
+

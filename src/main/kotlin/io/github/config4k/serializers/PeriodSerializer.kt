@@ -61,7 +61,7 @@ public object PeriodSerializer : KSerializer<Period> {
                     if (it.years == 0 && it.months == 0) {
                         "${it.days} d"
                     } else if (it.days == 0) {
-                        if (it.months == 0) "${it.years} y" else "${it.toTotalMonths()} m"
+                        if (it.months == 0) "${it.years} y" else "${it.toTotalMonths()} mo"
                     } else {
                         throw SerializationException("java.time.Period can be specified by only one time unit")
                     }
