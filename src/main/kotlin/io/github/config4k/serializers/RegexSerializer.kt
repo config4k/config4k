@@ -23,11 +23,11 @@ import kotlinx.serialization.hocon.HoconEncoder
  *   @Serializable(RegexSerializer::class)
  *   val regex: Regex,
  * )
- * val config = ConfigFactory.parseString("regex = \"7[0-9]{10}\"")
+ * val config = ConfigFactory.parseString("regex = \"[0-9]{10}\"")
  * val exampleRegex: ExampleRegex = Hocon.decodeFromConfig(config)
  * val newConfig = Hocon.encodeToConfig(ExampleRegex.serializer(), exampleRegex)
  *
- * val configOps = ConfigFactory.parseString("regex = {pattern=\"7[0-9]{10}\",options=[LITERAL]}")
+ * val configOps = ConfigFactory.parseString("regex = {pattern=\"[0-9]{10}\",options=[LITERAL]}")
  * val exampleRegexOps: ExampleRegex = Hocon.decodeFromConfig(configOps)
  * val newConfigOps = Hocon.encodeToConfig(ExampleRegex.serializer(), exampleRegexOps)
  * ```
