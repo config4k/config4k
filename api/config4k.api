@@ -119,6 +119,24 @@ public final class io/github/config4k/serializers/TemporalAmountSerializer : kot
 	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/time/temporal/TemporalAmount;)V
 }
 
+public final class io/github/config4k/serializers/URISerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lio/github/config4k/serializers/URISerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/net/URI;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/net/URI;)V
+}
+
+public final class io/github/config4k/serializers/URLSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lio/github/config4k/serializers/URLSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/net/URL;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/net/URL;)V
+}
+
 public final class io/github/config4k/serializers/UUIDSerializer : kotlinx/serialization/KSerializer {
 	public static final field INSTANCE Lio/github/config4k/serializers/UUIDSerializer;
 	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
