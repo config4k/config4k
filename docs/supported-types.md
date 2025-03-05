@@ -1,11 +1,5 @@
----
-layout: default
-title: Supported types
-permalink: /supported-types
-nav_order: 4
----
-
 Property delegation, `extract` and `toConfig` support these types:
+
 - `Boolean`
 - `Byte`
 - `Int`
