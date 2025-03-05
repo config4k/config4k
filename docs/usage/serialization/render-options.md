@@ -1,17 +1,6 @@
----
-layout: default
-title: ConfigRenderOptions
-permalink: /usage/serialization/render-options
-snippet_source: "../src/test/kotlin/io/github/config4k/DocExamples.kt"
-snippet_comment_prefix: "//"
-parent: Serialization
-grand_parent: Usage
-nav_order: 2
----
-
 Typesafe Config's class `ConfigRenderOptions` is the argument of `ConfigValue#render`.
 ```kotlin
-{% include_snippet serialization-hocon %}
+--8<-- "src/test/kotlin/io/github/config4k/DocExamples.kt:serializationHocon"
 ```
 Output:
 ```
@@ -25,7 +14,7 @@ person {
 ```
 
 ```kotlin
-{% include_snippet serialization-without-comments %}
+--8<-- "src/test/kotlin/io/github/config4k/DocExamples.kt:serializationWithoutComments"
 ```
 Output:
 ```

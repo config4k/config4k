@@ -1,0 +1,49 @@
+site_name: Config4k
+site_url: !ENV READTHEDOCS_CANONICAL_URL
+repo_url: https://github.com/config4k/config4k/
+copyright: Copyright &copy; 2016-2021 morihiro, since 2021 The Config4k Team.
+
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/favicon-32x32.png
+  #custom_dir: docs/overrides
+  palette:
+    primary: white
+    accent: white
+  features:
+    - navigation.expand
+    - content.code.copy
+    - content.code.select
+    - content.tabs.link
+
+extra:
+  generator: false
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      dedent_subsections: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Installation: install.md
+  - Usage:
+      - Delegated Properties: usage/delegated-properties.md
+      - Serialization:
+          - String: usage/serialization/string.md
+          - ConfigRenderOptions: usage/serialization/render-options.md
+      - Deserialization:
+          - Default values: usage/deserialization/default-values.md
+          - Data Classes: usage/deserialization/data-class.md
+          - Nullable: usage/deserialization/nullable.md
+          - Map: usage/deserialization/map.md
+          - Enum: usage/deserialization/enum.md
+  - Supported Types: supported-types.md
