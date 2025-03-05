@@ -1,10 +1,9 @@
 # Read the Docs configuration file
 # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
-
 version: 2
 
 build:
-  os: ubuntu-24.04
+  os: ubuntu-lts-latest
   tools:
     python: "3.13"
 
@@ -12,9 +11,7 @@ build:
 mkdocs:
   configuration: mkdocs.yml
 
-    # Optionally, but recommended,
-    # declare the Python requirements required to build your documentation
-    # See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
-    # python:
-    #    install:
-    #    - requirements: docs/requirements.txt
+# See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
+python:
+  install:
+  - requirements: docs/requirements.txt

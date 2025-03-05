@@ -11,14 +11,7 @@ For check documentation use the next steps.
 
 Run the docker container from root folder of this repo:
 ```bash
-docker run --rm --volume="$PWD:/srv/jekyll:Z" --publish 4000:4000 -it jekyll/jekyll:4 sh
+docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
 ```
 
-Inside the running container run the next commands:
-```bash
-cd docs
-bundle install
-rm -rf _site/ && bundle exec jekyll serve -H 0.0.0.0 --incremental
-```
-
-Open [http://localhost:4000/config4k](http://localhost:4000/config4k/) in your browser.
+Open [http://0.0.0.0:8000/](http://0.0.0.0:8000/) in your browser.

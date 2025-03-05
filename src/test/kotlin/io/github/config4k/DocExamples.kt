@@ -18,7 +18,7 @@ fun main() {
 
 object DocExamples {
     fun delegatedProperties() {
-        // begin-snippet: delegated-properties
+        // # --8<-- [start:delegatedProperties]
         val config =
             ConfigFactory.parseString(
                 """
@@ -36,11 +36,11 @@ object DocExamples {
 
         val booleanValue: Boolean by config
         println(booleanValue) // true
-        // end-snippet
+        // # --8<-- [end:delegatedProperties]
     }
 
     fun deserializationMap() {
-        // begin-snippet: deserialization-map
+        // --8<-- [start:deserializationMap]
         val config =
             ConfigFactory.parseString(
                 """
@@ -53,11 +53,11 @@ object DocExamples {
         val map: Map<String, Int> = config.extract("map")
         println(map["foo"] == 5) // true
         println(map["bar"] == 6) // true
-        // end-snippet
+        // --8<-- [end:deserializationMap]
     }
 
     fun deserializationMapKey() {
-        // begin-snippet: deserialization-map-key
+        // --8<-- [start:deserializationMapKey]
         val config =
             ConfigFactory.parseString(
                 """
@@ -74,11 +74,11 @@ object DocExamples {
         val map: Map<Int, String> = config.extract("map")
         println(map[5] == "foo") // true
         println(map[6] == "bar") // true
-        // end-snippet
+        // --8<-- [end:deserializationMapKey]
     }
 
     fun deserializationDataClasses() {
-        // begin-snippet: deserialization-data-class
+        // --8<-- [start:deserializationDataClass]
         data class Person(
             val name: String,
             val age: Int,
@@ -96,37 +96,37 @@ object DocExamples {
         val person: Person = config.extract("key")
         println(person.name) // foo
         println(person.age) // 20
-        // end-snippet
+        // --8<-- [end:deserializationDataClass]
     }
 
     fun deserializeNullable() {
-        // begin-snippet: deserialization-nullable
+        // --8<-- [start:deserializationNullable]
         val config = ConfigFactory.parseString("""key = 10""")
         val key = config.extract<Int?>("key")
         val foo = config.extract<Int?>("foo")
         println(key) // 10
         println(foo) // null
-        // end-snippet
+        // --8<-- [end:deserializationNullable]
     }
 
-    // begin-snippet: deserialization-enum-class
+    // --8<-- [start:deserializationEnumClass]
     enum class Size {
         SMALL,
         MEDIUM,
         LARGE,
     }
-    // end-snippet
+    // --8<-- [end:deserializationEnumClass]
 
     fun deserializeEnum() {
-        // begin-snippet: deserialization-enum
+        // --8<-- [start:deserializationEnum]
         val config = ConfigFactory.parseString("""key = SMALL""")
         val small = config.extract<Size>("key")
         println(small == Size.SMALL) // true
-        // end-snippet
+        // --8<-- [end:deserializationEnum]
     }
 
     fun serializeString() {
-        // begin-snippet: serialization-string
+        // --8<-- [start:serializationString]
         data class Person(
             val name: String,
             val age: Int,
@@ -134,11 +134,11 @@ object DocExamples {
 
         val person = Person("foo", 20).toConfig("person")
         println(person.root().render())
-        // end-snippet
+        // --8<-- [end:serializationString]
     }
 
     fun serializeHocon() {
-        // begin-snippet: serialization-hocon
+        // --8<-- [start:serializationHocon]
         // If setJson(false) is called, ConfigValue.render returns HOCON
         data class Person(
             val name: String,
@@ -148,11 +148,11 @@ object DocExamples {
         val person = Person("foo", 20).toConfig("person")
         val options = ConfigRenderOptions.defaults().setJson(false)
         println(person.root().render(options))
-        // end-snippet
+        // --8<-- [end:serializationHocon]
     }
 
     fun serializeWithoutComments() {
-        // begin-snippet: serialization-without-comments
+        // --8<-- [start:serializationWithoutComments]
         // setOriginComments(false) removes comments
         data class Person(
             val name: String,
@@ -166,14 +166,14 @@ object DocExamples {
                 .setJson(false)
                 .setOriginComments(false)
         println(person.root().render(options))
-        // end-snippet
+        // --8<-- [end:serializationWithoutComments]
     }
 
     fun extractDefaultValues() {
-        // begin-snippet: deserialization-default-values
+        // --8<-- [start:deserializationDefaultValues]
         val config = ConfigFactory.parseString("""key = 10""")
         val key = config.extract("unknown", 20)
         println(key) // 20
-        // end-snippet
+        // --8<-- [end:deserializationDefaultValues]
     }
 }
