@@ -1,13 +1,6 @@
----
-layout: default
-title: Installation
-permalink: /install
-nav_order: 2
----
-
 Gradle:
 
-```groovy
+``` groovy title="build.gradle"
 repositories {
     mavenCentral()
 }
