@@ -14,7 +14,7 @@ _**Config** for **K**otlin._
 
 ## Documentation
 
-For more information see the [documentation](https://config4k.github.io/config4k)
+For more information see the [documentation](https://config4k.readthedocs.io)
 
 ## Snapshots
 

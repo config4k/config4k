@@ -61,7 +61,7 @@ class TestToConfigForArbitraryType :
 
         "DataWithURL.toConfig" should {
             "return Config having DataWithURL" {
-                val data = DataWithURL(URL("https://config4k.github.io/config4k/"))
+                val data = DataWithURL(URL("https://github.com/config4k/config4k"))
                 val config = data.toConfig("data")
                 config.extract<DataWithURL>("data") shouldBe data
             }
