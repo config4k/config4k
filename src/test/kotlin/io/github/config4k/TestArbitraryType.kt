@@ -141,7 +141,7 @@ class TestArbitraryType :
 
         "Config.extract<DataWithURL>()" should {
             "return DataWithURL" {
-                val url = "https://config4k.github.io/config4k/"
+                val url = "https://github.com/config4k/config4k"
                 val config =
                     """
                 {

@@ -51,21 +51,3 @@ jobs:
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-
-  docs:
-    name: Validate docs
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          # we don't know what commit the last tag was
-          fetch-depth: 0
-
-      # Use GitHub Actions' cache to shorten build times and decrease load on servers
-      - uses: actions/cache@v4
-        with:
-         path: docs/vendor/bundle
-         key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
-         restore-keys: |
-           ${{ runner.os }}-gems-

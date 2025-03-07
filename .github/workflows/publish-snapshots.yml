@@ -54,22 +54,3 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
-
-  publish-docs:
-    name: Publish documentation
-    runs-on: ubuntu-latest
-    if: github.repository_owner == 'config4k'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          # we don't know what commit the last tag was
-          fetch-depth: 0
-
-      # Use GitHub Actions' cache to shorten build times and decrease load on servers
-      - uses: actions/cache@v4
-        with:
-          path: docs/vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
