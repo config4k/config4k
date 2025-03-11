@@ -74,6 +74,15 @@ public final class io/github/config4k/serializers/ConfigValueSerializer : kotlin
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
 }
 
+public final class io/github/config4k/serializers/FileSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lio/github/config4k/serializers/FileSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/io/File;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/io/File;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
 public final class io/github/config4k/serializers/PathSerializer : kotlinx/serialization/KSerializer {
 	public static final field INSTANCE Lio/github/config4k/serializers/PathSerializer;
 	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
