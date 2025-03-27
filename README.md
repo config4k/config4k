@@ -7,6 +7,7 @@
 [![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.config4k/config4k?label=snapshot&server=https%3A%2F%2Foss.sonatype.org)](https://oss.sonatype.org/content/repositories/snapshots/io/github/config4k/config4k/)
 [![javadoc](https://javadoc.io/badge2/io.github.config4k/config4k/javadoc.svg)](https://javadoc.io/doc/io.github.config4k/config4k)
 [![GitHub](https://img.shields.io/github/license/config4k/config4k)](https://github.com/config4k/config4k/blob/main/LICENSE)
+[![libs.tech](https://libs.tech/project/72716336/badge.svg)](https://libs.tech/project/72716336/config4k)
 
 _**Config** for **K**otlin._
 
