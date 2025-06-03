@@ -17,7 +17,7 @@ typesafe-config = { group = "com.typesafe", name = "config", version.ref = "type
 kotlinx-serialization-hocon = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-hocon", version.ref = "kotlinx-serialization" }
 kotest = { group = "io.kotest", name = "kotest-runner-junit5-jvm", version.ref = "kotest" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
-junit5 = { module = "org.junit:junit-bom", version = "5.12.2" }
+junit5 = { module = "org.junit:junit-bom", version = "5.13.0" }
 ktlint = { group = "com.pinterest.ktlint", name = "ktlint-bom", version.ref = "ktlint" }
 
 [plugins]
