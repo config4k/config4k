@@ -38,7 +38,7 @@ jobs:
           # we don't know what commit the last tag was
           fetch-depth: 0
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: 'adopt'
           java-version: '8'

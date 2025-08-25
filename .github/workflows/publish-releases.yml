@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 0
       - run: git fetch --tags --force origin # WA: https://github.com/actions/checkout/issues/882
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: 'adopt'
           java-version: '8'
