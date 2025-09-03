@@ -12,7 +12,7 @@ jobs:
     if: github.repository_owner == 'config4k'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # we don't know what commit the last tag was
           fetch-depth: 0
@@ -27,7 +27,7 @@ jobs:
     needs: gradle-validation
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # we don't know what commit the last tag was
           fetch-depth: 0
