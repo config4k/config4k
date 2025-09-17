@@ -1,6 +1,7 @@
 package io.github.config4k.serializers
 
 import kotlinx.serialization.KSerializer
+import java.net.URI
 import java.net.URL
 
 /**
@@ -18,4 +19,5 @@ import java.net.URL
  * val newConfig = Hocon.encodeToConfig(ExampleURL.serializer(), exampleURL)
  * ```
  */
-public object URLSerializer : KSerializer<URL> by stringSerializer("hocon.${URL::class.qualifiedName}", ::URL, URL::toExternalForm)
+public object URLSerializer :
+    KSerializer<URL> by stringSerializer("hocon.${URL::class.qualifiedName}", { URI(it).toURL() }, URL::toExternalForm)

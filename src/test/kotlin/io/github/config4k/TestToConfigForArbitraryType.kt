@@ -2,7 +2,7 @@ package io.github.config4k
 
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
-import java.net.URL
+import java.net.URI
 import java.time.Duration
 import java.util.UUID
 
@@ -61,7 +61,7 @@ class TestToConfigForArbitraryType :
 
         "DataWithURL.toConfig" should {
             "return Config having DataWithURL" {
-                val data = DataWithURL(URL("https://github.com/config4k/config4k"))
+                val data = DataWithURL(URI("https://github.com/config4k/config4k").toURL())
                 val config = data.toConfig("data")
                 config.extract<DataWithURL>("data") shouldBe data
             }

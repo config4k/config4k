@@ -19,6 +19,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.net.URI
 import java.net.URL
 import java.util.UUID
 
@@ -26,7 +27,7 @@ class MapAsListSerializerTest {
     private companion object {
         val simpleKeyMap = mapOf(5 to NestedConf(foo = "bar"), 0 to null, null to NestedConf(foo = "baz"))
         val enumKeyMap = mapOf(HTTPS to "secured", HTTP to "unsecured")
-        val typedKeyMap = mapOf(UUID.fromString("b14240e7-acc0-4a19-bc5d-31a7901e36b0") to URL("https://www.example.com"))
+        val typedKeyMap = mapOf(UUID.fromString("b14240e7-acc0-4a19-bc5d-31a7901e36b0") to URI("https://www.example.com").toURL())
     }
 
     @Serializable

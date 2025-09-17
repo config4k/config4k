@@ -16,12 +16,13 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.Assertions.catchThrowableOfType
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.net.URI
 import java.net.URL
 
 class URLSerializerTest {
     private companion object {
-        val url: URL = URL("https://www.example.com")
-        val defaultUrl: URL = URL("https://www.default.com")
+        val url: URL = URI("https://www.example.com").toURL()
+        val defaultUrl: URL = URI("https://www.default.com").toURL()
     }
 
     @Nested
