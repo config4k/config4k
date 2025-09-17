@@ -35,8 +35,8 @@ jobs:
 
       - uses: actions/setup-java@v5
         with:
-          distribution: 'adopt'
-          java-version: '8'
+          distribution: 'liberica'
+          java-version: '21'
           check-latest: true
           cache: 'gradle'
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
