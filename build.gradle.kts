@@ -27,7 +27,7 @@ dependencies {
     implementation(kotlin("reflect"))
     api(libs.typesafe.config)
     api(libs.kotlinx.serialization.hocon)
-    testImplementation(platform(libs.junit5))
+    testImplementation(platform(libs.junit))
     testImplementation(platform(libs.assertj))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core")
@@ -49,13 +49,18 @@ val dokkaJar by tasks.registering(Jar::class) {
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 
-tasks.withType<JavaCompile>().configureEach {
+tasks.compileJava {
     options.release = 8
+}
+
+tasks.compileKotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_1_8
+    }
 }
 
 kotlin {
     compilerOptions {
-        jvmTarget = JvmTarget.JVM_1_8
         allWarningsAsErrors = true
         optIn.add("kotlinx.serialization.ExperimentalSerializationApi")
     }
