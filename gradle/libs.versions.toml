@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.2.20"
+kotlin = "2.2.21"
 ktlint = "1.7.1"
 gradle-ktlint = "13.1.0"
 dokka = "2.1.0"
