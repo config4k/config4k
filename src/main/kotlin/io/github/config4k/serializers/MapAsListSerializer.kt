@@ -47,13 +47,16 @@ public class MapAsListSerializer<T, V>(
         if (decoder is HoconDecoder) {
             decoder.decodeConfigValue { conf, path ->
                 when (val type = conf.getValue(path).valueType()) {
-                    LIST ->
+                    LIST -> {
                         decoder
                             .decodeSerializableValue(
                                 ListSerializer(SerializableItem.serializer(keySerializer, valueSerializer)),
                             ).associate { it.toPair() }
+                    }
 
-                    else -> throw SerializationException("MapAsList can't be specified by $type value type, only LIST supported")
+                    else -> {
+                        throw SerializationException("MapAsList can't be specified by $type value type, only LIST supported")
+                    }
                 }
             }
         } else {

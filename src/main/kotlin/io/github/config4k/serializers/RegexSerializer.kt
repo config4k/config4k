@@ -50,12 +50,17 @@ public object RegexSerializer : KSerializer<Regex> {
         if (decoder is HoconDecoder) {
             decoder.decodeConfigValue { conf, path ->
                 when (val type = conf.getValue(path).valueType()) {
-                    STRING -> conf.getString(path).toRegex()
+                    STRING -> {
+                        conf.getString(path).toRegex()
+                    }
+
                     OBJECT -> {
                         decoder.decodeSerializableValue(SerializableRegex.serializer()).toRegex()
                     }
 
-                    else -> throw SerializationException("kotlin.text.Regex can't be specified by $type value type")
+                    else -> {
+                        throw SerializationException("kotlin.text.Regex can't be specified by $type value type")
+                    }
                 }
             }
         } else {

@@ -28,14 +28,20 @@ internal fun extractWithParameters(
         constructor.parameters.associateWith { param ->
             val classContainer: ClassContainer =
                 when (val type = param.type.javaType) {
-                    is ParameterizedType ->
+                    is ParameterizedType -> {
                         ClassContainer(
                             (type.rawType as Class<*>).kotlin,
                             getGenericMap(type, clazz.typeArguments),
                         )
+                    }
 
-                    is Class<*> -> ClassContainer(type.kotlin)
-                    else -> requireNotNull(clazz.typeArguments[type.typeName]) { "couldn't find type argument for ${type.typeName}" }
+                    is Class<*> -> {
+                        ClassContainer(type.kotlin)
+                    }
+
+                    else -> {
+                        requireNotNull(clazz.typeArguments[type.typeName]) { "couldn't find type argument for ${type.typeName}" }
+                    }
                 }
             SelectReader
                 .getReader(classContainer)

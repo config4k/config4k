@@ -96,14 +96,38 @@ public fun Any.toConfig(name: String): Config {
     }
     val map =
         when {
-            clazz.javaPrimitiveType != null -> mapOf(name to this)
-            this is String -> mapOf(name to this)
-            this is Enum<*> -> mapOf(name to this.name)
-            this is File -> mapOf(name to this.toString())
-            this is Path -> mapOf(name to this.toString())
-            this is UUID -> mapOf(name to this.toString())
-            this is URL -> mapOf(name to this.toString())
-            this is Duration -> mapOf(name to if (this.nano == 0) "${this.seconds} s" else "${this.toNanos()} ns")
+            clazz.javaPrimitiveType != null -> {
+                mapOf(name to this)
+            }
+
+            this is String -> {
+                mapOf(name to this)
+            }
+
+            this is Enum<*> -> {
+                mapOf(name to this.name)
+            }
+
+            this is File -> {
+                mapOf(name to this.toString())
+            }
+
+            this is Path -> {
+                mapOf(name to this.toString())
+            }
+
+            this is UUID -> {
+                mapOf(name to this.toString())
+            }
+
+            this is URL -> {
+                mapOf(name to this.toString())
+            }
+
+            this is Duration -> {
+                mapOf(name to if (this.nano == 0) "${this.seconds} s" else "${this.toNanos()} ns")
+            }
+
             this is Iterable<*> -> {
                 val list =
                     this.map {
@@ -129,11 +153,17 @@ public fun Any.toConfig(name: String): Config {
                 }
             }
 
-            clazz.primaryConstructor != null ->
+            clazz.primaryConstructor != null -> {
                 mapOf(name to getConfigMap(this, clazz))
+            }
 
-            clazz.objectInstance != null -> mapOf(name to emptyMap<String, Any>())
-            else -> throw Config4kException.UnSupportedType(clazz)
+            clazz.objectInstance != null -> {
+                mapOf(name to emptyMap<String, Any>())
+            }
+
+            else -> {
+                throw Config4kException.UnSupportedType(clazz)
+            }
         }
 
     return ConfigFactory.parseMap(map)
