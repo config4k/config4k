@@ -68,12 +68,17 @@ public object PatternSerializer : KSerializer<Pattern> {
         if (decoder is HoconDecoder) {
             decoder.decodeConfigValue { conf, path ->
                 when (val type = conf.getValue(path).valueType()) {
-                    STRING -> Pattern.compile(conf.getString(path))
+                    STRING -> {
+                        Pattern.compile(conf.getString(path))
+                    }
+
                     OBJECT -> {
                         decoder.decodeSerializableValue(SerializablePattern.serializer()).toPattern()
                     }
 
-                    else -> throw SerializationException("java.util.regex.Pattern can't be specified by $type value type")
+                    else -> {
+                        throw SerializationException("java.util.regex.Pattern can't be specified by $type value type")
+                    }
                 }
             }
         } else {

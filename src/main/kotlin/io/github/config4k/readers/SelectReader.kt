@@ -35,40 +35,129 @@ public object SelectReader {
             }
         }
         return when (clazz.mapperClass) {
-            Int::class -> IntReader()
-            String::class -> StringReader()
-            Boolean::class -> BooleanReader()
-            Byte::class -> ByteReader()
-            Double::class -> DoubleReader()
-            Float::class -> FloatReader()
-            Long::class -> LongReader()
-            Duration::class -> DurationReader()
-            Period::class -> PeriodReader()
-            TemporalAmount::class -> TemporalAmountReader()
-            ConfigMemorySize::class -> MemorySizeReader()
-            UUID::class -> UUIDReader()
-            URL::class -> URLReader()
-            Config::class -> ConfigReader()
-            ConfigValue::class -> ConfigValueReader()
-            MutableList::class -> ListReader(clazz.typeArguments.getValue("E"), mutable = true)
-            List::class -> ListReader(clazz.typeArguments.getValue("E"))
-            MutableSet::class -> SetReader(clazz.typeArguments.getValue("E"), mutable = true)
-            Set::class -> SetReader(clazz.typeArguments.getValue("E"))
-            MutableMap::class -> MapReader(clazz.typeArguments.getValue("K"), clazz.typeArguments.getValue("V"), mutable = true)
-            Map::class -> MapReader(clazz.typeArguments.getValue("K"), clazz.typeArguments.getValue("V"))
-            File::class -> FileReader()
-            Path::class -> PathReader()
-            Regex::class -> RegexReader()
-            else ->
+            Int::class -> {
+                IntReader()
+            }
+
+            String::class -> {
+                StringReader()
+            }
+
+            Boolean::class -> {
+                BooleanReader()
+            }
+
+            Byte::class -> {
+                ByteReader()
+            }
+
+            Double::class -> {
+                DoubleReader()
+            }
+
+            Float::class -> {
+                FloatReader()
+            }
+
+            Long::class -> {
+                LongReader()
+            }
+
+            Duration::class -> {
+                DurationReader()
+            }
+
+            Period::class -> {
+                PeriodReader()
+            }
+
+            TemporalAmount::class -> {
+                TemporalAmountReader()
+            }
+
+            ConfigMemorySize::class -> {
+                MemorySizeReader()
+            }
+
+            UUID::class -> {
+                UUIDReader()
+            }
+
+            URL::class -> {
+                URLReader()
+            }
+
+            Config::class -> {
+                ConfigReader()
+            }
+
+            ConfigValue::class -> {
+                ConfigValueReader()
+            }
+
+            MutableList::class -> {
+                ListReader(clazz.typeArguments.getValue("E"), mutable = true)
+            }
+
+            List::class -> {
+                ListReader(clazz.typeArguments.getValue("E"))
+            }
+
+            MutableSet::class -> {
+                SetReader(clazz.typeArguments.getValue("E"), mutable = true)
+            }
+
+            Set::class -> {
+                SetReader(clazz.typeArguments.getValue("E"))
+            }
+
+            MutableMap::class -> {
+                MapReader(clazz.typeArguments.getValue("K"), clazz.typeArguments.getValue("V"), mutable = true)
+            }
+
+            Map::class -> {
+                MapReader(clazz.typeArguments.getValue("K"), clazz.typeArguments.getValue("V"))
+            }
+
+            File::class -> {
+                FileReader()
+            }
+
+            Path::class -> {
+                PathReader()
+            }
+
+            Regex::class -> {
+                RegexReader()
+            }
+
+            else -> {
                 when {
-                    clazz.mapperClass.java.isArray ->
+                    clazz.mapperClass.java.isArray -> {
                         ArrayReader(clazz.mapperClass.java.componentType.kotlin)
-                    clazz.mapperClass.java.isEnum -> EnumReader(clazz.mapperClass)
-                    clazz.mapperClass.primaryConstructor != null -> ArbitraryTypeReader(clazz)
-                    clazz.mapperClass.objectInstance != null -> ObjectReader(clazz)
-                    clazz.mapperClass.constructors.any { it.parameters.isEmpty() } -> JavaBeanReader(clazz.mapperClass)
-                    else -> throw Config4kException.UnSupportedType(clazz.mapperClass)
+                    }
+
+                    clazz.mapperClass.java.isEnum -> {
+                        EnumReader(clazz.mapperClass)
+                    }
+
+                    clazz.mapperClass.primaryConstructor != null -> {
+                        ArbitraryTypeReader(clazz)
+                    }
+
+                    clazz.mapperClass.objectInstance != null -> {
+                        ObjectReader(clazz)
+                    }
+
+                    clazz.mapperClass.constructors.any { it.parameters.isEmpty() } -> {
+                        JavaBeanReader(clazz.mapperClass)
+                    }
+
+                    else -> {
+                        throw Config4kException.UnSupportedType(clazz.mapperClass)
+                    }
                 }
+            }
         }.getValue
     }
 
