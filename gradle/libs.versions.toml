@@ -12,7 +12,7 @@ jgitver = "0.9.1"
 binary-compatibility-validator = "0.18.1"
 
 [libraries]
-assertj = { module = "org.assertj:assertj-bom", version = "3.27.6" }
+assertj = { module = "org.assertj:assertj-bom", version = "3.27.7" }
 typesafe-config = { group = "com.typesafe", name = "config", version.ref = "typesafe-config" }
 kotlinx-serialization-hocon = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-hocon", version.ref = "kotlinx-serialization" }
 kotest = { group = "io.kotest", name = "kotest-runner-junit5-jvm", version.ref = "kotest" }
