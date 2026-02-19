@@ -24,6 +24,38 @@ class TestExtensibleTypes :
                 config.getString("key") shouldBe "#fe222e"
             }
         }
+
+        registerCustomType(HexIntCustomType)
+        "value type: Config.extract<HexInt>" should {
+            "return HexInt" {
+                val config = """
+                    key = "CAFE"
+                """.trimIndent().toConfig()
+                val hex = config.extract<HexInt>("key")
+                hex shouldBe HexInt(0xCAFE)
+            }
+        }
+        "value type: Config.extract<ContainerClass>" should {
+            "return HexInt" {
+                val config = """
+                    hex = "CAFE"
+                """.trimIndent().toConfig()
+                val c = config.extract<ContainerClass>()
+                c.hex shouldBe HexInt(0xCAFE)
+            }
+        }
+        "value type: HexInt.toConfig" should {
+            "return string value" {
+                val config = HexInt(0xBEBE).toConfig("hex")
+                config.getString("hex").uppercase() shouldBe "BEBE"
+            }
+        }
+        "value type: ContainerClass.toConfig" should {
+            "return string value" {
+                val config = ContainerClass(HexInt(0xBEBE)).toConfig("key")
+                config.getString("key.hex").uppercase() shouldBe "BEBE"
+            }
+        }
     })
 
 data class Color(
@@ -66,3 +98,29 @@ object ColorCustomType : CustomType {
         name: String,
     ): Config = (obj as Color).format().toConfig(name)
 }
+
+@JvmInline
+value class HexInt internal constructor(val rawValue: Int) {
+
+    override fun toString(): String = rawValue.toString(16)
+
+    companion object {
+        fun parse(s: String): HexInt = HexInt(s.toInt(16))
+    }
+}
+
+object HexIntCustomType : CustomType {
+    override fun testParse(clazz: ClassContainer): Boolean = clazz.mapperClass == HexInt::class
+
+    override fun testToConfig(obj: Any): Boolean = HexInt::class.isInstance(obj)
+
+    override fun parse(
+        clazz: ClassContainer,
+        config: Config,
+        name: String
+    ): Any? = HexInt.parse(config.getString(name))
+
+    override fun toConfig(obj: Any, name: String): Config = (obj as HexInt).toString().toConfig(name)
+
+}
+data class ContainerClass(val hex: HexInt)
