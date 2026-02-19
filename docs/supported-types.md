@@ -15,6 +15,7 @@ Property delegation, `extract` and `toConfig` support these types:
 - `java.util.UUID`
 - `java.net.URL`
 - `kotlin.text.Regex`
+- `kotlin.time.Duration`
 - Collections
     - `List`
     - `Set`
@@ -27,3 +28,4 @@ Property delegation, `extract` and `toConfig` support these types:
     - `com.typesafe.config.ConfigMemorySize`
 - Enum
 - Data classes
+- Value classes
