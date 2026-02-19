@@ -10,11 +10,12 @@ import io.github.config4k.customTypeRegistry
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
-import java.time.Duration
 import java.time.Period
 import java.time.temporal.TemporalAmount
 import java.util.UUID
 import kotlin.reflect.full.primaryConstructor
+import kotlin.time.Duration
+import java.time.Duration as JavaDuration
 
 /**
  * Don't use this class.
@@ -61,6 +62,10 @@ public object SelectReader {
 
             Long::class -> {
                 LongReader()
+            }
+
+            JavaDuration::class -> {
+                JavaDurationReader()
             }
 
             Duration::class -> {

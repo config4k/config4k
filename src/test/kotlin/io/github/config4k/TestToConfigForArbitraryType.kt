@@ -5,6 +5,9 @@ import io.kotest.matchers.shouldBe
 import java.net.URI
 import java.time.Duration
 import java.util.UUID
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.nanoseconds
 
 class TestToConfigForArbitraryType :
     WordSpec({
@@ -67,13 +70,25 @@ class TestToConfigForArbitraryType :
             }
         }
 
+        "DataWithJavaDuration.toConfig" should {
+            "return Config having DataWithJavaDuration" {
+                val data = DataWithJavaDuration(Duration.ofMinutes(15))
+                val config = data.toConfig("data")
+                config.extract<DataWithJavaDuration>("data") shouldBe data
+
+                val dataNanos = DataWithJavaDuration(Duration.ofHours(8).plusNanos(123))
+                val configNanos = dataNanos.toConfig("data")
+                configNanos.extract<DataWithJavaDuration>("data") shouldBe dataNanos
+            }
+        }
+
         "DataWithDuration.toConfig" should {
             "return Config having DataWithDuration" {
-                val data = DataWithDuration(Duration.ofMinutes(15))
+                val data = DataWithDuration(15.minutes)
                 val config = data.toConfig("data")
                 config.extract<DataWithDuration>("data") shouldBe data
 
-                val dataNanos = DataWithDuration(Duration.ofHours(8).plusNanos(123))
+                val dataNanos = DataWithDuration(8.hours.plus(123.nanoseconds))
                 val configNanos = dataNanos.toConfig("data")
                 configNanos.extract<DataWithDuration>("data") shouldBe dataNanos
             }

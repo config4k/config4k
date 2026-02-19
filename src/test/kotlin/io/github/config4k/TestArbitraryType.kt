@@ -3,8 +3,11 @@ package io.github.config4k
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 import java.net.URL
-import java.time.Duration
 import java.util.UUID
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.toJavaDuration
+import java.time.Duration as JavaDuration
 
 class TestArbitraryType :
     WordSpec({
@@ -176,6 +179,30 @@ class TestArbitraryType :
                 data.fooBar shouldBe "fooBar"
             }
         }
+
+        "Config.extract<DataWithJavaDuration>()" should {
+            "return a duration" {
+                val config =
+                    """
+                {
+                  duration: "65s"
+                }""".toConfig()
+                val data = config.extract<DataWithJavaDuration>()
+                data.duration shouldBe 65.seconds.toJavaDuration()
+            }
+        }
+
+        "Config.extract<DataWithDuration>()" should {
+            "return a duration" {
+                val config =
+                    """
+                {
+                  duration: "65s"
+                }""".toConfig()
+                val data = config.extract<DataWithDuration>()
+                data.duration shouldBe 65.seconds
+            }
+        }
     })
 
 data class Person(
@@ -207,6 +234,10 @@ data class NestJavaBean(
 
 data class DataWithUUID(
     val uuid: UUID,
+)
+
+data class DataWithJavaDuration(
+    val duration: JavaDuration,
 )
 
 data class DataWithDuration(

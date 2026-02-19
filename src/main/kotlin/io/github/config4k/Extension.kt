@@ -7,10 +7,12 @@ import io.github.config4k.readers.SelectReader
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
-import java.time.Duration
 import java.util.UUID
 import kotlin.reflect.KProperty
 import kotlin.reflect.full.primaryConstructor
+import kotlin.time.Duration
+import kotlin.time.toJavaDuration
+import java.time.Duration as JavaDuration
 
 /**
  * An extension function that enables you to use type parameter.
@@ -94,6 +96,9 @@ public fun Any.toConfig(name: String): Config {
             return customType.toConfig(this, name)
         }
     }
+
+    fun JavaDuration.toHoconString(): String = if (this.nano == 0) "${this.seconds} s" else "${this.toNanos()} ns"
+
     val map =
         when {
             clazz.javaPrimitiveType != null -> {
@@ -124,8 +129,12 @@ public fun Any.toConfig(name: String): Config {
                 mapOf(name to this.toString())
             }
 
+            this is JavaDuration -> {
+                mapOf(name to this.toHoconString())
+            }
+
             this is Duration -> {
-                mapOf(name to if (this.nano == 0) "${this.seconds} s" else "${this.toNanos()} ns")
+                mapOf(name to this.toJavaDuration().toHoconString())
             }
 
             this is Iterable<*> -> {
