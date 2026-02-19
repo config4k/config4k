@@ -6,6 +6,7 @@ import io.github.config4k.extract
 import io.github.config4k.getGenericMap
 import io.github.config4k.readers.Reader.Companion.camelCaseToLowerHyphenCase
 import java.lang.reflect.ParameterizedType
+import kotlin.reflect.KClass
 import kotlin.reflect.KParameter
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.primaryConstructor
@@ -36,7 +37,8 @@ internal fun extractWithParameters(
                     }
 
                     is Class<*> -> {
-                        ClassContainer(type.kotlin)
+                        val klass = param.type.classifier as? KClass<*>
+                        ClassContainer(klass ?: type.kotlin)
                     }
 
                     else -> {
