@@ -47,7 +47,7 @@ val dokkaJar by tasks.registering(Jar::class) {
     from(tasks.dokkaGeneratePublicationHtml)
 }
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 
 tasks.compileJava {
     options.release = 8
