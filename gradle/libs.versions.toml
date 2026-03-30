@@ -2,7 +2,7 @@
 kotlin = "2.3.20"
 ktlint = "1.8.0"
 gradle-ktlint = "14.2.0"
-dokka = "2.1.0"
+dokka = "2.2.0"
 nexus-publish = "2.0.0"
 typesafe-config = "1.4.6"
 kotlinx-serialization = "1.10.0"
